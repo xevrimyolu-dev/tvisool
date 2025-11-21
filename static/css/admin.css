@@ -1,0 +1,634 @@
+:root {
+    --color-bg: #1e1e2d;
+    --color-card-bg: #27293d;
+    --color-dark-bg: #1a1a27;
+    --color-border: rgba(255, 255, 255, 0.08);
+    --color-text-primary: #f0f0f0;
+    --color-text-secondary: #a0a0b0;
+    --color-accent-blue: #007bff;
+    --color-accent-green: #2dce89;
+    --color-accent-orange: #fb6340;
+    --color-accent-red: #f5365c;
+    --color-accent-purple: #8965e0;
+    --font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    font-family: var(--font-family);
+    margin: 0;
+}
+
+/* --- TOAST NOTIFICATION STYLES --- */
+#tv-toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tv-toast {
+    background-color: #333;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 250px;
+    max-width: 350px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    font-size: 14px;
+    border-left: 4px solid #555;
+}
+
+.tv-toast.tv-show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.tv-toast.tv-hide {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+.tv-toast.tv-success {
+    background-color: #2dce89; /* Green */
+    color: white;
+    border-left-color: #23a06b;
+}
+
+.tv-toast.tv-error {
+    background-color: #f5365c; /* Red */
+    color: white;
+    border-left-color: #c92a49;
+}
+
+.tv-toast.tv-info {
+    background-color: #11cdef; /* Blue */
+    color: white;
+    border-left-color: #0da5c0;
+}
+
+.tv-toast-close {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 15px;
+    line-height: 1;
+    opacity: 0.7;
+}
+
+.tv-toast-close:hover {
+    opacity: 1;
+}
+
+/* admin.css dosyasının sonuna ekleyin */
+
+.badge.bg-danger {
+    background-color: var(--color-accent-red);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+}
+
+.badge.bg-success {
+    background-color: var(--color-accent-green);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-right: 5px;
+}
+
+.permission-select {
+    background-color: var(--color-dark-bg);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 4px 6px;
+    font-size: 0.8rem;
+}
+
+.btn-close {
+    background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+    border: 0;
+    border-radius: .25rem;
+    opacity: .7;
+    cursor: pointer;
+    padding: 0.5em;
+}
+.btn-close:hover {
+    opacity: 1;
+}
+
+.action-buttons-cell .emergency-delete-btn {
+    background-color: var(--color-accent-red);
+    color: white;
+}
+.action-buttons-cell .emergency-delete-btn:hover {
+    background-color: #d6284a;
+}
+
+/* Silinmiş kullanıcı satırını soluklaştır */
+.deleted-user-row {
+    opacity: 0.5;
+    background-color: rgba(92, 28, 28, 0.3);
+    text-decoration: line-through;
+}
+
+.admin-container { max-width: 1600px; margin: 0 auto; padding: 20px; }
+
+/* YENİ: ORTALANMIŞ ANA BAŞLIK ALANI */
+.admin-header {
+    display: flex;
+    flex-direction: column; /* Dikey hizalama için */
+    align-items: center; /* Tüm öğeleri ortala */
+    gap: 20px; /* Öğeler arası boşluk */
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--color-border);
+    text-align: center; /* Yazıları ortala */
+}
+.admin-header h1 { margin: 0; font-size: 28px; display: flex; align-items: center; gap: 15px; }
+.header-actions { display: flex; gap: 15px; }
+.header-actions a { color: var(--color-text-secondary); text-decoration: none; background-color: var(--color-card-bg); padding: 8px 15px; border-radius: 8px; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+.header-actions a:hover { color: var(--color-text-primary); background-color: var(--color-accent-blue); }
+
+/* YENİ: ORTALANMIŞ İSTATİSTİK KARTLARI */
+.stat-cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+.stat-card {
+    background-color: var(--color-card-bg);
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column; /* Dikey hizalama */
+    align-items: center;   /* Yatayda ortala */
+    text-align: center;    /* Yazıları ortala */
+    gap: 15px;
+}
+.stat-card i { font-size: 32px; }
+.icon-blue { color: var(--color-accent-blue); } .icon-green { color: var(--color-accent-green); } .icon-orange { color: var(--color-accent-orange); } .icon-purple { color: var(--color-accent-purple); }
+.stat-info p { margin: 0; font-size: 14px; color: var(--color-text-secondary); }
+.stat-info span { font-size: 24px; font-weight: 600; display: block; }
+
+.main-content-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
+.card { background-color: var(--color-card-bg); border-radius: 12px; border: 1px solid var(--color-border); overflow: hidden; display: flex; flex-direction: column;}
+
+/* YENİ: ORTALANMIŞ KART BAŞLIKLARI */
+.card-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column; /* Dikey hizala */
+    align-items: center;   /* Ortala */
+    gap: 15px;
+    text-align: center;
+}
+.card-header h2 { margin: 0; font-size: 18px; display: flex; align-items: center; gap: 10px; }
+
+.chart-card, .analysis-card { grid-column: span 12; }
+@media (min-width: 992px) { .chart-card { grid-column: span 5; } .analysis-card { grid-column: span 7; } }
+.tickets-card, .users-card { grid-column: 1 / -1; }
+.reported-posts-card { grid-column: 1 / -1; }
+.reported-posts-wrapper { padding: 15px; }
+
+.approve-report.claim-btn { background-color: var(--color-accent-green); border-color: var(--color-accent-green); color: #fff; }
+.approve-report.claim-btn:hover { filter: brightness(1.08); }
+.reject-report.close-btn { background-color: var(--color-accent-red); border-color: var(--color-accent-red); color: #fff; }
+.reject-report.close-btn:hover { filter: brightness(1.08); }
+.action-buttons-cell { display: flex; gap: 8px; align-items: center; }
+
+.chart-container { padding: 20px; position: relative; flex-grow: 1; min-height: 300px; }
+
+/* YENİ: ORTALANMIŞ ANALİZ DETAYLARI */
+.analysis-details { padding: 25px; font-size: 15px; line-height: 1.7; text-align: center; }
+.analysis-details h3 { font-size: 17px; margin-top: 0; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.analysis-details ul, .analysis-details ol { padding: 0; margin: 0 0 20px 0; list-style-position: inside; } /* list-style-position ortalamaya yardımcı olur */
+.analysis-details li { margin-bottom: 8px; }
+.analysis-details hr { border: none; border-top: 1px solid var(--color-border); margin: 20px 0; }
+
+.card-tabs { display: flex; gap: 5px; background-color: var(--color-dark-bg); padding: 5px; border-radius: 8px; }
+.tab-btn { background: none; border: none; color: var(--color-text-secondary); padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 500; transition: all 0.2s; }
+.tab-btn.active { background-color: var(--color-accent-blue); color: white; }
+.ticket-list-wrapper { padding: 0; overflow-x: auto;}
+.tab-content { display: none; } .tab-content.active { display: block; }
+
+.tickets-table, .user-management-table { width: 100%; border-collapse: collapse; text-align: left; }
+.tickets-table th, .user-management-table th { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--color-border); white-space: nowrap; }
+.tickets-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--color-border); white-space: normal; }
+.user-management-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--color-border); white-space: nowrap; }
+.tickets-table th { color: var(--color-text-secondary); font-size: 13px; text-transform: uppercase; }
+.tickets-table td .user-role-badge { font-size: 11px; padding: 3px 8px; border-radius: 12px; color: white; }
+.role-admin { background-color: var(--color-accent-red); } .role-dev { background-color: var(--color-accent-purple); } .role-premium { background-color: var(--color-accent-green); } .role-ücretsiz { background-color: var(--color-text-secondary); }
+.ticket-status { font-weight: 600; } .status-claimed { color: var(--color-accent-orange); }
+
+.user-management-table-wrapper { overflow-x: auto; }
+.user-cell { display: flex; align-items: center; gap: 10px; }
+.user-profile-thumb { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+.potential-badge { padding: 4px 10px; border-radius: 15px; font-size: 12px; font-weight: 600; color: white; }
+.potential-yüksek { background-color: var(--color-accent-green); } .potential-orta { background-color: var(--color-accent-orange); } .potential-düşük { background-color: var(--color-accent-red); } /* Düşük Kırmızı yapıldı */
+.action-btn { background-color: var(--color-dark-bg); border: 1px solid var(--color-border); color: var(--color-text-secondary); padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+.action-btn:hover:not(:disabled) { background-color: var(--color-accent-blue); border-color: var(--color-accent-blue); color: white; }
+.action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.role-select { background-color: var(--color-dark-bg); color: var(--color-text-primary); border: 1px solid var(--color-border); border-radius: 6px; padding: 8px; cursor: pointer; }
+
+/* Quote styles for reply content in admin tables */
+.post-quote { display: block; background-color: rgba(255, 255, 255, 0.05); border-left: 3px solid var(--color-accent-blue); border-radius: 4px; padding: 6px 10px; margin-bottom: 8px; }
+.post-quote-header { display: flex; align-items: center; gap: 6px; margin-bottom: 2px; line-height: 1.2; }
+.post-quote-header i { font-size: 0.75rem; color: var(--color-accent-blue); opacity: 0.85; }
+.quote-username { font-size: 0.8rem; font-weight: 700; color: var(--color-accent-blue); }
+.post-quote-content { font-size: 0.85rem; color: var(--color-text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.reported-posts-card .goto-user { color: var(--color-text-primary); text-decoration: none; }
+.reported-posts-card .goto-user:hover { color: #fff; }
+
+.user-chip { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background-color: rgba(255,255,255,0.03); border: 1px solid var(--color-border); border-radius: 10px; }
+.chip-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+.chip-info { display: flex; flex-direction: column; line-height: 1.2; }
+.chip-name { font-weight: 700; color: var(--color-text-primary); }
+.chip-email { font-size: 12px; color: var(--color-text-secondary); }
+.chip-label { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 8px; background-color: rgba(255,255,255,0.06); border: 1px solid var(--color-border); color: var(--color-text-secondary); display: inline-block; }
+
+.post-snapshot { background-color: var(--color-dark-bg); border: 1px solid var(--color-border); border-radius: 12px; padding: 12px; display: grid; grid-template-columns: 40px 1fr; grid-template-rows: auto auto; grid-column-gap: 10px; grid-row-gap: 8px; }
+.snapshot-author-pic { grid-row: 1 / span 2; width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+.snapshot-author-name { font-weight: 700; color: var(--color-text-primary); align-self: center; }
+.snapshot-content { color: var(--color-text-primary); line-height: 1.6; grid-column: 2; }
+.snapshot-media { display: flex; gap: 6px; flex-wrap: wrap; grid-column: 2; }
+.snapshot-media img { width: 56px; height: 56px; object-fit: cover; border-radius: 6px; }
+
+.reason-badge { display: inline-block; padding: 6px 10px; border-radius: 10px; background-color: rgba(255,255,255,0.06); border: 1px solid var(--color-border); color: var(--color-text-primary); font-size: 12px; }
+/* Reason section in details */
+.reason-section { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+.reason-title { font-size: 12px; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.6px; }
+.reason-chip { display: inline-block; padding: 6px 10px; border-radius: 10px; background-color: rgba(255,255,255,0.06); border: 1px solid var(--color-border); color: var(--color-text-primary); font-size: 12px; }
+.details-meta { display: flex; align-items: center; gap: 12px; margin: 12px 0 8px; }
+.details-meta-item { display: flex; align-items: center; gap: 6px; }
+.details-meta-label { font-size: 12px; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.6px; }
+
+.reporter-card { display: flex; align-items: center; gap: 12px; padding: 10px; background-color: rgba(255,255,255,0.04); border: 1px solid var(--color-border); border-radius: 12px; }
+.reporter-card .rc-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+.reporter-card .rc-info { display: flex; flex-direction: column; }
+.reporter-card .rc-name { color: var(--color-text-primary); font-weight: 700; }
+.reporter-card .rc-email { color: var(--color-text-secondary); font-size: 12px; }
+.reporter-role-badge { display: inline-block; margin-top: 8px; padding: 6px 10px; border-radius: 10px; background-color: rgba(255,255,255,0.06); border: 1px solid var(--color-border); color: var(--color-text-primary); font-size: 12px; }
+.report-details-list { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+.details-item { display: flex; flex-direction: column; gap: 8px; }
+.long-dash { font-size: 22px; color: var(--color-border); text-align: center; line-height: 1; }
+.details-post { background-color: rgba(255,255,255,0.03); border: 1px solid var(--color-border); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+.details-post-text { color: var(--color-text-primary); line-height: 1.6; }
+.details-media { display: flex; gap: 6px; flex-wrap: wrap; }
+.details-media img { width: 56px; height: 56px; object-fit: cover; border-radius: 6px; }
+.snapshot-photo { width: 100%; border-radius: 12px; border: 1px solid var(--color-border); display: block; }
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1050;
+    display: none; /* KARARMA EKRANINI BAŞLANGIÇTA GİZLER */
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Modal stilleri öncekiyle aynı, sadece yukarıdaki display:none kuralı hatayı çözer */
+.modal-content { background-color: var(--color-card-bg); border-radius: 12px; max-width: 700px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+.modal-header { padding: 15px 20px; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; }
+.modal-header h3 { margin: 0; }
+.modal-close { background: none; border: none; font-size: 24px; color: var(--color-text-secondary); cursor: pointer; }
+.modal-body { padding: 20px; overflow-y: auto; overflow-x: hidden; }
+.log-list { list-style: none; padding: 0; margin: 0; }
+.log-item { display: flex; gap: 15px; padding: 10px 0; border-bottom: 1px solid var(--color-border); }
+.log-item:last-child { border-bottom: none; }
+.timestamp { color: var(--color-text-secondary); font-size: 13px; white-space: nowrap; }
+.chat-modal-content { max-width: 420px; width: 100%; height: 85vh; max-height: 700px; }
+.chat-body { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; background-color: #0d1418; }
+.chat-messages-list { flex-grow: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; }
+.chat-message { display: flex; flex-direction: column; max-width: 85%; }
+.message-bubble { padding: 8px 14px; border-radius: 18px; line-height: 1.5; word-wrap: break-word; font-size: 15px; box-shadow: 0 1px 2px rgba(0, 0, 0, .1); }
+.message-timestamp { font-size: 11px; margin-top: 4px; padding: 0 5px; color: var(--color-text-secondary); }
+.chat-message.user-message { align-self: flex-start; align-items: flex-start; }
+.chat-message.user-message .message-bubble, .chat-message.user-message .message-attachment { background-color: #2a2f34; border-bottom-left-radius: 4px; }
+.chat-message.admin-message { align-self: flex-end; align-items: flex-end; }
+.chat-message.admin-message .message-bubble, .chat-message.admin-message .message-attachment { background-color: #056162; border-bottom-right-radius: 4px; }
+.message-attachment { padding: 5px; border-radius: 12px; line-height: 0; display: inline-block; }
+.attachment-image { max-width: 200px; max-height: 200px; border-radius: 8px; cursor: pointer; }
+.attachment-file { display: flex; align-items: center; gap: 10px; padding: 10px; text-decoration: none; color: var(--color-text-primary); }
+.attachment-file i { font-size: 24px; }
+.chat-status-bar { padding: 8px 15px; text-align: center; font-size: 12px; background-color: rgba(0,0,0,0.2); color: var(--color-text-secondary); }
+.chat-input-form { display: flex; align-items: center; padding: 8px 12px; background-color: var(--color-card-bg); border-top: 1px solid var(--color-border); }
+.chat-file-label { color: var(--color-text-secondary); font-size: 22px; cursor: pointer; padding: 8px; transition: color .2s; }
+.chat-file-label:hover { color: var(--color-accent-blue); }
+#chat-text-input-admin { flex-grow: 1; border: none; background: #27293d; padding: 10px 15px; color: var(--color-text-primary); font-size: 15px; outline: none; border-radius: 20px; margin: 0 8px; }
+#chat-text-input-admin:disabled { opacity: 0.5; background-color: var(--color-dark-bg); }
+#chat-send-button-admin { background: none; border: none; color: var(--color-text-secondary); font-size: 20px; padding: 8px; cursor: pointer; transition: color .2s; }
+#chat-send-button-admin:hover { color: var(--color-accent-blue); }
+.modal-footer.admin-chat-actions { padding: 15px; border-top: 1px solid var(--color-border); display: flex; gap: 15px; justify-content: center; background-color: var(--color-card-bg); }
+.claim-btn { background-color: var(--color-accent-green); border-color: var(--color-accent-green); color: white; }
+.close-btn { background-color: var(--color-accent-red); border-color: var(--color-accent-red); color: white; }
+.image-modal-backdrop { z-index: 1060; }
+@media (max-width: 768px) { .admin-container { padding: 15px; } .admin-header { flex-direction: column; align-items: center; } .header-actions a span { display: none; } .header-actions a { padding: 10px; } }
+@media (max-width: 480px) { .admin-header h1 { font-size: 22px; } .chat-modal-content { height: 90vh; } }
+
+/* Var olan .admin-css dosyanızın sonuna bu kuralları ekleyin */
+
+.user-management-table td, .user-management-table th {
+    vertical-align: middle; /* Hücre içeriğini dikeyde ortala */
+}
+
+.role-display {
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    color: white;
+    text-transform: capitalize;
+}
+
+/* Rol gösterimi için renkler */
+.role-kurucu { background-color: #ffd700; color: #333; } /* Altın rengi */
+.role-admin { background-color: var(--color-accent-red); }
+.role-dev { background-color: var(--color-accent-purple); }
+.role-premium { background-color: var(--color-accent-green); }
+.role-ücretsiz { background-color: var(--color-text-secondary); }
+
+.expiry-date {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+}
+.expiry-date.permanent {
+    font-style: italic;
+    color: var(--color-accent-green);
+}
+
+.action-buttons-cell {
+    display: flex;
+    gap: 8px;
+}
+
+
+/* Rol Düzenleme Modalı Stilleri */
+.modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+/* Var olan .admin.css dosyanızın sonuna bu kuralları ekleyin */
+
+.user-management-table td, .user-management-table th {
+    vertical-align: middle; /* Hücre içeriğini dikeyde ortala */
+}
+
+.role-display {
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    color: white;
+    text-transform: capitalize;
+}
+
+/* Rol gösterimi için renkler */
+.role-kurucu { background-color: #ffd700; color: #333; } /* Altın rengi */
+.role-usta-admin { background: linear-gradient(45deg, #8965e0, #6c47c7); } /* Mor gradient */
+.role-caylak-admin { background: linear-gradient(45deg, #007bff, #0056b3); } /* Mavi gradient */
+.role-admin { background-color: var(--color-accent-red); }
+.role-dev { background-color: var(--color-accent-purple); }
+.role-premium { background-color: var(--color-accent-green); }
+.role-ücretsiz { background-color: var(--color-text-secondary); }
+
+.expiry-date {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+}
+.expiry-date.permanent {
+    font-style: italic;
+    color: var(--color-accent-green);
+}
+
+.action-buttons-cell {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Acil Durum Silme Butonu */
+.action-buttons-cell .emergency-delete-btn {
+    background-color: var(--color-accent-red);
+    color: white;
+}
+.action-buttons-cell .emergency-delete-btn:hover {
+    background-color: #d6284a;
+}
+
+/* Silinmiş kullanıcı satırını soluklaştır */
+.deleted-user-row {
+    opacity: 0.5;
+    background-color: rgba(92, 28, 28, 0.3);
+    text-decoration: line-through;
+}
+
+/* Yedek Kod Kopyalama */
+.backup-code-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}
+.backup-code-cell .copy-btn { padding: 5px 8px; }
+
+/* Özel Yetki Stilleri */
+.badge.bg-success {
+    background-color: var(--color-accent-green);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-right: 5px;
+}
+
+.permission-select {
+    background-color: var(--color-dark-bg);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 4px 6px;
+    font-size: 0.8rem;
+}
+
+.btn-close {
+    background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+    border: 0;
+    border-radius: .25rem;
+    opacity: .7;
+    cursor: pointer;
+    padding: 0.5em;
+}
+.btn-close:hover { opacity: 1; }
+
+.form-group .role-select {
+    width: 100%;
+    box-sizing: border-box; /* padding'in genişliği etkilememesi için */
+}
+
+.save-btn {
+    background-color: var(--color-accent-green);
+    border-color: var(--color-accent-green);
+    color: white;
+}
+.save-btn:hover {
+    background-color: #28b475;
+    border-color: #28b475;
+}
+
+/* admin.css dosyasının sonuna ekleyin */
+.backup-code-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}
+
+.backup-code-cell .copy-btn {
+    padding: 5px 8px; /* Daha küçük buton */
+}
+
+.action-buttons-cell .action-btn {
+    flex-shrink: 0; /* Butonların küçülmesini engelle */
+}
+
+/* Cihaz Listesi Stilleri */
+.device-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.device-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 5px;
+    border-bottom: 1px solid var(--color-border);
+}
+.device-item:last-child {
+    border-bottom: none;
+}
+.device-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.device-info i {
+    font-size: 20px;
+    color: var(--color-text-secondary);
+}
+.device-details strong {
+    display: block;
+    color: var(--color-text-primary);
+}
+.device-details small {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+}
+.remove-device-btn {
+    background-color: var(--color-accent-red);
+    border-color: var(--color-accent-red);
+    color: white;
+}
+.remove-device-btn:hover {
+    filter: brightness(1.2);
+}
+
+/* ===================================== */
+/* YENİ: ÖDEME NİYETLERİ (INTENTIONS)     */
+/* ===================================== */
+
+/* "Tercih" modalındaki onay/reddet butonları */
+#intent-action-footer .save-btn {
+    background-color: var(--color-accent-green);
+    border-color: var(--color-accent-green);
+}
+#intent-action-footer .save-btn:hover {
+    background-color: #28b475;
+}
+#intent-action-footer .close-btn { /* Reddet butonu için */
+    background-color: var(--color-accent-red);
+    border-color: var(--color-accent-red);
+}
+#intent-action-footer .close-btn:hover {
+    background-color: #d6284a;
+}
+#intent-action-footer .save-btn:disabled,
+#intent-action-footer .close-btn:disabled {
+    background-color: var(--color-text-secondary);
+    border-color: var(--color-text-secondary);
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+#intent-action-footer .save-btn:disabled:hover,
+#intent-action-footer .close-btn:disabled:hover {
+     background-color: var(--color-text-secondary);
+}
+
+
+/* Pasif niyetler tablosundaki durum etiketleri */
+.intent-status-badge {
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    color: white;
+}
+.status-completed {
+    background-color: var(--color-accent-green);
+}
+.status-cancelled {
+    background-color: var(--color-accent-red);
+}
+
+/* Modal içindeki durum göstergesi */
+#intent-status-text.role-display {
+    width: auto;
+    display: inline-block;
+}

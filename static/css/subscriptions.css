@@ -1,0 +1,416 @@
+.back-button-subscriptions:hover,
+.features-list li i {
+  color: var(--primary-accent-color);
+}
+body,
+html {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+}
+.app-wrapper {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+.subscriptions-main {
+  flex-grow: 1;
+  padding: 20px 10px;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.subscriptions-main::-webkit-scrollbar {
+  display: none;
+}
+.background-pattern {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  z-index: -1;
+}
+body.dark-theme {
+  --card-bg-color: #2c3038;
+  --banner-bg-color: #343a40;
+  --card-shadow-color: rgba(0, 0, 0, 0.4);
+  --disabled-btn-bg: #4a4a4a;
+  --disabled-btn-color: #9e9e9e;
+  --border-color: #444;
+  --border-color-light: #555;
+  --input-bg-color: #3a3a3a;
+  --header-text-color: #e0e0e0;
+  --success-color: #27ae60;
+  --success-bg-color: rgba(39, 174, 96, 0.1);
+  --primary-accent-color: #007bff;
+}
+body.light-theme {
+  --card-bg-color: #ffffff;
+  --banner-bg-color: #f8f9fa;
+  --card-shadow-color: rgba(0, 0, 0, 0.1);
+  --disabled-btn-bg: #e0e0e0;
+  --disabled-btn-color: #8c8c8c;
+  --border-color: #dee2e6;
+  --border-color-light: #e9ecef;
+  --input-bg-color: #ffffff;
+  --header-text-color: #212121;
+  --success-color: #28a745;
+  --success-bg-color: rgba(40, 167, 69, 0.1);
+  --primary-accent-color: #007bff;
+}
+.back-button-subscriptions {
+  font-size: 1.5rem;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.banner-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+.current-role-banner {
+  background-color: var(--banner-bg-color);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px var(--card-shadow-color);
+  padding: 12px 20px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+.header-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.menu-action-btn {
+  background-color: var(--tertiary-bg);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--text-color);
+  transition: background-color 0.2s, transform 0.2s;
+}
+.menu-action-btn:hover {
+  background-color: var(--secondary-bg);
+  transform: translateY(-2px);
+}
+.role-tag {
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+}
+.role-free,
+.role-ücretsiz {
+  background-color: #6c757d;
+}
+.role-premium {
+  background-color: #007bff;
+}
+.role-dev {
+  background-color: #6f42c1;
+}
+.purchase-alert {
+  padding: 15px;
+  background-color: var(--success-bg-color);
+  color: var(--success-color);
+  border: 1px solid var(--success-color);
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+.card,
+.duration-dropdown option {
+  background-color: var(--card-bg-color);
+}
+.subscription-cards {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  width: 100%;
+}
+.card {
+  box-shadow: 0 4px 15px var(--card-shadow-color);
+  border-radius: 16px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-color);
+  transition: transform 0.3s, box-shadow 0.3s;
+  width: 100%;
+  max-width: 650px;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px var(--card-shadow-color);
+}
+.card[data-role="premium"] {
+  border-top: 4px solid var(--primary-accent-color);
+}
+.card[data-role="dev"] {
+  border-top: 4px solid #8a2be2;
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 15px;
+}
+.card-header h2 {
+  margin: 0;
+  color: var(--header-text-color);
+  font-size: 1.8rem;
+}
+.duration-selector .duration-dropdown {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: var(--input-bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 10px 30px 10px 15px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%238c8c8c' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+}
+.duration-selector .duration-dropdown:focus {
+  outline: 0;
+  border-color: var(--primary-accent-color);
+  box-shadow: 0 0 5px var(--primary-accent-color);
+}
+.duration-dropdown option {
+  color: var(--text-color);
+}
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  flex-grow: 1;
+}
+.features-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-color-light);
+  font-size: 0.95rem;
+}
+.features-list li:last-child {
+  border-bottom: none;
+}
+.features-list li i {
+  width: 20px;
+  text-align: center;
+}
+.features-list li strong {
+  flex-grow: 1;
+  text-align: left;
+}
+.features-list li span {
+  text-align: right;
+  flex-shrink: 0;
+}
+.pricing {
+  text-align: right;
+  margin-top: auto;
+  padding-top: 20px;
+}
+.pricing .hourly-price {
+  font-size: 0.9rem;
+  color: var(--text-light-color);
+  display: block;
+}
+.pricing .main-price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--success-color);
+}
+.card-footer {
+  margin-top: 20px;
+}
+.purchase-btn {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: #fff;
+  transition: background-color 0.3s, transform 0.2s;
+}
+.purchase-btn:hover:not(:disabled) {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+.purchase-btn:disabled {
+  background-color: var(--disabled-btn-bg);
+  color: var(--disabled-btn-color);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* === YENİ: Toast Bildirim Stilleri === */
+
+.toast-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: var(--card-bg-color, #333);
+  color: var(--text-color, #fff);
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color, #555);
+  font-size: 0.95rem;
+  z-index: 1050;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  max-width: 300px;
+  text-align: center;
+}
+
+.toast-notification.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Hata mesajları için (kırmızı tema) */
+.toast-notification.toast-error {
+  background-color: var(--color-accent-red-bg, #2e1a1a);
+  color: var(--color-accent-red, #f16262);
+  border-color: var(--color-accent-red, #f16262);
+}
+
+/* Başarı mesajları için (yeşil tema) */
+.toast-notification.toast-success {
+  background-color: var(--color-accent-green-bg, #1a2e1a);
+  color: var(--color-accent-green, #62f17e);
+  border-color: var(--color-accent-green, #62f17e);
+}
+
+
+.pricing .main-price {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    line-height: 1.1;
+}
+
+.old-price-strikethrough {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 2px;
+    opacity: 0.7;
+}
+
+.new-discounted-price {
+    color: var(--success-color);
+    font-size: 2.5rem;
+    font-weight: 800;
+    text-shadow: 0 0 10px rgba(39, 174, 96, 0.3);
+}
+
+/* 2. Canlı İndirim Sayacı Kutusu */
+.discount-timer-container {
+    margin: 15px 0 20px 0;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    /* Hafif parlak, gradyan arka plan */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.15); /* Altın parıltısı */
+    animation: borderPulse 2s infinite;
+}
+
+/* Tema uyumluluğu */
+body.dark-theme .discount-timer-container {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 215, 0, 0.4); 
+}
+
+body.light-theme .discount-timer-container {
+    background: #fff8e1; /* Açık sarımsı */
+    border: 1px solid #ffc107;
+}
+
+/* Etiket Metni (BU FİYATLAR İÇİN SON vb.) */
+.timer-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    color: var(--primary-accent-color); /* Mavi veya tema rengi */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Şimşek ikonu */
+.timer-label i {
+    color: #ffc107; 
+    animation: flash 1.5s infinite;
+}
+
+/* Rakamlar */
+.timer-digits {
+    font-size: 1.5rem;
+    font-weight: 800;
+    font-family: 'Courier New', Courier, monospace; /* Dijital saat fontu */
+    letter-spacing: 2px;
+    color: var(--header-text-color);
+}
+
+/* Animasyonlar */
+@keyframes flash {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+@keyframes borderPulse {
+    0% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.1); }
+    50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+    100% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.1); }
+}
+
+/* Mobil Uyumluluk */
+@media (max-width: 768px) {
+    .new-discounted-price { font-size: 2rem; }
+    .old-price-strikethrough { font-size: 1rem; }
+    .timer-digits { font-size: 1.3rem; }
+}

@@ -1,0 +1,514 @@
+/* payment.css */
+
+/* SCROLLBAR GİZLEME VE GENEL DÜZEN */
+.payment-main {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    /* Scrollbar'ı gizle */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+.payment-main::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.payment-step {
+    width: 100%;
+    background-color: var(--card-bg-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px var(--card-shadow-color);
+    padding: 30px;
+    margin-bottom: 20px;
+    display: none; /* Varsayılan olarak gizli */
+}
+
+.payment-step.active {
+    display: block;
+}
+
+.step-title {
+    color: var(--header-text-color);
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color-light);
+    padding-bottom: 15px;
+}
+
+/* --- Adım 1: Genel Yöntem Seçimi --- */
+.method-selection-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.method-card {
+    background-color: var(--secondary-bg);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    border: 2px solid var(--border-color);
+}
+
+.method-card:hover {
+    background-color: var(--input-bg-color);
+    transform: translateY(-3px);
+    border-color: var(--primary-accent-color);
+}
+
+.method-card i {
+    font-size: 3rem;
+    color: var(--primary-accent-color);
+    margin-bottom: 10px;
+}
+
+.method-card p {
+    margin: 0;
+    font-weight: 600;
+}
+
+/* --- Adım 2 & 3: QR ve Transfer Detayları --- */
+.back-btn-container {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.back-btn-container button {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.3s;
+}
+
+.back-btn-container button:hover {
+    color: var(--primary-accent-color);
+}
+
+/* Plan Özeti Kutusu (Tekrarlanan) */
+.plan-summary-box-payment {
+    background-color: var(--input-bg-color);
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    border: 1px solid var(--border-color);
+}
+
+.plan-summary-box-payment h4 {
+    margin-top: 0;
+    color: var(--success-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+}
+
+.plan-summary-box-payment p {
+    margin: 5px 0;
+    font-size: 0.95rem;
+}
+
+/* --- QR Seçim Alanı Düzeltmeleri --- */
+.qr-method-grid {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.qr-icon-btn {
+    background: none;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 90px; /* Sabit genişlik */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.qr-icon-btn:hover {
+    border-color: var(--primary-accent-color);
+}
+
+.qr-icon-btn.selected {
+    border-color: var(--success-color);
+    box-shadow: 0 0 10px rgba(39, 174, 96, 0.5);
+}
+
+.qr-icon-btn img {
+    width: 100%;
+    max-width: 50px;
+    height: 50px; /* Sabit yükseklik vererek isim konumunu hizalıyoruz */
+    object-fit: contain;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* İsimlerin hizalanması ve koyu temada görünürlüğü */
+.qr-icon-btn span {
+    margin-top: 0;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--header-text-color); /* Koyu temada beyaz/açık renk */
+    white-space: nowrap;
+    line-height: 1.2;
+}
+
+/* --- QR Görüntüleme Alanı Düzeltmeleri --- */
+.qr-display-area {
+    text-align: center;
+    padding: 20px;
+    border: 1px dashed var(--border-color);
+    border-radius: 8px;
+    /* QR'ı ve altındaki metni ortalar */
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+.qr-image {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    margin-bottom: 15px;
+    border: 5px solid var(--card-bg-color);
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
+
+/* QR Bilgi metni (UPI ID/Ağ Bilgisi) ortalanır */
+#qrInfoText {
+    color: var(--primary-accent-color);
+    margin-bottom: 0;
+    text-align: center; 
+}
+
+/* --- Transfer Alanı Düzeltmeleri --- */
+.transfer-info-container p {
+    color: var(--text-light-color);
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    text-align: center; /* İstenen ortalama */
+}
+
+.transfer-method-box {
+    border: 1px solid var(--border-color);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.transfer-method-box h5 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: var(--header-text-color);
+}
+
+.transfer-method-box h5 img {
+    width: 24px;
+    height: 24px;
+}
+
+.transfer-value-display {
+    background-color: var(--input-bg-color);
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: monospace;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    transition: border-color 0.2s;
+}
+
+.transfer-value-display:hover {
+    border-color: var(--success-color);
+}
+
+.copy-btn-icon {
+    font-size: 1rem;
+    color: var(--primary-accent-color);
+    transition: color 0.3s;
+}
+.transfer-value-display:hover .copy-btn-icon {
+    color: var(--success-color);
+}
+
+/* İkon için kopyalandı efekti */
+.transfer-value-display .copy-btn-icon.copied {
+    color: var(--success-color);
+}
+
+/* Metnin kendisi için kopyalandı efekti (Yeşil bindirme) */
+.transfer-value-display span.copied {
+    color: #fff; /* Beyaz metin */
+    background-color: var(--success-color); /* Yeşil arka plan */
+    padding: 2px 5px; /* Biraz dolgu */
+    border-radius: 4px; /* Köşeleri yuvarla */
+    transition: all 0.2s;
+}
+
+.payment-confirm-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: var(--success-color);
+    color: #fff;
+    margin-top: 20px;
+}
+
+/* ===================================== */
+/* YENİ EKLENEN STİLLER (Adım 4, 5, 6)   */
+/* ===================================== */
+
+.proof-form .form-group {
+    margin-bottom: 20px;
+}
+
+.proof-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--header-text-color); /* Değişken kullanıldı */
+    font-size: 0.95em;
+}
+
+.proof-input {
+    width: calc(100% - 24px); /* Padding için ayarla */
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#receiptUploadBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: 500;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    margin-top: 5px;
+}
+
+.select-btn i {
+    margin-right: 8px;
+}
+
+/* ===================================== */
+/* TEMA DÜZELTMESİ (AÇIK & KOYU TEMA)    */
+/* ===================================== */
+
+/* Beyaz Tema (Varsayılan) */
+body:not(.dark-theme) .proof-input,
+body:not(.dark-theme) #receiptUploadBtn {
+    background-color: #f0f2f5; /* Beyaz arka plandan farklılaşan açık gri */
+    color: #333;
+    border: 1px solid #dde1e7;
+}
+
+body:not(.dark-theme) .proof-input:focus {
+     border-color: var(--primary-accent-color);
+     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+     outline: none;
+}
+
+body:not(.dark-theme) .select-btn:hover {
+    background-color: #e4e6e9; /* Hover için biraz daha koyu gri */
+}
+
+/* Siyah Tema (Zaten çalışıyordu) */
+body.dark-theme .proof-input,
+body.dark-theme #receiptUploadBtn {
+    background-color: var(--input-bg-color); /* Temanın kendi gri değişkeni */
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+body.dark-theme .proof-input:focus {
+     border-color: var(--primary-accent-color);
+     box-shadow: 0 0 0 3px rgba(var(--primary-accent-color-rgb), 0.2);
+     outline: none;
+}
+
+body.dark-theme .select-btn:hover {
+    background-color: var(--secondary-bg); /* Temanın kendi hover değişkeni */
+}
+
+/* ===================================== */
+
+.hidden-file-input {
+    display: none; /* Dosya inputunu gizle */
+}
+
+.file-name-display {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: var(--text-light-color); /* Değişken kullanıldı */
+    word-break: break-all;
+}
+/* Koyu temada seçilen dosya adı */
+body.dark-theme .file-name-display {
+    color: var(--text-light-color);
+}
+/* Açık temada seçilen dosya adı */
+body:not(.dark-theme) .file-name-display {
+    color: #555;
+}
+
+
+.proof-form .payment-confirm-btn {
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* Status/Error messages */
+.proof-form .settings-status {
+    margin-top: 15px;
+    text-align: center;
+}
+.proof-form .flash-danger {
+    color: var(--color-accent-red);
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+/* ===================================== */
+/* Verifying (step5-verifying) Styles */
+/* ===================================== */
+
+.verifying-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    text-align: center;
+    background-color: var(--card-bg-color); /* Değişken kullanıldı */
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: var(--card-shadow-color); /* Değişken kullanıldı */
+}
+
+.loading-spinner {
+    border: 4px solid var(--border-color-light); /* Değişken kullanıldı */
+    border-top: 4px solid var(--primary-accent-color); /* Değişken kullanıldı */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.verifying-container .step-title {
+    color: var(--header-text-color); /* Değişken kullanıldı */
+    margin-bottom: 0;
+}
+
+
+/* ===================================== */
+/* Verification Result (step6-verification-result) Styles */
+/* ===================================== */
+
+.verification-result-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    text-align: center;
+    background-color: var(--card-bg-color); /* Değişken kullanıldı */
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: var(--card-shadow-color); /* Değişken kullanıldı */
+}
+
+.verification-result-container .step-title {
+    color: var(--header-text-color); /* Değişken kullanıldı */
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.verification-result-container p {
+    color: var(--text-light-color); /* Değişken kullanıldı */
+    font-size: 1.05em;
+    line-height: 1.5;
+    margin-bottom: 25px;
+    max-width: 80%;
+}
+
+.verification-result-container .icon-success {
+    color: var(--success-color); /* Değişken kullanıldı */
+    font-size: 3.5em;
+}
+
+.verification-result-container .icon-danger {
+    color: #f5365c; /* Hata rengi (genelde --danger-color olur) */
+    font-size: 3.5em;
+}
+
+.verification-result-container .action-btn {
+    padding: 10px 25px;
+    font-size: 1em;
+    font-weight: 500;
+    /* Temel buton stillerini (varsa) miras almalı */
+    /* Gerekirse buraya da tema düzeltmesi eklenebilir */
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+.verification-result-container .action-btn:hover {
+    background-color: var(--secondary-bg);
+}
+
+/* Açık tema için "Geri" butonu düzeltmesi */
+body:not(.dark-theme) .verification-result-container .action-btn {
+    background-color: #f0f2f5;
+    color: #333;
+    border: 1px solid #dde1e7;
+}
+body:not(.dark-theme) .verification-result-container .action-btn:hover {
+    background-color: #e4e6e9;
+}
+
+
+/* ===================================== */
+/* Media Queries (Eski dosyadan)       */
+/* ===================================== */
+@media (max-width: 600px) {
+    .method-selection-grid {
+        grid-template-columns: 1fr;
+    }
+}
