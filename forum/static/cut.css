@@ -1,0 +1,121 @@
+.croppie-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(10, 10, 15, 0.9);
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+  animation: 0.3s croppieFadeIn;
+  font-family: inherit;
+}
+.croppie-modal-content {
+  background-color: #1e1e24;
+  border: 1px solid #333;
+  border-radius: 12px;
+  width: clamp(320px, 90vw, 600px);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  animation: 0.3s croppieScaleUp;
+}
+.croppie-modal-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.croppie-modal-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #f0f0f0;
+}
+.croppie-modal-close {
+  background: 0 0;
+  border: none;
+  font-size: 1.8rem;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.croppie-modal-close:hover {
+  color: #fff;
+}
+.croppie-modal-body {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  min-height: 300px;
+}
+.croppie-container .cr-boundary {
+  border-radius: 8px;
+}
+.croppie-container .cr-viewport {
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 2000px 2000px rgba(0, 0, 0, 0.5);
+}
+.croppie-modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2a2a30;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+.croppie-nav-btn {
+  background-color: #444;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.croppie-nav-btn:hover:not(:disabled) {
+  background-color: #555;
+}
+.croppie-nav-btn:disabled {
+  background-color: #333;
+  color: #777;
+  cursor: not-allowed;
+}
+.croppie-finish-btn {
+  background-color: #007bff;
+}
+.croppie-finish-btn:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+.croppie-counter {
+  font-size: 1rem;
+  color: #ccc;
+  font-weight: 500;
+}
+@keyframes croppieFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes croppieScaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
