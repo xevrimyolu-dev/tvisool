@@ -1,0 +1,17 @@
+Flask
+Flask-Login
+Flask-SQLAlchemy
+Flask-Migrate
+Flask-WTF
+Flask-Limiter
+Flask-APScheduler
+APScheduler
+Authlib
+python-dotenv
+requests
+user-agents
+Pillow
+numpy
+bleach
+ffmpeg-python
+gunicorn
