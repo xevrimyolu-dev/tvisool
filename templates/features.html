@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Config Özellikleri - ToolVision</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="antenna-link" content="{{ antenna_link }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/features.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  </head>
+  <body class="dark-theme">
+    <div class="app-wrapper">
+      <header>
+        <a href="{{ url_for('forum.forum_page') }}" class="hamburger-menu" style="text-decoration: none;">
+          <i class="fas fa-arrow-left"></i>
+        </a>
+        <div class="title" data-lang-key="config_features">CONFIG ÖZELLİKLERİ</div>
+        <div class="header-actions-right">
+          <button class="menu-action-btn" id="themeToggleButton">
+            <i class="fas fa-sun"></i>
+          </button>
+          <label class="profile-pic-label"> {% if user.profile_pic_url %} <img src="{{ user.profile_pic_url }}" alt="Profil" class="profile-pic"> {% else %} {% set profile_image = user.role.value + '.png' if user.role.value in ['premium', 'dev', 'usta_admin', 'caylak_admin'] else 'free.png' %} <img src="{{ url_for('static', filename='images/' + profile_image) }}" alt="Profil" class="profile-pic"> {% endif %} </label>
+        </div>
+      </header>
+      <main class="features-main-content">
+        <div class="features-grid"> {% for feature in features %} <div class="feature-card {{ 'locked' if feature.is_locked else '' }}" data-feature-key="{{ feature.key }}" data-feature-name="{{ feature.name }}">
+            <div class="card-content">
+              <img src="{{ url_for('static', filename='images/' + feature.image) }}" alt="{{ feature.name }}" class="feature-icon">
+              <h3 class="feature-name">{{ feature.name }}</h3>
+              <label class="switch">
+                <input type="checkbox" {{ 'disabled' if feature.is_locked else '' }}>
+                <span class="slider round"></span>
+              </label>
+            </div> {% if feature.is_locked %} <div class="lock-overlay">
+              <i class="fas fa-lock"></i>
+              <span data-lang-key="purchase_to_unlock">Kilidi Açmak için Satın Al</span>
+            </div> {% endif %}
+          </div> {% endfor %} </div>
+      </main>
+      <footer>
+        <div class="language-selector">
+          <div class="lang-panel">
+            <a href="#" class="lang-option" data-lang="tr">
+              <img src="{{ url_for('static', filename='images/tr.png') }}">
+              <span>Türkçe</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="en">
+              <img src="{{ url_for('static', filename='images/en.png') }}">
+              <span>English</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="fr">
+              <img src="{{ url_for('static', filename='images/fr.png') }}">
+              <span>Français</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="es">
+              <img src="{{ url_for('static', filename='images/es.png') }}">
+              <span>Español</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="ja">
+              <img src="{{ url_for('static', filename='images/ja.png') }}">
+              <span>日本語</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="ko">
+              <img src="{{ url_for('static', filename='images/ko.png') }}">
+              <span>한국어</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="zh">
+              <img src="{{ url_for('static', filename='images/zh.png') }}">
+              <span>中文</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="hi">
+              <img src="{{ url_for('static', filename='images/hi.png') }}">
+              <span>हिन्दी</span>
+            </a>
+          </div>
+          <button class="lang-current">
+            <img src="{{ url_for('static', filename='images/' ~ user.selected_language ~ '.png') }}">
+            <span data-lang-key="lang_native">Türkçe</span>
+          </button>
+        </div>
+        <span class="footer-center">TOOLVISION</span>
+        <span class="footer-right">1.1</span>
+      </footer>
+    </div>
+    <div id="bottomActionArea" class="bottom-action-area">
+      <div class="tray-container">
+        <div class="selected-features-tray">
+          <h4 data-lang-key="selected_features_title">Seçtiğiniz Özellikler</h4>
+          <ul id="selected-features-list"></ul>
+        </div>
+        <button id="start-features-btn" class="start-btn-features" data-lang-key="start_button">İNDİR</button>
+      </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/features.js') }}"></script>
+    
+    <div id="subscriptionRedirectModal" class="redirect-modal-backdrop">
+      <div class="redirect-modal-content">
+        <p data-lang-key="redirect_to_subs_prompt">Abonelik sayfasına yönlendirileceksiniz</p>
+        <div class="redirect-modal-actions">
+          <button id="modalRedirectBack" class="modal-btn-secondary" data-lang-key="modal_back">Geri</button>
+          <button id="modalRedirectContinue" class="modal-btn-primary" data-lang-key="modal_continue">Devam Et</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

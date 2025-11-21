@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="payment_options_title">Ödeme Yöntemi Seçimi</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/subscriptions.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/payment.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="dark-theme">
+    <div class="background-pattern"></div>
+    <div class="app-wrapper">
+        <header>
+            <a href="{{ url_for('subscriptions_page') }}" class="back-button-subscriptions">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div class="title" id="headerTitle" data-lang-key="payment_options_title">Ödeme Yöntemi Seçimi</div>
+            <div class="header-actions-right">
+                <label class="profile-pic-label"> 
+                    {% if user.profile_pic_url %} 
+                        <img src="{{ user.profile_pic_url }}" alt="Profil" class="profile-pic"> 
+                    {% else %} 
+                        {% set profile_image = user.role.value + '.png' if user.role.value in ['premium', 'dev', 'usta_admin', 'caylak_admin'] else 'free.png' %} 
+                        <img src="{{ url_for('static', filename='images/' + profile_image) }}" alt="Profil" class="profile-pic"> 
+                    {% endif %} 
+                </label>
+            </div>
+        </header>
+        <main class="payment-main">
+
+            <!-- Adım 1: Ödeme Yöntemi Seçimi -->
+            <div class="payment-step active" id="step1-selection">
+                <h2 class="step-title" data-lang-key="payment_options_title">Ödeme Yöntemi Seçimi</h2>
+                <div class="method-selection-grid">
+                    <div class="method-card" data-next-step="step2-qr">
+                        <i class="fas fa-qrcode"></i>
+                        <p data-lang-key="payment_method_qr">QR Kod ile Ödeme</p>
+                    </div>
+                    <div class="method-card" data-next-step="step3-transfer">
+                        <i class="fas fa-wallet"></i>
+                        <p data-lang-key="payment_method_transfer">Transfer ile Ödeme</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Adım 2: QR Kod Seçimi -->
+            <div class="payment-step" id="step2-qr">
+                <div class="back-btn-container">
+                    <button class="back-btn" data-prev-step="step1-selection">
+                        <i class="fas fa-arrow-left"></i> 
+                        <span data-lang-key="back_to_select">Geri</span>
+                    </button>
+                </div>
+                <h2 class="step-title" data-lang-key="qr_select_title">QR Kod Seçimi</h2>
+                
+                <div class="qr-method-grid" id="qrMethodGrid">
+                    <!-- QR butonları JavaScript ile dinamik olarak eklenecek -->
+                </div>
+
+                <div class="qr-display-area">
+                    <img id="qrImageDisplay" class="qr-image" src="" alt="QR Kodu" style="display: none;">
+                    <p id="qrInfoText" style="color: var(--primary-accent-color); margin-bottom: 0;"></p>
+                </div>
+
+                <div class="plan-summary-box-payment">
+                    <h4 data-lang-key="summary_header">Ödenecek Plan Özeti</h4>
+                    <p>
+                        <strong data-lang-key="role_label">Rol:</strong> 
+                        <span id="summaryRoleQR">{{ intent.role|upper }}</span>
+                    </p>
+                    <p>
+                        <strong data-lang-key="duration_label">Süre:</strong> 
+                        <span id="summaryDurationQR">{{ intent.duration }}</span>
+                    </p>
+                    <p>
+                        <strong data-lang-key="price_label">Ödenecek Tutar:</strong> 
+                        <span id="summaryPriceQR">{{ intent.price }}</span>
+                    </p>
+                </div>
+
+                <button class="payment-confirm-btn" id="qrPaymentConfirmBtn" data-lang-key="payment_completed_btn">
+                    Ödemeyi Yaptım, Onay Bekliyorum
+                </button>
+                <div id="qrPaymentStatus" class="settings-status"></div>
+            </div>
+
+            <!-- Adım 3: Transfer Detayları -->
+            <div class="payment-step" id="step3-transfer">
+                <div class="back-btn-container">
+                    <button class="back-btn" data-prev-step="step1-selection">
+                        <i class="fas fa-arrow-left"></i> 
+                        <span data-lang-key="back_to_select">Geri</span>
+                    </button>
+                </div>
+                <h2 class="step-title" data-lang-key="transfer_select_title">Transfer Detayları</h2>
+
+                <div class="transfer-info-container">
+                    <p data-lang-key="transfer_instructions">
+                        Lütfen aşağıdaki bilgileri kullanarak ödeme yapın. Hesap bilgilerine dokunarak kopyalayabilirsiniz.
+                    </p>
+                    
+                    <div id="transferDetailsContainer">
+                        <!-- Transfer detayları JavaScript ile dinamik olarak eklenecek -->
+                    </div>
+                </div>
+
+                <div class="plan-summary-box-payment">
+                    <h4 data-lang-key="summary_header">Ödenecek Plan Özeti</h4>
+                    <p>
+                        <strong data-lang-key="role_label">Rol:</strong> 
+                        <span id="summaryRoleTransfer">{{ intent.role|upper }}</span>
+                    </p>
+                    <p>
+                        <strong data-lang-key="duration_label">Süre:</strong> 
+                        <span id="summaryDurationTransfer">{{ intent.duration }}</span>
+                    </p>
+                    <p>
+                        <strong data-lang-key="price_label">Ödenecek Tutar:</strong> 
+                        <span id="summaryPriceTransfer">{{ intent.price }}</span>
+                    </p>
+                </div>
+
+                <button class="payment-confirm-btn" id="transferPaymentConfirmBtn" data-lang-key="payment_completed_btn">
+                    Ödemeyi Yaptım, Onay Bekliyorum
+                </button>
+                <div id="transferPaymentStatus" class="settings-status"></div>
+            </div>
+
+            <!-- Adım 4: Ödeme Kanıtı Formu -->
+            <div class="payment-step" id="step4-proof">
+                <div class="back-btn-container">
+                    <button class="back-btn" data-prev-step="step1-selection">
+                        <i class="fas fa-arrow-left"></i> 
+                        <span data-lang-key="back_to_select">Geri</span>
+                    </button>
+                </div>
+                <h2 class="step-title" data-lang-key="proof_of_payment_title">Ödeme Kanıtı</h2>
+
+                <form id="paymentProofForm" class="proof-form">
+                    <input type="hidden" name="intent_id" id="form_intent_id" value="{{ intent.intent_id }}">
+                    
+                    <div class="form-group">
+                        <label for="custom_username" data-lang-key="username_label">Kullanıcı Adı</label>
+                        <input type="text" id="custom_username" name="custom_username" class="proof-input" value="{{ user.username }}" readonly style="opacity: 0.7; cursor: not-allowed;">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" data-lang-key="email_label">E-posta Adresi</label>
+                        <input type="email" id="email" name="email" class="proof-input" data-lang-key="email_placeholder" placeholder="E-posta Adresiniz" maxlength="35" required value="{{ user.email }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label data-lang-key="receipt_label">Ödeme Dekontu (Max 10MB: png, jpg, webp)</label>
+                        <input type="file" id="receiptFileInput" name="receipt_file" class="hidden-file-input" accept="image/png, image/jpeg, image/webp" required>
+                        <button type="button" class="action-btn" id="receiptUploadBtn">
+                            <i class="fas fa-upload"></i> <span data-lang-key="receipt_upload_btn">Dekont Yükle</span>
+                        </button>
+                        <span id="receiptFileName" class="file-name-display"></span>
+                    </div>
+
+                    <button type="submit" class="payment-confirm-btn" id="submitProofBtn" data-lang-key="submit_proof_btn">
+                        Kanıtı Gönder
+                    </button>
+                    <div id="proofPaymentStatus" class="settings-status"></div>
+                </form>
+            </div>
+
+            <!-- Adım 5: Doğrulama Ekranı -->
+            <div class="payment-step" id="step5-verifying">
+                <div class="verifying-container">
+                    <div class="loading-spinner"></div>
+                    <h2 class="step-title" data-lang-key="verifying_receipt">Doğrulanıyor...</h2>
+                </div>
+            </div>
+
+            <!-- Adım 6: Doğrulama Sonucu -->
+            <div class="payment-step" id="step6-verification-result">
+                <div class="verification-result-container">
+                    <i id="verificationIcon" class="fas fa-check-circle icon-success"></i>
+                    <h2 id="verificationResultTitle" class="step-title" data-lang-key="verification_success_title">Doğrulama Başarılı</h2>
+                    <p id="verificationResultMessage" data-lang-key="verification_success_message">Dekontunuz doğrulandı. Yönetici onayı bekleniyor.</p>
+                    <button class="action-btn" id="backToProofBtn" data-lang-key="back_to_proof_form" style="display: none;">
+                        <i class="fas fa-arrow-left"></i> Geri
+                    </button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+    
+    <script nonce="{{ g.csp_nonce }}">
+        // Sunucudan gelen plan verileri
+        const intentData = {
+            id: "{{ intent.intent_id }}",
+            role: "{{ intent.role }}",
+            duration: "{{ intent.duration }}",
+            price: "{{ intent.price }}",
+            paymentDetails: {{ payment_details | tojson | safe }}
+        };
+    </script>
+    
+    <script nonce="{{ g.csp_nonce }}" src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script nonce="{{ g.csp_nonce }}" src="{{ url_for('static', filename='js/payment.js') }}"></script>
+</body>
+</html>

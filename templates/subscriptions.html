@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abonelikler - ToolVision</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/subscriptions.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  </head>
+  <body class="dark-theme" data-user-role="{{ user.role.value }}">
+    <div class="background-pattern"></div>
+    <div class="app-wrapper">
+      <header>
+        <a href="{{ url_for('forum.forum_page') }}" class="back-button-subscriptions">
+          <i class="fas fa-arrow-left"></i>
+        </a>
+        <div class="title" id="headerTitle" data-lang-key="subscriptions_title">Abonelikler</div>
+        <div class="header-actions-right">
+          <label class="profile-pic-label"> {% if user.profile_pic_url %} <img src="{{ user.profile_pic_url }}" alt="Profil" class="profile-pic"> {% else %} {% set profile_image = user.role.value + '.png' if user.role.value in ['premium', 'dev', 'usta_admin', 'caylak_admin'] else 'free.png' %} <img src="{{ url_for('static', filename='images/' + profile_image) }}" alt="Profil" class="profile-pic"> {% endif %} </label>
+        </div>
+      </header>
+      <main class="subscriptions-main">
+        <div class="banner-wrapper">
+          <div class="current-role-banner">
+            <span data-lang-key="current_role_is">Mevcut Rolünüz</span>
+            
+            {% if user.role.value == 'ücretsiz' %}
+            <span class="role-tag role-ücretsiz" data-lang-key="role_free">ÜCRETSİZ</span>
+            {% else %}
+            <span class="role-tag role-{{ user.role.value }}">{{ user.role.value|upper }}</span>
+            {% endif %}
+
+          </div>
+        </div>
+        <div id="purchase-success-alert" class="purchase-alert" style="display: none;">
+          <span data-lang-key="purchase_successful">Satın alma başarılı!</span>
+        </div>
+        <div class="subscription-cards">
+          <div class="card" data-role="ücretsiz">
+            <div class="card-header">
+              <h2 data-lang-key="plan_free">FREE</h2>
+            </div>
+            <ul class="features-list">
+              <li>
+                <i class="fas fa-file-archive"></i>
+                <strong data-lang-key="pak_unpack_limit"></strong>
+                <span>20 MB</span>
+              </li>
+              <li>
+                <i class="fas fa-file-zipper"></i>
+                <strong data-lang-key="pak_repack_limit"></strong>
+                <span>20 MB</span>
+              </li>
+              <li>
+                <i class="fas fa-database"></i>
+                <strong data-lang-key="obb_unpack_limit"></strong>
+                <span>2 GB</span>
+              </li>
+              <li>
+                <i class="fas fa-file-export"></i>
+                <strong data-lang-key="obb_repack_limit"></strong>
+                <span>170 MB</span>
+              </li>
+              <li>
+                <i class="fas fa-calendar-day"></i>
+                <strong data-lang-key="daily_limit"></strong>
+                <span data-lang-key="free_daily_limit_desc">1 İşlem / 3 Saat Bekleme</span>
+              </li>
+              <li>
+                <i class="fas fa-cogs"></i>
+                <strong data-lang-key="config_features"></strong>
+                <span data-lang-key="limited_access">1 Config Özelliği</span>
+              </li>
+              <li>
+                <i class="fas fa-video"></i>
+                <strong data-lang-key="coding_videos"></strong>
+                <span data-lang-key="free_videos_only">1 Kodlama Videosu</span>
+              </li>
+              <li>
+                <i class="fas fa-thumbtack"></i>
+                <strong data-lang-key="message_pinning"></strong>
+                <span>0</span>
+              </li>
+            </ul>
+            <div class="card-footer">
+              <button class="purchase-btn" data-lang-key="purchase">Satın Al</button>
+            </div>
+          </div>
+          <div class="card" data-role="premium">
+            <div class="card-header">
+              <h2 data-lang-key="plan_premium">PREMIUM</h2>
+              <div class="duration-selector">
+                <select name="duration" class="duration-dropdown">
+                  <option value="1w" data-lang-key="1_week">1 Hafta</option>
+                  <option value="1m" selected data-lang-key="1_month">1 Ay</option>
+                  <option value="3m" data-lang-key="3_months">3 Ay</option>
+                  <option value="5m" data-lang-key="5_months">5 Ay</option>
+                  <option value="1y" data-lang-key="1_year">1 Yıl</option>
+                  <option value="permanent" data-lang-key="permanent">Kalıcı</option>
+                </select>
+              </div>
+            </div>
+            <ul class="features-list">
+              <li>
+                <i class="fas fa-file-archive"></i>
+                <strong data-lang-key="pak_unpack_limit"></strong>
+                <span>100 MB</span>
+              </li>
+              <li>
+                <i class="fas fa-file-zipper"></i>
+                <strong data-lang-key="pak_repack_limit"></strong>
+                <span>100 MB</span>
+              </li>
+              <li>
+                <i class="fas fa-database"></i>
+                <strong data-lang-key="obb_unpack_limit"></strong>
+                <span>870 MB</span>
+              </li>
+              <li>
+                <i class="fas fa-file-export"></i>
+                <strong data-lang-key="obb_repack_limit"></strong>
+                <span>300 MB</span>
+              </li>
+              <li>
+                <i class="fas fa-calendar-day"></i>
+                <strong data-lang-key="daily_limit"></strong>
+                <span data-lang-key="premium_daily_limit_desc">30 İşlem / 1 Saat Bekleme</span>
+              </li>
+              <li>
+                <i class="fas fa-cogs"></i>
+                <strong data-lang-key="config_features"></strong>
+                <span data-lang-key="all_features">12 Config Özelliği</span>
+              </li>
+              <li>
+                <i class="fas fa-video"></i>
+                <strong data-lang-key="coding_videos"></strong>
+                <span data-lang-key="all_videos">12 Kodlama Videosu</span>
+              </li>
+              <li>
+                <i class="fas fa-thumbtack"></i>
+                <strong data-lang-key="message_pinning"></strong>
+                <span>20</span>
+              </li>
+            </ul>
+            <div class="pricing">
+              <span class="hourly-price" data-lang-key="hourly"></span>
+              <span class="main-price"></span>
+            </div>
+            <div class="card-footer">
+              <button class="purchase-btn" data-lang-key="purchase">Satın Al</button>
+            </div>
+          </div>
+          <div class="card" data-role="dev">
+            <div class="card-header">
+              <h2 data-lang-key="plan_dev">DEV</h2>
+              <div class="duration-selector">
+                <select name="duration" class="duration-dropdown">
+                  <option value="1w" data-lang-key="1_week">1 Hafta</option>
+                  <option value="1m" selected data-lang-key="1_month">1 Ay</option>
+                  <option value="3m" data-lang-key="3_months">3 Ay</option>
+                  <option value="5m" data-lang-key="5_months">5 Ay</option>
+                  <option value="1y" data-lang-key="1_year">1 Yıl</option>
+                  <option value="permanent" data-lang-key="permanent">Kalıcı</option>
+                </select>
+              </div>
+            </div>
+            <ul class="features-list">
+              <li>
+                <i class="fas fa-file-archive"></i>
+                <strong data-lang-key="pak_unpack_limit"></strong>
+                <span>6 GB</span>
+              </li>
+              <li>
+                <i class="fas fa-file-zipper"></i>
+                <strong data-lang-key="pak_repack_limit"></strong>
+                <span>5 GB</span>
+              </li>
+              <li>
+                <i class="fas fa-database"></i>
+                <strong data-lang-key="obb_unpack_limit"></strong>
+                <span>7 GB</span>
+              </li>
+              <li>
+                <i class="fas fa-file-export"></i>
+                <strong data-lang-key="obb_repack_limit"></strong>
+                <span>6 GB</span>
+              </li>
+              <li>
+                <i class="fas fa-calendar-day"></i>
+                <strong data-lang-key="daily_limit"></strong>
+                <span data-lang-key="unlimited">Sınırsız</span>
+              </li>
+              <li>
+                <i class="fas fa-cogs"></i>
+                <strong data-lang-key="config_features"></strong>
+                <span data-lang-key="dev_config_desc">Tüm Config Özellikleri</span>
+              </li>
+              <li>
+                <i class="fas fa-video"></i>
+                <strong data-lang-key="coding_videos"></strong>
+                <span data-lang-key="dev_videos_desc">üm Videolar + Özel İçerikler</span>
+              </li>
+              <li>
+                <i class="fas fa-thumbtack"></i>
+                <strong data-lang-key="message_pinning"></strong>
+                <span>70</span>
+              </li>
+            </ul>
+            <div class="pricing">
+              <span class="hourly-price" data-lang-key="hourly"></span>
+              <span class="main-price"></span>
+            </div>
+            <div class="card-footer">
+              <button class="purchase-btn" data-lang-key="purchase">Satın Al</button>
+            </div>
+          </div>
+        </div>
+      </main>
+      <footer>
+        <div class="language-selector">
+          <div class="lang-panel">
+            <a href="#" class="lang-option" data-lang="tr">
+              <img src="{{ url_for('static', filename='images/tr.png') }}">
+              <span>Türkçe</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="en">
+              <img src="{{ url_for('static', filename='images/en.png') }}">
+              <span>English</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="fr">
+              <img src="{{ url_for('static', filename='images/fr.png') }}">
+              <span>Français</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="es">
+              <img src="{{ url_for('static', filename='images/es.png') }}">
+              <span>Español</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="ja">
+              <img src="{{ url_for('static', filename='images/ja.png') }}">
+              <span>日本語</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="ko">
+              <img src="{{ url_for('static', filename='images/ko.png') }}">
+              <span>한국어</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="zh">
+              <img src="{{ url_for('static', filename='images/zh.png') }}">
+              <span>中文</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="hi">
+              <img src="{{ url_for('static', filename='images/hi.png') }}">
+              <span>हिन्दी</span>
+            </a>
+          </div>
+          <button class="lang-current">
+            <img src="{{ url_for('static', filename='images/' ~ user.selected_language ~ '.png') }}">
+            <span>{{ user.selected_language|upper }}</span>
+          </button>
+        </div>
+        <span class="footer-center">TOOLVISION</span>
+        <span class="footer-right">1.1</span>
+      </footer>
+    </div>
+    
+    <script nonce="{{ g.csp_nonce }}">
+      const subscriptionData = {{ subscription_data | safe }};
+    </script>
+    
+    <script nonce="{{ g.csp_nonce }}" src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script nonce="{{ g.csp_nonce }}" src="{{ url_for('static', filename='js/subscriptions.js') }}"></script>
+  </body>
+</html>

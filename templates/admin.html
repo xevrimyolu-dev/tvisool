@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>ToolVision Yönetim Paneli</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script nonce="{{ g.csp_nonce }}">
+        window.PIE_CHART_LABELS = {{ pie_chart_labels|tojson|safe }};
+        window.PIE_CHART_DATA = {{ pie_chart_data|tojson|safe }};
+        window.CURRENT_ADMIN_USERNAME = "{{ current_user.username }}";
+        window.CURRENT_ADMIN_ROLE = "{{ current_user.role.value }}";
+    </script>
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1><i class="fas fa-shield-alt"></i> ToolVision Admin Kontrol Merkezi</h1>
+            <div class="header-actions">
+                <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> <span>Ana Sayfa</span></a>
+                <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> <span>Güvenli Çıkış</span></a>
+            </div>
+        </header>
+
+        <section class="stat-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+            <div class="stat-card"><i class="fas fa-users icon-blue"></i><div class="stat-info"><p>Toplam Aktif Kullanıcı</p><span>{{ stats.total_users }}</span></div></div>
+            <div class="stat-card"><i class="fas fa-cogs icon-green"></i><div class="stat-info"><p>Toplam İşlem</p><span>{{ stats.total_actions }}</span></div></div>
+            <div class="stat-card"><i class="fas fa-crown icon-orange"></i><div class="stat-info"><p>Yüksek Potansiyelli</p><span>{{ stats.high_potential_count }}</span></div></div>
+            <div class="stat-card">
+                <i class="fas fa-hdd icon-purple"></i>
+                <div class="stat-info"><p>İşlenen Toplam Boyut</p><span>{{ '%.2f' | format(stats.file_size_analysis.pak_unpack.total_size_mb + stats.file_size_analysis.obb_unpack.total_size_mb) }} MB</span></div>
+            </div>
+            <div class="stat-card"><i class="fas fa-eye icon-purple"></i><div class="stat-info"><p>Sizin Rolünüz</p><span class="role-display role-{{ current_user.role.value.replace('_', '-') }}">{{ current_user.role.value.replace('_', ' ')|capitalize }}</span></div></div>
+        </section>
+
+        <section class="main-content-grid">
+            <div class="card chart-card"><div class="card-header"><h2>Satın Alma Potansiyeli</h2></div><div class="chart-container"><canvas id="potentialPieChart"></canvas></div></div>
+            
+            <div class="card analysis-card">
+                <div class="card-header"><h2>Detaylı Analizler</h2></div>
+                <div class="analysis-details">
+                    <h3><i class="fas fa-fire"></i> En Aktif Kullanıcı</h3>
+                    <p><strong>{{ stats.most_active_user_name }}</strong></p>
+                    <hr>
+                    <h3><i class="fas fa-language"></i> Dil Kullanım Oranları</h3>
+                    <ul>
+                        {% for lang, count in stats.lang_usage.items() %}
+                        <li><strong>{{ lang|upper }}:</strong> {{ count }} kullanıcı</li>
+                        {% endfor %}
+                    </ul>
+                    <hr>
+                     <h3><i class="fas fa-clock"></i> Ortalama Sayfa Ziyaret Süreleri</h3>
+                    <ul>
+                        {% for page, avg_time in stats.page_visit_stats.items() %}
+                        <li><strong>{{ page.replace('page-', '')|capitalize }}:</strong> {{ avg_time }}</li>
+                        {% endfor %}
+                    </ul>
+                    <hr>
+                    <h3><i class="fas fa-video"></i> Ortalama Video İzlenme Süreleri</h3>
+                    <ul>
+                        {% for video_key, avg_time in stats.video_watch_stats.items() %}
+                        <li><strong>{{ video_key|replace('_', ' ')|capitalize }}:</strong> {{ avg_time }}</li>
+                        {% else %}
+                        <li>Henüz video izlenme verisi yok.</li>
+                        {% endfor %}
+                    </ul>
+                    <hr>
+                    <h3><i class="fas fa-magic"></i> En Çok Kullanılan Config Özellikleri</h3>
+                    <ol class="top-files-list">
+                        {% for feature in stats.top_used_features %}
+                        <li><strong>{{ feature.count }} kez</strong> - {{ feature.name }}</li>
+                        {% else %}
+                        <li>Henüz config özelliği kullanım verisi yok.</li>
+                        {% endfor %}
+                    </ol>
+                    <hr>
+                    <h3><i class="fas fa-exchange-alt"></i> En Çok Değiştirilen 10 Dosya</h3>
+                    <ol class="top-files-list">
+                        {% for file_name, count in stats.top_modified_files %}
+                        <li><strong>{{ count }} kez</strong> - {{ file_name }}</li>
+                        {% else %}
+                        <li>Henüz repack işlemi yapılmamış.</li>
+                        {% endfor %}
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="card tickets-card"> 
+                <div class="card-header">
+                    <h2><i class="fas fa-user-clock"></i> Susturulan Kullanıcılar</h2>
+                    <div class="card-tabs">
+                        <button class="tab-btn active" data-tab="active-mutes" tabindex="0">Aktif</button>
+                        <button class="tab-btn" data-tab="inactive-mutes" tabindex="0">Pasif</button>
+                    </div>
+                </div>
+                <div class="ticket-list-wrapper"> 
+                    <p id="mutes-loading" style="text-align: center; padding: 20px;">Susturulan kullanıcılar yükleniyor...</p>
+                    
+                    <div id="active-mutes-content" class="tab-content active">
+                        <table class="tickets-table"> 
+                            <thead>
+                                <tr>
+                                    <th>Kullanıcı</th>
+                                    <th>Rol</th>
+                                    <th>Kalan Süre</th>
+                                </tr>
+                            </thead>
+                            <tbody id="active-mutes-body">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="inactive-mutes-content" class="tab-content">
+                        <table class="tickets-table"> 
+                            <thead>
+                                <tr>
+                                    <th>Kullanıcı</th>
+                                    <th>Rol</th>
+                                    <th>Susturma Bitiş Tarihi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inactive-mutes-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card tickets-card" id="intentions-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-file-invoice-dollar"></i> Ödeme Niyetleri</h2>
+                    <div class="card-tabs">
+                        <button class="tab-btn active" data-tab="active-intents" tabindex="0">Aktif</button>
+                        <button class="tab-btn" data-tab="passive-intents" tabindex="0">Pasif (İşlenmiş)</button>
+                    </div>
+                </div>
+                <div class="ticket-list-wrapper"> 
+                    <p id="intents-loading" style="text-align: center; padding: 20px;">Onay bekleyen kayıtlar yükleniyor...</p>
+                    
+                    <div id="active-intents-content" class="tab-content active">
+                        <table class="tickets-table"> 
+                            <thead>
+                                <tr>
+                                    <th>Kullanıcı</th>
+                                    <th>Mevcut Rol</th>
+                                    <th>Aksiyonlar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="active-intents-body">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="passive-intents-content" class="tab-content">
+                        <table class="tickets-table"> 
+                            <thead>
+                                <tr>
+                                    <th>Kullanıcı</th>
+                                    <th>İşlem Durumu</th>
+                                    <th>Detaylar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="passive-intents-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card reported-posts-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-flag"></i> Raporlanan Gönderiler</h2>
+                    <div class="card-tabs">
+                        <button class="tab-btn active" data-tab="active-reports" tabindex="0">Aktif</button>
+                        <button class="tab-btn" data-tab="passive-reports" tabindex="0">Pasif (İşlenmiş)</button>
+                    </div>
+                </div>
+                <div class="reported-posts-wrapper">
+                    <p id="reports-loading" style="text-align: center; padding: 20px;">Raporlanan gönderiler yükleniyor...</p>
+                    <div id="active-reports-content" class="tab-content active">
+                        <table class="tickets-table">
+                            <thead>
+                                <tr>
+                                    <th>Raporlayan</th>
+                                    <th>Raporlayanın Rolü</th>
+                                    <th>Detaylar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="active-reports-body"></tbody>
+                        </table>
+                    </div>
+                    <div id="passive-reports-content" class="tab-content">
+                        <table class="tickets-table">
+                            <thead>
+                                <tr>
+                                    <th>Raporlayan</th>
+                                    <th>Raporlayanın Rolü</th>
+                                    <th>Detaylar</th>
+                                    <th>İşleyen</th>
+                                </tr>
+                            </thead>
+                            <tbody id="passive-reports-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card users-card">
+                <div class="card-header"><h2><i class="fas fa-users-cog"></i> Kullanıcı Yönetim</h2></div>
+                <div class="user-management-table-wrapper">
+                    <table class="user-management-table">
+                        <thead>
+                            <tr>
+                                <th>Kullanıcı Bilgisi</th>
+                                <th>Potansiyel</th>
+                                <th>İşlem Sayısı</th>
+                                <th>Rol</th>
+                                <th>Rol Bitişi</th>
+                                <th>Yedek Kod</th>
+                                <th>Aksiyonlar</th>
+                                {% if current_user.role.value == 'kurucu' %}<th style="min-width: 200px;">Özel Yetkiler</th>{% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in enriched_users %}
+                            <tr id="user-row-{{ data.user.id }}" class="{{ 'deleted-user-row' if data.user.status == 'deleted' }}">
+                                <td>
+                                    <div class="user-cell">
+                                        <img src="{{ data.user.profile_pic_url or url_for('static', filename='images/' + (data.user.role.value if data.user.role.value in ['premium', 'dev', 'caylak_admin', 'usta_admin', 'kurucu'] else 'free') + '.png') }}" class="user-profile-thumb" loading="lazy" alt="{{ data.user.username }} profil resmi">
+                                        <div><strong>{{ data.user.username }}</strong><br><small>{{ data.email }}</small></div>
+                                    </div>
+                                </td>
+                                <td><div class="potential-badge potential-{{ data.potential_category|lower }}">{{ data.potential_category }}</div></td>
+                                <td>{{ data.total_actions }}</td>
+                                <td><div class="role-display role-{{ data.user.role.value.replace('_', '-') }}">{{ data.user.role.value.replace('_', ' ')|capitalize }}</div></td>
+                                <td>{% if data.role_expiry_date %}<small class="expiry-date">{{ data.role_expiry_date }}</small>{% elif data.user.role.value not in ['ücretsiz', 'kurucu'] and data.user.status != 'deleted' %}<small class="expiry-date permanent">Kalıcı</small>{% else %}<span>-</span>{% endif %}</td>
+                                <td>
+                                    {% if current_user.role.value == 'kurucu' or (current_user.role.value == 'usta_admin' and data.user.role.value not in ['kurucu', 'usta_admin']) %}
+                                    <div class="backup-code-cell">
+                                        <span>{{ data.backup_code }}</span>
+                                        <button class="action-btn copy-btn" data-code="{{ data.backup_code }}" title="Yedek Kodu Kopyala" aria-label="Yedek Kodu Kopyala">
+                                            <i class="far fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    {% else %}<span class="badge bg-danger">Gizli</span>{% endif %}
+                                </td>
+                                <td>
+                                    <div class="action-buttons-cell">
+                                        <button class="action-btn view-logs-btn" data-user-id="{{ data.user.id }}" data-user-name="{{ data.user.username }}"><i class="fas fa-history"></i> Log</button>
+                                        {% if data.user.status != 'deleted' %}
+                                            {% if current_user.role.value in ['usta_admin', 'kurucu'] %}<button class="action-btn manage-devices-btn" data-user-id="{{ data.user.id }}" data-user-name="{{ data.user.username }}"><i class="fas fa-desktop"></i> Cihaz</button>{% endif %}
+                                            {% if data.user.role.value != 'kurucu' and current_user.id != data.user.id and (current_user.role.value == 'kurucu' or (current_user.role.value == 'usta_admin' and data.user.role.value not in ['usta_admin', 'kurucu'])) %}<button class="action-btn edit-role-btn" data-user-id="{{ data.user.id }}" data-user-name="{{ data.user.username }}" data-current-role="{{ data.user.role.value }}"><i class="fas fa-edit"></i> Rol</button>{% endif %}
+                                            {% if (current_user.role.value == 'kurucu' or current_user.has_permission('emergency_delete')) and data.user.role.value != 'kurucu' %}<button class="action-btn emergency-delete-btn" title="Kullanıcıyı Devre Dışı Bırak" aria-label="Kullanıcıyı Devre Dışı Bırak" data-user-id="{{ data.user.id }}" data-user-name="{{ data.user.username }}"><i class="fas fa-trash-alt"></i></button>{% endif %}
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                {% if current_user.role.value == 'kurucu' %}
+                                <td>
+                                    {% if data.user.role.value in ['caylak_admin', 'usta_admin'] and data.user.status != 'deleted' %}
+                                        {% for perm in data.user.permissions %}
+                                        <span class="badge bg-success">
+                                            {{ perm.name }}
+                                            <form action="{{ url_for('revoke_permission') }}" method="POST" style="display: inline;">
+                                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                <input type="hidden" name="user_id" value="{{ data.user.id }}">
+                                                <input type="hidden" name="permission_id" value="{{ perm.id }}">
+                                                <button type="submit" class="btn-close btn-close-white" title="Yetkiyi Kaldır" aria-label="Yetkiyi Kaldır"></button>
+                                            </form>
+                                        </span>
+                                        {% endfor %}
+                                        <form action="{{ url_for('grant_permission') }}" method="POST" style="display: inline;">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                            <input type="hidden" name="user_id" value="{{ data.user.id }}">
+                                            <select name="permission_id" class="permission-select" title="Yeni Yetki Ekle">
+                                                <option value="">+ Ekle</option>
+                                                {% for perm in available_permissions %}
+                                                    {% if perm not in data.user.permissions %}
+                                                        <option value="{{ perm.id }}">{{ perm.name }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </form>
+                                    {% else %}<span>-</span>{% endif %}
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="{% if current_user.role.value == 'kurucu' %}8{% else %}7{% endif %}" style="text-align: center; padding: 20px;">
+                                    Kayıtlı kullanıcı bulunamadı.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+        <div id="deviceModal" class="modal-backdrop" role="dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="deviceModalTitle">Cihaz Yönetimi: <span id="modal-device-user"></span></h3>
+                    <button class="modal-close" data-dismiss="modal" aria-label="Kapat">&times;</button>
+                </div>
+                <div class="modal-body" id="modal-device-body">
+                    <p>Yükleniyor...</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="action-btn close-btn" data-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="roleModal" class="modal-backdrop" role="dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="roleModalTitle">Rolünü Düzenle: <span id="modal-role-user"></span></h3>
+                    <button class="modal-close" data-dismiss="modal" aria-label="Kapat">&times;</button>
+                </div>
+                <form id="roleChangeForm" action="{{ url_for('change_role') }}" method="POST">
+                    <div class="modal-body">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" id="modal-user-id" name="user_id">
+                        <div class="form-group">
+                            <label for="role-select">Yeni Rol:</label>
+                            <select name="role" id="role-select" class="role-select" required>
+                                <option value="" disabled>Rol Seçin...</option>
+                                <option value="ücretsiz">Ücretsiz</option>
+                                <option value="premium">Premium</option>
+                                <option value="dev">Dev</option>
+                                {% if current_user.role.value == 'kurucu' %}
+                                <option value="caylak_admin">Çaylak Admin</option>
+                                <option value="usta_admin">Usta Admin</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="form-group" id="duration-group" style="display: none;">
+                            <label for="duration-select">Rol Süresi:</label>
+                            <select name="duration" id="duration-select" class="role-select">
+                                <option value="" disabled selected>Lütfen bir süre seçin...</option>
+                                <option value="1h">1 Saat</option>
+                                <option value="2d">2 Gün</option>
+                                <option value="1w">1 Hafta</option>
+                                <option value="1m">1 Ay</option>
+                                <option value="3m">3 Ay</option>
+                                <option value="5m">5 Ay</option>
+                                <option value="1y">1 Yıl</option>
+                                <option value="permanent">Kalıcı (Süresiz)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="action-btn close-btn" data-dismiss="modal">İptal</button>
+                        <button type="submit" class="action-btn save-btn"><i class="fas fa-save"></i> Değişiklikleri Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div id="logModal" class="modal-backdrop" role="dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="logModalTitle">Log Kayıtları: <span id="modal-title-user"></span></h3>
+                    <button class="modal-close" data-dismiss="modal" aria-label="Kapat">&times;</button>
+                </div>
+                <div class="modal-body" id="modal-body-content">
+                    <p>Yükleniyor...</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="action-btn close-btn" data-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="intentInfoModal" class="modal-backdrop" role="dialog">
+            <div class="modal-content" style="max-width: 500px;">
+                <div class="modal-header">
+                    <h3 id="intentInfoModalTitle">Kullanıcı Bilgileri</h3>
+                    <button class="modal-close" data-dismiss="modal" aria-label="Kapat">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Kullanıcı Adı:</label>
+                        <input type="text" id="intent-info-name" class="role-select" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>E-posta:</label>
+                        <input type="text" id="intent-info-email" class="role-select" readonly>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="action-btn close-btn" data-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="intentReceiptModal" class="modal-backdrop" role="dialog">
+            <div class="modal-content" style="max-width: 600px;">
+                <div class="modal-header">
+                    <h3>Dekont Görüntüsü</h3>
+                    <button class="modal-close" data-dismiss="modal" aria-label="Kapat">&times;</button>
+                </div>
+                <div class="modal-body" style="text-align: center;">
+                    <img id="intent-receipt-image" src="" alt="Dekont" style="max-width: 100%; height: auto; border-radius: 8px;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="action-btn close-btn" data-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="intentPreferenceModal" class="modal-backdrop" role="dialog">
+            <div class="modal-content" style="max-width: 500px;">
+                <div class="modal-header">
+                    <h3>Talep Edilen Tercih</h3>
+                    <button class="modal-close" data-dismiss="modal" aria-label="Kapat">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Talep Edilen Rol:</label>
+                        <input type="text" id="intent-pref-role" class="role-select" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Talep Edilen Süre:</label>
+                        <input type="text" id="intent-pref-duration" class="role-select" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Ödenen Tutar:</label>
+                        <input type="text" id="intent-pref-price" class="role-select" readonly>
+                    </div>
+                    <div class="form-group" id="intent-status-display" style="display: none;">
+                        <label>İşlem Sonucu:</label>
+                        <span id="intent-status-text" class="role-display"></span>
+                    </div>
+                </div>
+                <div class="modal-footer" id="intent-action-footer">
+                    <button type="button" class="action-btn close-btn" id="intent-reject-btn"><i class="fas fa-times"></i> Reddet</button>
+                    <button type="button" class="action-btn save-btn" id="intent-approve-btn"><i class="fas fa-check"></i> Onayla</button>
+                </div>
+            </div>
+        </div>
+
+        </div> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>
+        <div id="reportDetailsModal" class="modal-backdrop" role="dialog">
+            <div class="modal-content" style="max-width: 720px;">
+                <div class="modal-header">
+                    <h3>Rapor Detayları</h3>
+                    <button class="modal-close" data-dismiss="modal" aria-label="Close">&times;</button>
+                </div>
+                <div class="modal-body" id="report-details-body"></div>
+                <div class="modal-footer" id="report-details-footer">
+                    <button type="button" class="action-btn close-btn" id="report-reject-btn"><i class="fas fa-times"></i> Reddet</button>
+                    <button type="button" class="action-btn claim-btn" id="report-approve-btn"><i class="fas fa-check"></i> Onayla</button>
+                </div>
+            </div>
+        </div>

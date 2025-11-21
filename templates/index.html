@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToolVision</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('forum.static', filename='forum.css') }}">
+    <link rel="stylesheet" href="{{ url_for('forum.static', filename='cut.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script nonce="{{ g.csp_nonce }}" src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
+  </head>
+  <body class="dark-theme" data-user-id="{{ current_user.id }}" {% if single_post_id %}data-single-post-id="{{ single_post_id }}" {% endif %}>
+    <div id="login-loading-screen">
+      <div class="loading-dots">
+        <span>.</span>
+        <span>.</span>
+        <span>.</span>
+      </div>
+    </div>
+    <div class="backdrop"></div>
+    <nav class="side-menu">
+      <div class="user-info-section">
+        <button class="user-role-badge" id="userRoleButton">
+          <span data-lang-key="your_role">Rolünüz:</span>
+          <span id="userRoleText"></span>
+        </button>
+        <div class="role-details-tooltip" id="roleDetailsTooltip">
+          <p>
+            <span data-lang-key="daily_limit">Günlük Limit:</span>
+            <span id="tooltipDailyLimit"></span>
+          </p>
+          <p>
+            <span data-lang-key="cooldown_time">Limit Yenileme Süresi:</span>
+            <span id="tooltipCooldownTime"></span>
+          </p>
+          <p id="expiryContainer" style="display: none;">
+            <span data-lang-key="remaining_time">Kalan Süre:</span>
+            <span id="tooltipRoleExpiry"></span>
+          </p>
+          <p>
+            <span data-lang-key="actions_taken">Yaptığınız işlem sayısı:</span>
+            <span id="tooltipActionsTaken"></span>
+          </p>
+          <p>
+            <span data-lang-key="remaining_actions">Kalan işlem hakkı:</span>
+            <span id="tooltipRemainingActions"></span>
+          </p>
+        </div>
+      </div>
+      <ul>
+        <li>
+          <a href="{{ url_for('forum.forum_page') }}" class="menu-item" data-lang-key="forum">Forum</a>
+        </li>
+        <li>
+          <a href="#" class="menu-item" data-page="page-unpack" data-lang-key="unpack_pak">Unpack PAK</a>
+        </li>
+        <li>
+          <a href="#" class="menu-item" data-page="page-rpack" data-lang-key="rpack_pak">Rpack PAK</a>
+        </li>
+        <li>
+          <a href="#" class="menu-item" data-page="page-unpack-obb" data-lang-key="unpack_obb">Unpack OBB</a>
+        </li>
+        <li>
+          <a href="#" class="menu-item" data-page="page-rpack-obb" data-lang-key="rpack_obb">Rpack OBB</a>
+        </li>
+        <li>
+          <a href="{{ url_for('features.features_page') }}" class="menu-item" data-lang-key="config_features">Config Features</a>
+        </li>
+        <li>
+          <a href="{{ url_for('video.videos_page') }}" class="menu-item" data-lang-key="coding_videos">Kodlama Videoları</a>
+        </li>
+        <li>
+          <a href="{{ url_for('subscriptions_page') }}" class="menu-item" data-lang-key="subscriptions_link">Abonelikler</a>
+        </li>
+        <li>
+          <a href="#" class="menu-item" data-page="page-user-manual" data-lang-key="user_manual">User Manual</a>
+        </li>
+        <li>
+          <a href="#" class="menu-item" data-page="page-about" data-lang-key="about">About</a>
+        </li> {% if user.role.value in ['caylak_admin', 'usta_admin', 'kurucu'] %} <li>
+          <a href="{{ url_for('admin_dashboard') }}" class="menu-item-highlight">
+            <i class="fas fa-user-shield"></i>
+            <span data-lang-key="panel">Admin Paneli</span>
+          </a>
+        </li> {% endif %} <li>
+          <a href="{{ url_for('logout') }}" class="menu-item-highlight" data-lang-key="exit">Çıkış Yap</a>
+        </li>
+      </ul>
+      <div class="side-menu-bottom-actions">
+        <button class="menu-action-btn" id="themeToggleButton">
+          <i class="fas fa-sun"></i>
+        </button>
+        <button class="menu-action-btn" id="settingsButton">
+          <i class="fas fa-cog"></i>
+        </button>
+      </div>
+    </nav>
+    <div class="app-wrapper">
+      <header>
+        <button class="hamburger-menu" id="hamburgerMenu">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="title" id="headerTitle" data-lang-key="forum">FORUM</div>
+        <label for="profilePicInput" class="profile-pic-label"> {% if user.profile_pic_url %} <img src="{{ user.profile_pic_url }}" alt="Profil" class="profile-pic" id="profilePic"> {% else %} {% set profile_image = user.role.value + '.png' if user.role.value in ['premium', 'dev', 'usta_admin', 'caylak_admin'] else 'free.png' %} <img src="{{ url_for('static', filename='images/' + profile_image) }}" alt="Profil" class="profile-pic" id="profilePic"> {% endif %} </label>
+        <input type="file" id="profilePicInput" class="hidden-file-input" accept="image/*">
+      </header>
+      <main>
+	  
+<div class="page" id="page-unpack" data-maintenance="false">
+  <div class="input-row">
+		  
+            <span id="unpack-pak-filename" data-lang-key="select_pak_dir">Pak dosyasının dizinini seçiniz...</span>
+            <input type="file" class="hidden-file-input" id="pakFileInput" accept=".pak">
+            <button class="select-btn" data-lang-key="select">SEÇ</button>
+          </div>
+          <button class="start-btn" id="startUnpackBtn" data-lang-key="start">BAŞLA</button>
+          <div id="unpack-status" class="status-container"></div>
+        </div>
+		
+<div class="page" id="page-rpack" data-maintenance="false">
+  <div class="input-row">
+		  
+            <span id="repack-pak-filename" data-lang-key="select_original_pak">Orijinal Pak dosyasını seçiniz...</span>
+            <input type="file" class="hidden-file-input" id="repackPakInput" accept=".pak">
+            <button class="select-btn" data-lang-key="select">SEÇ</button>
+          </div>
+          <div class="input-row">
+            <span data-lang-key="select_modified_files">Değiştirilen dosyaları seçiniz...</span>
+            <input type="file" class="hidden-file-input" id="repackModifiedInput" multiple>
+            <button class="select-btn" data-lang-key="select">SEÇ</button>
+          </div>
+          <div class="file-list-box">
+            <span class="box-title" data-lang-key="selected_files">Seçtiğiniz dosyalar:</span>
+            <ul id="repackFileList"></ul>
+          </div>
+          <button class="start-btn" id="startRepackBtn" data-lang-key="start">BAŞLA</button>
+          <div id="repack-status" class="status-container"></div>
+        </div>
+        <div class="page" id="page-unpack-obb">
+          <div class="input-row">
+            <span id="unpack-obb-filename" data-lang-key="select_obb_unpack">OBB dosyanızı seçiniz...</span>
+            <input type="file" class="hidden-file-input" id="unpackObbInput" accept=".obb">
+            <button class="select-btn" data-lang-key="select">SEÇ</button>
+          </div>
+          <button class="start-btn" id="startUnpackObbBtn" data-lang-key="start">BAŞLA</button>
+          <div id="unpack-status-obb" class="status-container"></div>
+        </div>
+        <div class="page" id="page-rpack-obb">
+          <div class="input-row">
+            <span id="repack-obb-filename" data-lang-key="select_original_obb">Orijinal OBB dosyasını seçiniz...</span>
+            <input type="file" class="hidden-file-input" id="repackObbInput" accept=".obb">
+            <button class="select-btn" data-lang-key="select">SEÇ</button>
+          </div>
+          <div class="input-row">
+            <span data-lang-key="select_modified_files">Değiştirilen dosyaları seçiniz...</span>
+            <input type="file" class="hidden-file-input" id="repackModifiedInputObb" multiple>
+            <button class="select-btn" data-lang-key="select">SEÇ</button>
+          </div>
+          <div class="file-list-box">
+            <span class="box-title" data-lang-key="selected_files">Seçtiğiniz dosyalar:</span>
+            <ul id="repackFileListObb"></ul>
+          </div>
+          <button class="start-btn" id="startRepackObbBtn" data-lang-key="start">BAŞLA</button>
+          <div id="repack-status-obb" class="status-container">
+            <div id="progress-container-obb" class="progress-container" style="display: none;">
+              <div id="progress-bar-obb" class="progress-bar">
+                <span id="progress-text-obb"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="page" id="page-about">
+          <div class="about-content">
+            <p data-lang-key="about_text"> Bu web sitesiyle başlangıçta .pak dosyalarını daha kolay yönetmenizi ve yeni gelecek özelliklerle kodlamayı bilmeseniz dahi butonlar aracılığıyla istediğiniz dosyayı elde edebileceğiniz bir yapı oluşturmaya çalışıyoruz. Sunucu alanından tasaruf etmek için şu an için 100MB'den daha fazla dosyalara unpack ve rpack işlemlerini uygulayamıyoruz. Sitemizi olabildiğince karmaşadan uzaklaştırıp basit tasarıma yöneldik. Ve gün geçtikçe geliştiriyoruz. Bize aşağıda belirtilen telegram kanalından ulaşabilirsiniz. </p>
+            <a href="https://t.me/tool_vision" target="_blank" class="telegram-button">
+              <img src="{{ url_for('static', filename='images/tg.png') }}" alt="Telegram">
+              <span>Telegram</span>
+            </a>
+          </div>
+        </div>
+        <div class="page" id="page-user-manual">
+          <div class="user-manual-content">
+            <h2 data-lang-key="user_manual_title">Kullanıcı Kılavuzu</h2>
+            <div class="video-container">
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/wv4JYr2r5_g" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <p data-lang-key="user_manual_description"> Bu video, ToolVision uygulamasının temel özelliklerini ve nasıl kullanılacağını adım adım açıklamaktadır. Uygulama arayüzündeki butonların işlevleri, PAK ve OBB dosyalarıyla yapılan "Unpack" ve "Repack" işlemleri, kullanıcı rolünüze göre işlem limitleriniz ve özel ayarlar gibi konulara değinilmiştir. Uygulayı en verimli şekilde kullanmak için bu kılavuzu izlemeniz önerilir. </p>
+          </div>
+        </div>
+        <div class="page" id="page-soon">
+          <div class="center-text" data-lang-key="coming_soon">BU ÖZELLİK YAKINDA GELECEK</div>
+        </div>
+      </main>
+      <footer>
+        <div class="language-selector">
+          <div class="lang-panel">
+            <a href="#" class="lang-option" data-lang="tr">
+              <img src="{{ url_for('static', filename='images/tr.png') }}">
+              <span>Türkçe</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="en">
+              <img src="{{ url_for('static', filename='images/en.png') }}">
+              <span>English</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="fr">
+              <img src="{{ url_for('static', filename='images/fr.png') }}">
+              <span>Français</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="es">
+              <img src="{{ url_for('static', filename='images/es.png') }}">
+              <span>Español</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="ja">
+              <img src="{{ url_for('static', filename='images/ja.png') }}">
+              <span>日本語</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="ko">
+              <img src="{{ url_for('static', filename='images/ko.png') }}">
+              <span>한국어</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="zh">
+              <img src="{{ url_for('static', filename='images/zh.png') }}">
+              <span>中文</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="hi">
+              <img src="{{ url_for('static', filename='images/hi.png') }}">
+              <span>हिन्दी</span>
+            </a>
+          </div>
+          <button class="lang-current">
+            <img src="{{ url_for('static', filename='images/' ~ user.selected_language ~ '.png') }}">
+            <span>{{ user.selected_language|upper }}</span>
+          </button>
+        </div>
+        <span class="footer-center">TOOLVISION</span>
+        <span class="footer-right">1.1</span>
+      </footer>
+    </div>
+    <div id="settingsModal" class="modal-backdrop">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 data-lang-key="settings_title">Ayarlar</h2>
+          <button class="modal-close" id="closeSettingsModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="settings-section">
+            <label for="usernameInput" data-lang-key="your_name">İsminiz:</label>
+            <input type="text" id="usernameInput" class="settings-input" maxlength="15">
+            <button id="updateUsernameBtn" class="settings-btn" data-lang-key="update_username">Kullanıcı Adını Güncelle</button>
+            <div id="usernameStatus" class="settings-status"></div>
+          </div>
+          <div class="settings-section">
+            <label data-lang-key="your_email">E-posta adresiniz:</label>
+            <input type="text" id="emailDisplay" class="settings-input" readonly>
+          </div>
+          <div class="settings-section">
+            <button id="showPasswordChangeBtn" class="settings-btn" data-lang-key="change_password_button">Şifre Değiştirme</button>
+            <div id="passwordChangeArea" style="display: none;">
+              <label for="oldPasswordInput" data-lang-key="current_password">Mevcut Şifreniz:</label>
+              <input type="password" id="oldPasswordInput" class="settings-input" maxlength="20">
+              <label for="newPasswordInput" data-lang-key="new_password">Yeni Şifreniz:</label>
+              <input type="password" id="newPasswordInput" class="settings-input" maxlength="20">
+              <div id="password-rules-settings" class="password-rules hidden">
+                <div id="rule-length-settings" class="password-rule" data-lang-key="password_rule_min_length">
+                  <i class="fas fa-times"></i> 
+                </div>
+                <div id="rule-uppercase-settings" class="password-rule" data-lang-key="password_rule_uppercase">
+                  <i class="fas fa-times"></i> 
+                </div>
+                <div id="rule-special-settings" class="password-rule" data-lang-key="password_rule_special">
+                  <i class="fas fa-times"></i> 
+                </div>
+              </div>
+              <button id="changePasswordBtn" class="settings-btn" data-lang-key="change_password">Şifreyi Değiştir</button>
+              <div id="passwordStatus" class="settings-status"></div>
+            </div>
+          </div>
+          <div class="settings-section backup-code-section">
+            <label data-lang-key="backup_code_label">Hesap Kurtarma Kodunuz:</label>
+            <p style="font-size: 0.8rem; color: var(--text-light-color); margin: -5px 0 10px 0;" data-lang-key="backup_code_description">Bu kodu güvenli bir yere not edin. Şifrenizi unutursanız hesabınıza erişmek için bu koda ihtiyacınız olacak.</p>
+            <div class="backup-code-display">
+              <span id="backupCodeText" class="backup-code-text">XXXXX</span>
+              <button id="copyBackupCodeBtn" class="copy-code-btn" title="Kodu Kopyala">
+                <i class="far fa-copy"></i>
+              </button>
+            </div>
+          </div>
+          <div class="settings-section delete-section">
+            <button id="deleteAccountBtn" class="settings-btn delete-btn" data-lang-key="delete_account">Hesabımı Sil</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="image-preview-modal" class="image-modal-backdrop" style="display: none;">
+      <span class="image-modal-close">&times;</span>
+      <img class="image-modal-content" id="modal-image-content">
+    </div>
+    <div id="image-viewer-modal" class="image-viewer-backdrop" style="display: none;">
+      <span class="image-viewer-close">&times;</span>
+      <img class="image-viewer-content" id="viewer-image-content">
+    </div>
+    <script nonce="{{ g.csp_nonce }}" src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+    <script nonce="{{ g.csp_nonce }}" src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script nonce="{{ g.csp_nonce }}" src="{{ url_for('static', filename='js/auth_helpers.js') }}"></script>
+  </body>
+</html>

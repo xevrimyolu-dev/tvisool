@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kodlama Videoları - ToolVision</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/video.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  </head>
+  <body class="{{ 'dark-theme' if session.get('theme', 'dark') == 'dark' else 'light-theme' }}">
+    <div class="app-wrapper">
+      <header>
+        <a href="{{ url_for('forum.forum_page') }}" class="hamburger-menu" style="text-decoration: none;">
+          <i class="fas fa-arrow-left"></i>
+        </a>
+        <div class="title" data-lang-key="coding_videos_title">KODLAMA VİDEOLARI</div>
+        <button class="header-theme-toggle" id="themeToggleButton">
+          <i class="fas fa-sun"></i>
+        </button>
+        <label class="profile-pic-label"> {% if user.profile_pic_url %} <img src="{{ user.profile_pic_url }}" alt="Profil" class="profile-pic"> {% else %} {% set profile_image = user.role.value + '.png' if user.role.value in ['premium', 'dev', 'usta_admin', 'caylak_admin'] else 'free.png' %} <img src="{{ url_for('static', filename='images/' + profile_image) }}" alt="Profil" class="profile-pic"> {% endif %} </label>
+      </header>
+      <main class="video-main-content">
+        <div class="video-list">
+          {% for video in videos %}
+          <div class="video-card {{ 'locked' if video.is_locked else '' }}" 
+               data-video-key="{{ video.key }}" 
+               data-video-file="{{ url_for('video.stream_video', filename=video.video_file) if video.video_file != 'youtube' else 'youtube' }}" 
+               data-youtube-id="{{ video.youtube_id if video.youtube_id else '' }}"
+               data-title-key="{{ video.title_lang_key }}">
+            
+            <div class="video-thumbnail-wrapper">
+              
+              {% if video.youtube_id %}
+              <img src="https://img.youtube.com/vi/{{ video.youtube_id }}/hqdefault.jpg" alt="{{ video.title_lang_key }}" class="video-thumbnail">
+              {% else %}
+              <img src="{{ url_for('static', filename='images/' + video.thumbnail) }}" alt="{{ video.title_lang_key }}" class="video-thumbnail">
+              {% endif %}
+              
+              {% if video.is_locked %}
+              <div class="lock-overlay">
+                <i class="fas fa-lock"></i>
+                <span data-lang-key="purchase_to_unlock">Kilidi Açmak İçin Satın Al</span>
+              </div>
+              {% else %}
+              <div class="play-overlay">
+                <i class="fas fa-play"></i>
+              </div>
+              {% endif %}
+            </div>
+            
+            <div class="video-info">
+              <h3 class="video-title" data-lang-key="{{ video.title_lang_key }}">Video Başlığı</h3>
+              
+              {% if not video.is_locked %}
+              <div class="tools-section">
+                <button class="tools-toggle-btn {% if not video.tools %}disabled{% endif %}">
+                  <span data-lang-key="tools_used">Kullanılan Araçlar</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="tools-content">
+                  {% if video.tools %}
+                  <ul>
+                    {% for tool in video.tools %}
+                    <li>
+                      <a href="{{ url_for('video.download_tool', filename=tool.file) }}">
+                        <i class="fas fa-download"></i>
+                        <span data-lang-key="{{ tool.lang_key }}">{{ tool.name }}</span>
+                      </a>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                  {% else %}
+                  <p class="no-tools-message" data-lang-key="no_tools_used">Bu videoda hiçbir araç kullanılmamıştır</p>
+                  {% endif %}
+                </div>
+              </div>
+              {% endif %}
+              
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </main>
+      <footer>
+        <div class="language-selector">
+          <div class="lang-panel">
+            <a href="#" class="lang-option" data-lang="tr">
+              <img src="{{ url_for('static', filename='images/tr.png') }}">
+              <span>Türkçe</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="en">
+              <img src="{{ url_for('static', filename='images/en.png') }}">
+              <span>English</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="fr">
+              <img src="{{ url_for('static', filename='images/fr.png') }}">
+              <span>Français</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="es">
+              <img src="{{ url_for('static', filename='images/es.png') }}">
+              <span>Español</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="ja">
+              <img src="{{ url_for('static', filename='images/ja.png') }}">
+              <span>日本語</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="ko">
+              <img src="{{ url_for('static', filename='images/ko.png') }}">
+              <span>한국어</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="zh">
+              <img src="{{ url_for('static', filename='images/zh.png') }}">
+              <span>中文</span>
+            </a>
+            <a href="#" class="lang-option" data-lang="hi">
+              <img src="{{ url_for('static', filename='images/hi.png') }}">
+              <span>हिन्दी</span>
+            </a>
+          </div>
+          <button class="lang-current">
+            <img src="{{ url_for('static', filename='images/' ~ user.selected_language ~ '.png') }}">
+            <span data-lang-key="lang_native">Türkçe</span>
+          </button>
+        </div>
+        <span class="footer-center">TOOLVISION</span>
+        <span class="footer-right">1.1</span>
+      </footer>
+    </div>
+    
+    <div id="videoPlayerModal" class="video-modal-backdrop" oncontextmenu="return false;">
+      <div class="video-modal-content">
+        <div class="video-player-container">
+          <video id="mainVideoPlayer" playsinline controls controlslist="nodownload"></video>
+          
+          <div id="youtubePlayerContainer" style="display: none; width: 100%; height: 100%;"></div>
+
+          <div class="video-modal-close">&times;</div>
+          <div id="continuePrompt" class="continue-prompt">
+            <p data-lang-key="continue_watching_prompt">En son kaldığınız yerden devam etmek ister misiniz?</p>
+            <div class="prompt-buttons">
+              <button id="restartVideoBtn" data-lang-key="restart_video">Baştan Başlat</button>
+              <button id="continueVideoBtn" data-lang-key="continue_watching">Devam Et</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="subscriptionRedirectModal" class="redirect-modal-backdrop">
+      <div class="redirect-modal-content">
+        <p data-lang-key="redirect_to_subs_prompt">Abonelik sayfasına yönlendirileceksiniz</p>
+        <div class="redirect-modal-actions">
+          <button id="modalRedirectBack" class="modal-btn-secondary" data-lang-key="modal_back">Geri</button>
+          <button id="modalRedirectContinue" class="modal-btn-primary" data-lang-key="modal_continue">Devam Et</button>
+        </div>
+      </div>
+    </div>
+    
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="{{ url_for('static', filename='js/video.js') }}"></script>
+  </body>
+</html>
