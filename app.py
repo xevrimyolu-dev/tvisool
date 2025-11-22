@@ -1519,8 +1519,9 @@ def update_profile_pic():
             except Exception:
                 pass
 
-        target_size = (96, 96)
-        img = img.resize(target_size, Image.Resampling.LANCZOS)
+        max_dim = max(img.width, img.height)
+        if max_dim > 512:
+            img.thumbnail((512, 512), Image.Resampling.LANCZOS)
 
         # 4. Şeffaflık (PNG) varsa, beyaz arka planla birleştir ve RGB formatına dönüştür
         if img.mode in ('RGBA', 'LA'):
@@ -1542,10 +1543,8 @@ def update_profile_pic():
             if old_pic_path.exists():
                 os.remove(old_pic_path)
 
-        # 7. YENİ KAYDETME AYARLARI:
-        #    Format: WebP (JPEG'den çok daha verimli)
-        #    Kalite: 70 (85'ten düşürüldü, daha agresif sıkıştırma)
-        img.save(file_path, 'WEBP', quality=70, optimize=True)
+        # 7. KAYDETME AYARLARI (yüksek kalite)
+        img.save(file_path, 'WEBP', quality=92, optimize=True)
 
         # 8. Kullanıcının veritabanı kaydını yeni dosya yoluyla güncelle
         current_user.profile_pic_url = url_for('serve_profile_pic', filename=filename)
@@ -1575,8 +1574,8 @@ def update_profile_pic():
                     old_pic_path = app.config['PROFILE_PICS_FOLDER'] / old_pic_path_str
                     if old_pic_path.exists(): os.remove(old_pic_path)
 
-                # 7b. JPEG olarak hardcore kaydet (daha düşük kalite)
-                img.save(file_path_jpg, 'JPEG', quality=65, optimize=True) # Kaliteyi 65'e çektim
+                # 7b. JPEG olarak yüksek kalite ile kaydet
+                img.save(file_path_jpg, 'JPEG', quality=92, optimize=True)
 
                 # 8b. Veritabanını güncelle
                 current_user.profile_pic_url = url_for('serve_profile_pic', filename=filename_jpg)

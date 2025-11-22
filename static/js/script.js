@@ -3070,10 +3070,12 @@ async function checkLocalBridgeStatus() {
         const closeXBtn = document.createElement('button');
         closeXBtn.className = 'modal-close';
         closeXBtn.textContent = '×';
+        closeXBtn.style.marginTop = '-20px';
+        closeXBtn.style.marginRight = '-8px';
         headerEl.appendChild(closeXBtn);
         const wrap = document.createElement('div');
         wrap.className = 'avatar-wrapper';
-        wrap.style.cssText = 'align-self:center;margin:10px auto;';
+        wrap.style.cssText = 'align-self:center;margin:10px auto;transform:translateY(-16px);';
         wrap.setAttribute('data-frame-id', activeFrame || '');
         const imgEl = document.createElement('img');
         imgEl.src = profilePic ? profilePic.src : '';
