@@ -2926,8 +2926,12 @@ def admin_get_reported_posts():
             media_list = []
             if r.post:
                 for media in r.post.media_files:
-                    media_url = url_for('forum.serve_user_media', filename=media.file_url)
-                    thumbnail_url = url_for('serve_user_media', filename=media.thumbnail_url) if getattr(media, 'thumbnail_url', None) else None
+                    media_url = url_for('serve_user_media', filename=media.file_url)
+                    thumbnail_url = (
+                        url_for('serve_user_media', filename=media.thumbnail_url)
+                        if getattr(media, 'thumbnail_url', None)
+                        else url_for('static', filename='images/video_1_thumbnail.jpg')
+                    )
                     media_list.append({ 'url': media_url, 'thumbnail_url': thumbnail_url, 'type': media.file_type })
 
             return {

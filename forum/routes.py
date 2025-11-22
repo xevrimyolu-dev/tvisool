@@ -724,7 +724,11 @@ def get_all_posts_with_like_status():
             media_list = []
             for media in post.media_files:
                 media_url = url_for('serve_user_media', filename=media.file_url)
-                thumbnail_url = url_for('serve_user_media', filename=media.thumbnail_url) if media.thumbnail_url else None
+                thumbnail_url = (
+                    url_for('serve_user_media', filename=media.thumbnail_url)
+                    if media.thumbnail_url
+                    else url_for('static', filename='images/video_1_thumbnail.jpg')
+                )
                 
                 media_list.append({
                     "url": media_url, 
@@ -780,8 +784,12 @@ def get_single_post(post_id):
         
     media_list = []
     for media in post.media_files:
-        media_url = url_for('forum.serve_user_media', filename=media.file_url)
-        thumbnail_url = url_for('serve_user_media', filename=media.thumbnail_url) if media.thumbnail_url else None
+        media_url = url_for('serve_user_media', filename=media.file_url)
+        thumbnail_url = (
+            url_for('serve_user_media', filename=media.thumbnail_url)
+            if media.thumbnail_url
+            else url_for('static', filename='images/video_1_thumbnail.jpg')
+        )
         
         media_list.append({
             "url": media_url, 
@@ -1089,7 +1097,11 @@ def get_user_posts(user_id):
         media_list = []
         for media in post.media_files:
             media_url = url_for('serve_user_media', filename=media.file_url)
-            thumbnail_url = url_for('serve_user_media', filename=media.thumbnail_url) if media.thumbnail_url else None
+            thumbnail_url = (
+                url_for('serve_user_media', filename=media.thumbnail_url)
+                if media.thumbnail_url
+                else url_for('static', filename='images/video_1_thumbnail.jpg')
+            )
             
             media_list.append({
                 "url": media_url, 
@@ -1147,7 +1159,11 @@ def search_posts():
             media_list = []
             for media in post.media_files:
                 media_url = url_for('serve_user_media', filename=media.file_url)
-                thumbnail_url = url_for('serve_user_media', filename=media.thumbnail_url) if media.thumbnail_url else None
+                thumbnail_url = (
+                    url_for('serve_user_media', filename=media.thumbnail_url)
+                    if media.thumbnail_url
+                    else url_for('static', filename='images/video_1_thumbnail.jpg')
+                )
                 
                 media_list.append({
                     "url": media_url, 
