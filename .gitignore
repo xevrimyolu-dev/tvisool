@@ -1,0 +1,17 @@
+# Veritabanını görmezden gel (Canlı veri silinmesin)
+instance/
+*.db
+*.sqlite3
+
+# Yüklenen medyaları görmezden gel (Sunucudakiler kalsın)
+user_media/
+static/profile_pics/
+static/receipt/
+uploads/
+
+# Gereksiz sistem dosyaları
+__pycache__/
+*.pyc
+venv/
+.env
+.DS_Store
