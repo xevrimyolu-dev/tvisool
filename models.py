@@ -130,8 +130,8 @@ class User(UserMixin, db.Model):
     def can_perform_action(self):
         # GÜNCELLENDİ: Yeni admin rollerini de sınırsız olarak ekledik
         limits = { 
-            UserRole.ücretsiz: {'limit': 1, 'cooldown_hours': 3}, 
-            UserRole.premium: {'limit': 30, 'cooldown_hours': 1}, 
+            UserRole.ücretsiz: {'limit': 7, 'cooldown_hours': 3}, 
+            UserRole.premium: {'limit': 70, 'cooldown_hours': 1}, 
             UserRole.dev: {'limit': float('inf'), 'cooldown_hours': 0}, 
             UserRole.caylak_admin: {'limit': float('inf'), 'cooldown_hours': 0}, 
             UserRole.usta_admin: {'limit': float('inf'), 'cooldown_hours': 0}, 
@@ -168,8 +168,8 @@ class User(UserMixin, db.Model):
             
     def get_remaining_actions(self):
         limits = { 
-            UserRole.ücretsiz: {'limit': 1, 'cooldown_hours': 3}, 
-            UserRole.premium: {'limit': 30, 'cooldown_hours': 1}, 
+            UserRole.ücretsiz: {'limit': 7, 'cooldown_hours': 3}, 
+            UserRole.premium: {'limit': 70, 'cooldown_hours': 1}, 
             UserRole.dev: {'limit': float('inf'), 'cooldown_hours': 0}, 
             UserRole.caylak_admin: {'limit': float('inf'), 'cooldown_hours': 0},
             UserRole.usta_admin: {'limit': float('inf'), 'cooldown_hours': 0},

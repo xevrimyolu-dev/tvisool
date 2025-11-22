@@ -39,6 +39,7 @@ from flask_apscheduler import APScheduler
 from apscheduler.jobstores.base import ConflictingIdError
 
 from config import Config
+from frames import FRAMES, get_user_frames, set_user_frames
 from models import User, ActivityLog, TemporaryFile, PageVisitLog, UserRole, Permission, VideoLog, FeatureUsageLog, PurchaseIntent, PostReport
 from forum.models import Post
 from sqlalchemy.orm import joinedload
@@ -83,7 +84,7 @@ SUBSCRIPTION_DATA = {
             'pak_repack_limit': '20 MB',
             'obb_unpack_limit': '200 MB',
             'obb_repack_limit': '170 MB',
-            'daily_limit': '1 İşlem / 3 Saat Bekleme',
+            'daily_limit': '7 İşlem / 3 Saat Bekleme',
             'config_features': '1 Config Özelliği',
             'coding_videos': '1 Kodlama Videosu'
         }
@@ -94,7 +95,7 @@ SUBSCRIPTION_DATA = {
             'pak_repack_limit': '100 MB',
             'obb_unpack_limit': '900 MB',
             'obb_repack_limit': '870 MB',
-            'daily_limit': '30 İşlem / 1 Saat Bekleme',
+            'daily_limit': '70 İşlem / 1 Saat Bekleme',
             'config_features': '12 Config Özelliği',
             'coding_videos': '12 Kodlama Videosu'
         },
@@ -435,7 +436,20 @@ def check_receipt_keywords(image_path):
 def subscriptions_page():
     # Fiyat verilerini JavaScript'in anlayacağı bir formata çevirelim
     subscription_data_json = json.dumps(SUBSCRIPTION_DATA)
-    return render_template('subscriptions.html', user=current_user, subscription_data=subscription_data_json)
+    uf = get_user_frames(current_user.id)
+    active_frame_id = uf.get("active")
+    return render_template('subscriptions.html', user=current_user, subscription_data=subscription_data_json, active_frame_id=active_frame_id)
+
+@app.route('/user/frames', methods=['GET', 'POST'])
+@login_required
+def user_frames():
+    if request.method == 'GET':
+        data = get_user_frames(current_user.id)
+        return jsonify({"allowed": FRAMES, **data})
+    data = request.get_json() or {}
+    active = data.get('active')
+    result = set_user_frames(current_user.id, active)
+    return jsonify({"success": True, **result})
 
 def ultimate_key_func():
     """
@@ -789,10 +803,13 @@ def payment_options_page(intent_id):
     # YENİ: Dekont klasörünün var olduğundan emin ol
     RECEIPT_UPLOAD_FOLDER.mkdir(exist_ok=True)
 
+    uf = get_user_frames(current_user.id)
+    active_frame_id = uf.get("active")
     return render_template('payment_options.html',
                            user=current_user,
                            intent=intent,
-                           payment_details=payment_details)
+                           payment_details=payment_details,
+                           active_frame_id=active_frame_id)
 
 def check_action_limit(func):
     @wraps(func)
@@ -1453,7 +1470,9 @@ def logout():
 @login_required
 def index():
     # Bu rota artık sadece araçları içeren 'atölye' sayfasını gösterir.
-    return render_template('index.html', user=current_user)
+    uf = get_user_frames(current_user.id)
+    active_frame_id = uf.get("active")
+    return render_template('index.html', user=current_user, active_frame_id=active_frame_id)
 
 @app.route('/profile_pics/<filename>')
 def serve_profile_pic(filename):

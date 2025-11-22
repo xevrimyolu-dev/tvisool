@@ -21,6 +21,15 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transition: max-width 0.3s ease-in-out;
 }
+.post-composer .avatar-wrapper {
+  align-self: flex-start;
+  width: 45px;
+  height: 45px;
+}
+.post-composer .avatar-wrapper .composer-profile-pic {
+  width: 100%;
+  height: 100%;
+}
 .comment-actions {
   display: none;
   flex-direction: column;

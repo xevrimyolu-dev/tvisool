@@ -110,13 +110,24 @@
           <i class="fas fa-bars"></i>
         </button>
         <div class="title" id="headerTitle" data-lang-key="forum">FORUM</div>
-        <label for="profilePicInput" class="profile-pic-label"> {% if user.profile_pic_url %} <img src="{{ user.profile_pic_url }}" alt="Profil" class="profile-pic" id="profilePic"> {% else %} {% set profile_image = user.role.value + '.png' if user.role.value in ['premium', 'dev', 'usta_admin', 'caylak_admin'] else 'free.png' %} <img src="{{ url_for('static', filename='images/' + profile_image) }}" alt="Profil" class="profile-pic" id="profilePic"> {% endif %} </label>
+        <label for="profilePicInput" class="profile-pic-label">
+          <div class="avatar-wrapper" id="headerAvatarWrapper" data-frame-id="{{ active_frame_id or '' }}">
+            {% if user.profile_pic_url %}
+            <img src="{{ user.profile_pic_url }}" alt="Profil" class="profile-pic" id="profilePic">
+            {% else %}
+            {% set profile_image = user.role.value + '.png' if user.role.value in ['premium', 'dev', 'usta_admin', 'caylak_admin'] else 'free.png' %}
+            <img src="{{ url_for('static', filename='images/' + profile_image) }}" alt="Profil" class="profile-pic" id="profilePic">
+            {% endif %}
+          </div>
+        </label>
         <input type="file" id="profilePicInput" class="hidden-file-input" accept="image/*">
       </header>
       <main>
         <div class="page active" id="page-forum">
           <div class="post-composer">
-            <img src="{{ user.profile_pic_url or url_for('static', filename='images/free.png') }}" alt="Profil" class="composer-profile-pic">
+            <div class="avatar-wrapper" data-frame-id="{{ active_frame_id or '' }}">
+              <img src="{{ user.profile_pic_url or url_for('static', filename='images/free.png') }}" alt="Profil" class="composer-profile-pic">
+            </div>
             <form id="create-post-form" class="composer-form">
               
               <div id="reply-preview-area" class="reply-preview-container" style="display: none;">
@@ -206,6 +217,12 @@
       </footer>
     </div>
     
+    <div id="framesPopover" class="frames-popover" style="display:none;">
+      <div class="frames-popover-inner">
+        <div class="frames-carousel" id="availableFramesGrid"></div>
+      </div>
+    </div>
+
     <div id="image-viewer-modal" class="image-viewer-backdrop" style="display: none;">
       <span class="image-viewer-close">&times;</span>
       <img class="image-viewer-content" id="viewer-image-content">
@@ -223,10 +240,11 @@
             <button id="updateUsernameBtn" class="settings-btn" data-lang-key="update_username">Kullanıcı Adını Güncelle</button>
             <div id="usernameStatus" class="settings-status"></div>
           </div>
-          <div class="settings-section">
+        <div class="settings-section">
             <label data-lang-key="your_email">E-posta adresiniz:</label>
             <input type="text" id="emailDisplay" class="settings-input" readonly>
           </div>
+          
           <div class="settings-section">
             <button id="showPasswordChangeBtn" class="settings-btn" data-lang-key="change_password_button">Şifre Değiştirme</button>
             <div id="passwordChangeArea" style="display: none;">

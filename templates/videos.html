@@ -19,7 +19,16 @@
         <button class="header-theme-toggle" id="themeToggleButton">
           <i class="fas fa-sun"></i>
         </button>
-        <label class="profile-pic-label"> {% if user.profile_pic_url %} <img src="{{ user.profile_pic_url }}" alt="Profil" class="profile-pic"> {% else %} {% set profile_image = user.role.value + '.png' if user.role.value in ['premium', 'dev', 'usta_admin', 'caylak_admin'] else 'free.png' %} <img src="{{ url_for('static', filename='images/' + profile_image) }}" alt="Profil" class="profile-pic"> {% endif %} </label>
+        <label class="profile-pic-label">
+          <div class="avatar-wrapper" id="headerAvatarWrapper" data-frame-id="{{ active_frame_id or '' }}">
+            {% if user.profile_pic_url %}
+            <img src="{{ user.profile_pic_url }}" alt="Profil" class="profile-pic">
+            {% else %}
+            {% set profile_image = user.role.value + '.png' if user.role.value in ['premium', 'dev', 'usta_admin', 'caylak_admin'] else 'free.png' %}
+            <img src="{{ url_for('static', filename='images/' + profile_image) }}" alt="Profil" class="profile-pic">
+            {% endif %}
+          </div>
+        </label>
       </header>
       <main class="video-main-content">
         <div class="video-list">
@@ -160,5 +169,6 @@
     
     <script src="https://www.youtube.com/iframe_api"></script>
     <script src="{{ url_for('static', filename='js/video.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
   </body>
 </html>

@@ -7,6 +7,7 @@ import os
 from utils import record_log
 from datetime import datetime
 import mimetypes
+from frames import get_user_frames
 
 video_bp = Blueprint('video', __name__, template_folder='templates', static_folder='static')
 
@@ -121,7 +122,9 @@ def videos_page():
         video_copy["youtube_id"] = video.get("youtube_id", None) 
         
         processed_videos.append(video_copy)
-    return render_template('videos.html', user=current_user, videos=processed_videos)
+    uf = get_user_frames(current_user.id)
+    active_frame_id = uf.get("active")
+    return render_template('videos.html', user=current_user, videos=processed_videos, active_frame_id=active_frame_id)
 
 @video_bp.route('/download_tool/<filename>')
 @login_required

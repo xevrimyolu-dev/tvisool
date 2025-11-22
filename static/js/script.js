@@ -222,8 +222,8 @@ const translations = {
         'obb_unpack_limit': 'OBB Unpack Limiti:',
         'obb_repack_limit': 'OBB Rpack Limiti:',
         'message_pinning': 'Mesaj sabitleme',
-        'free_daily_limit_desc': '1 İşlem / 3 Saat Bekleme',
-        'premium_daily_limit_desc': '30 İşlem / 1 Saat Bekleme',
+        'free_daily_limit_desc': '7 İşlem / 3 Saat Bekleme',
+        'premium_daily_limit_desc': '70 İşlem / 1 Saat Bekleme',
         'limited_access': '1 Config Özelliği',
         'all_features': '12 Config Özelliği',
         'dev_config_desc': 'Tüm Config Özellikleri',
@@ -315,6 +315,10 @@ const translations = {
         'settings_title': 'Ayarlar',
         'your_name': 'İsminiz:',
         'your_email': 'E-posta adresiniz:',
+        'profile_frames': 'Profil Çerçeveleri',
+        'select_frames': 'Bir çerçeve seçin',
+        'active_frame': 'Aktif Çerçeve',
+        'save_frames': 'Çerçeveleri Kaydet',
         'update_username': 'Kullanıcı Adını Güncelle',
         'change_password_button': 'Şifre Değiştirme',
         'current_password': 'Mevcut Şifreniz:',
@@ -571,8 +575,8 @@ const translations = {
 'obb_unpack_limit': 'OBB Unpack Limit:',
 'obb_repack_limit': 'OBB Repack Limit:',
 'message_pinning': 'Message pinning',
-'free_daily_limit_desc': '1 Use / 3h Wait',
-'premium_daily_limit_desc': '30 Uses / 1h Wait',
+'free_daily_limit_desc': '7 Uses / 3h Wait',
+'premium_daily_limit_desc': '70 Uses / 1h Wait',
 'limited_access': '1 Config Feature',
 'all_features': '12 Config Features',
 'dev_config_desc': 'All Config Features',
@@ -656,6 +660,10 @@ const translations = {
         'user_manual_title': 'User Manual',
         'user_manual_description': 'This video explains step-by-step the basic features of the ToolVision application and how to use it. It covers topics such as the functions of the buttons in the application interface, "Unpack" and "Repack" operations with PAK and OBB files, your transaction limits according to your user role, and special settings. It is recommended to watch this guide to use the application most efficiently.',
         'settings_title': 'Settings',
+        'profile_frames': 'Profile Frames',
+        'select_frames': 'Select one frame',
+        'active_frame': 'Active Frame',
+        'save_frames': 'Save Frames',
         'your_name': 'Your Name:',
         'your_email': 'Your E-mail:',
         'update_username': 'Update Username',
@@ -916,8 +924,8 @@ const translations = {
 'obb_unpack_limit': 'Limite Unpack OBB:',
 'obb_repack_limit': 'Limite Repack OBB:',
 'message_pinning': 'Épinglage des messages',
-'free_daily_limit_desc': '1 Utilisation / 3h Attente',
-'premium_daily_limit_desc': '30 Utilisations / 1h Attente',
+'free_daily_limit_desc': '7 Utilisations / 3h Attente',
+'premium_daily_limit_desc': '70 Utilisations / 1h Attente',
 'limited_access': '1 Fonctionnalité de Config',
 'all_features': '12 Fonctionnalités de Config',
 'dev_config_desc': 'Toutes les Fonctionnalités de Config',
@@ -1068,8 +1076,8 @@ const translations = {
 'obb_unpack_limit': 'OBB解包限制：',
 'obb_repack_limit': 'OBB打包限制：',
 'message_pinning': '消息置顶',
-'free_daily_limit_desc': '1次使用 / 3小时等待',
-'premium_daily_limit_desc': '30次使用 / 1小时等待',
+'free_daily_limit_desc': '7次使用 / 3小时等待',
+'premium_daily_limit_desc': '70次使用 / 1小时等待',
 'limited_access': '1个配置功能',
 'all_features': '12个配置功能',
 'dev_config_desc': '所有配置功能',
@@ -1383,8 +1391,8 @@ const translations = {
 'obb_unpack_limit': 'Límite de Unpack OBB:',
 'obb_repack_limit': 'Límite de Repack OBB:',
 'message_pinning': 'Fijación de mensajes',
-'free_daily_limit_desc': '1 Uso / 3h Espera',
-'premium_daily_limit_desc': '30 Usos / 1h Espera',
+'free_daily_limit_desc': '7 Usos / 3h Espera',
+'premium_daily_limit_desc': '70 Usos / 1h Espera',
 'limited_access': '1 Característica de Config',
 'all_features': '12 Características de Config',
 'dev_config_desc': 'Todas las Características de Config',
@@ -1705,8 +1713,8 @@ const translations = {
 'obb_unpack_limit': 'OBB展開制限:',
 'obb_repack_limit': 'OBB再パック制限:',
 'message_pinning': 'メッセージの固定',
-'free_daily_limit_desc': '1回 / 3時間待機',
-'premium_daily_limit_desc': '30回 / 1時間待機',
+'free_daily_limit_desc': '7回 / 3時間待機',
+'premium_daily_limit_desc': '70回 / 1時間待機',
 'limited_access': '設定機能1つ',
 'all_features': '設定機能12個',
 'dev_config_desc': 'すべての設定機能',
@@ -2040,8 +2048,8 @@ const translations = {
 'obb_unpack_limit': 'OBB 압축 풀기 제한:',
 'obb_repack_limit': 'OBB 재압축 제한:',
 'message_pinning': '메시지 고정',
-'free_daily_limit_desc': '1회 사용 / 3시간 대기',
-'premium_daily_limit_desc': '30회 사용 / 1시간 대기',
+'free_daily_limit_desc': '7회 사용 / 3시간 대기',
+'premium_daily_limit_desc': '70회 사용 / 1시간 대기',
 'limited_access': '설정 기능 1개',
 'all_features': '설정 기능 12개',
 'dev_config_desc': '모든 설정 기능',
@@ -2373,8 +2381,8 @@ const translations = {
 'obb_unpack_limit': 'OBB अनपैक सीमा:',
 'obb_repack_limit': 'OBB रीपैक सीमा:',
 'message_pinning': 'संदेश पिनिंग',
-'free_daily_limit_desc': '1 उपयोग / 3 घंटे प्रतीक्षा',
-'premium_daily_limit_desc': '30 उपयोग / 1 घंटा प्रतीक्षा',
+'free_daily_limit_desc': '7 उपयोग / 3 घंटे प्रतीक्षा',
+'premium_daily_limit_desc': '70 उपयोग / 1 घंटा प्रतीक्षा',
 'limited_access': '1 कॉन्फ़िग सुविधा',
 'all_features': '12 कॉन्फ़िग सुविधाएँ',
 'dev_config_desc': 'सभी कॉन्फ़िग सुविधाएँ',
@@ -2888,7 +2896,164 @@ async function checkLocalBridgeStatus() {
 }
 
 // Sayfa yüklendikten 2 saniye sonra testi otomatik başlat
-setTimeout(() => { if (!document.hidden && isLocalBridgeCheckEnabled()) checkLocalBridgeStatus(); }, 2000);
+    setTimeout(() => { if (!document.hidden && isLocalBridgeCheckEnabled()) checkLocalBridgeStatus(); }, 2000);
+
+    const availableFramesGrid = document.getElementById('availableFramesGrid');
+    const activeFrameSelect = document.getElementById('activeFrameSelect');
+    const saveFramesBtn = document.getElementById('saveFramesBtn');
+    const framesPopover = document.getElementById('framesPopover');
+    const composerProfilePic = document.querySelector('.composer-profile-pic');
+    const headerAvatarWrapper = document.getElementById('headerAvatarWrapper');
+    const subsHeaderAvatarWrapper = document.getElementById('subsHeaderAvatarWrapper');
+    let allowedFrames = [];
+    let activeFrame = null;
+
+    function openFramesPopover(anchorEl) {
+        if (!framesPopover || !anchorEl) return;
+        const rect = anchorEl.getBoundingClientRect();
+        const w = Math.max(180, Math.min(320, Math.round(rect.width * 4)));
+        const h = Math.round(rect.height);
+        const wBox = w + 24;
+        const hBox = h + 16;
+        const gap = 8;
+        framesPopover.style.display = 'block';
+        framesPopover.style.width = `${wBox}px`;
+        framesPopover.style.height = `${hBox}px`;
+        const left = Math.round(rect.right + gap);
+        framesPopover.style.left = `${left}px`;
+        framesPopover.style.top = `${rect.top}px`;
+        const inner = framesPopover.querySelector('.frames-popover-inner');
+        if (inner) {
+            inner.style.width = `${wBox}px`;
+            inner.style.height = `${hBox}px`;
+        }
+        // Enable keyboard navigation
+        framesPopover.tabIndex = -1;
+        framesPopover.focus();
+    }
+
+    if (composerProfilePic && framesPopover) {
+        composerProfilePic.addEventListener('click', () => {
+            loadUserFrames();
+            openFramesPopover(composerProfilePic);
+        });
+        window.addEventListener('click', (e) => {
+            if (!framesPopover.contains(e.target) && e.target !== composerProfilePic) {
+                framesPopover.style.display = 'none';
+            }
+        });
+        framesPopover.addEventListener('keydown', (e) => {
+            const grid = document.getElementById('availableFramesGrid');
+            if (!grid) return;
+            if (e.key === 'Home') {
+                e.preventDefault();
+                grid.scrollTo({ left: 0, behavior: 'smooth' });
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                const maxLeft = grid.scrollWidth - grid.clientWidth;
+                grid.scrollTo({ left: maxLeft, behavior: 'smooth' });
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                grid.scrollBy({ left: -60, behavior: 'smooth' });
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                grid.scrollBy({ left: 60, behavior: 'smooth' });
+            }
+        });
+    }
+
+    function renderFramesGrid() {
+        if (!availableFramesGrid) return;
+        availableFramesGrid.innerHTML = '';
+        allowedFrames.forEach(f => {
+            const item = document.createElement('div');
+            item.className = 'frame-item' + (activeFrame === f ? ' selected' : '');
+            const wrap = document.createElement('div');
+            wrap.className = 'avatar-wrapper';
+            wrap.setAttribute('data-frame-id', f);
+            const circle = document.createElement('div');
+            circle.className = 'frame-preview-circle';
+            wrap.appendChild(circle);
+            item.appendChild(wrap);
+            item.addEventListener('click', () => {
+                activeFrame = f;
+                renderFramesGrid();
+                renderActiveSelect();
+                saveUserFrames();
+                if (framesPopover) framesPopover.style.display = 'none';
+            });
+            availableFramesGrid.appendChild(item);
+        });
+    }
+
+    function renderActiveSelect() {
+        if (!activeFrameSelect) return;
+        activeFrameSelect.innerHTML = '';
+        allowedFrames.forEach(f => {
+            const opt = document.createElement('option');
+            opt.value = f;
+            opt.textContent = f.replace(/_/g, ' ');
+            activeFrameSelect.appendChild(opt);
+        });
+        if (activeFrame) activeFrameSelect.value = activeFrame;
+        applyActiveFrameEverywhere();
+    }
+
+    function applyActiveFrameEverywhere() {
+        const id = activeFrame || '';
+        const imgs = Array.from(document.querySelectorAll('.profile-pic, .composer-profile-pic'));
+        imgs.forEach(img => {
+            const parent = img.parentElement;
+            if (!parent || !parent.classList || !parent.classList.contains('avatar-wrapper')) {
+                const wrap = document.createElement('div');
+                wrap.className = 'avatar-wrapper';
+                wrap.setAttribute('data-frame-id', id);
+                img.replaceWith(wrap);
+                wrap.appendChild(img);
+            } else {
+                parent.setAttribute('data-frame-id', id);
+            }
+        });
+        if (headerAvatarWrapper) headerAvatarWrapper.setAttribute('data-frame-id', id);
+        if (subsHeaderAvatarWrapper) subsHeaderAvatarWrapper.setAttribute('data-frame-id', id);
+    }
+
+    async function loadUserFrames() {
+        try {
+            const r = await fetch('/user/frames');
+            if (!r.ok) return;
+            const d = await r.json();
+            allowedFrames = Array.isArray(d.allowed) ? d.allowed : [];
+            activeFrame = d.active || null;
+            renderFramesGrid();
+            renderActiveSelect();
+        } catch (e) {}
+    }
+
+    async function saveUserFrames() {
+        try {
+            const r = await fetch('/user/frames', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                },
+                body: JSON.stringify({ active: activeFrame })
+            });
+            if (!r.ok) return;
+            const d = await r.json();
+            activeFrame = d.active || activeFrame;
+            applyActiveFrameEverywhere();
+            const lang = localStorage.getItem('userLanguage') || 'en';
+            showToast((translations[lang] && translations[lang]['post_edit_success']) || 'Saved', 'success');
+        } catch (e) {}
+    }
+
+    
+
+    // No explicit save button; frames are applied immediately on click
+
+    loadUserFrames();
 
 
     async function logFrontendFailure(actionType, fileName, fileSizeInBytes, limitInBytes) {

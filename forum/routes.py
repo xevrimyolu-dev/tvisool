@@ -19,6 +19,7 @@ import ffmpeg
 from collections import Counter
 
 from extensions import db
+from frames import get_user_frames
 from .models import Post, PostMedia, User, Like, Comment
 from .models import Reaction
 from models import UserRole, MuteLog, PostReport
@@ -640,7 +641,9 @@ def forum_page():
     Kullanıcı giriş yaptığında ilk göreceği sayfadır.
     """
     # forum.html şablonunu render et ve şablona mevcut kullanıcı bilgilerini gönder.
-    return render_template("forum.html", user=current_user)
+    uf = get_user_frames(current_user.id)
+    active_frame_id = uf.get("active")
+    return render_template("forum.html", user=current_user, active_frame_id=active_frame_id)
     
 @forum_bp.route("/view/post/<int:post_id>")
 @login_required
@@ -657,7 +660,9 @@ def view_single_post(post_id):
             
     # forum.html şablonunu render et, kullanıcıyı ve post_id'yi geçir
     # JavaScript (forum_core.js) bu 'single_post_id' değişkenini arayacak
-    return render_template("forum.html", user=current_user, single_post_id=post_id)
+    uf = get_user_frames(current_user.id)
+    active_frame_id = uf.get("active")
+    return render_template("forum.html", user=current_user, single_post_id=post_id, active_frame_id=active_frame_id)
     
 @forum_bp.route("/posts/<int:post_id>/likers", methods=["GET"])
 @login_required
@@ -669,10 +674,13 @@ def get_post_likers(post_id):
     likers_list = []
     for like in likes:
         user = like.author
+        uf = get_user_frames(user.id)
         likers_list.append({
-            "id": user.id, "username": user.username,
+            "id": user.id,
+            "username": user.username,
             "profile_pic": user.profile_pic_url or url_for('static', filename='images/free.png'),
-            "role": user.role.value
+            "role": user.role.value,
+            "selected_frame_id": uf.get("active")
         })
     return jsonify(likers_list)
 
@@ -717,14 +725,15 @@ def get_all_posts_with_like_status():
             if mr:
                 my_reaction = mr.type
 
+            uf = get_user_frames(post.user.id)
             posts_list.append({
                 "id": post.id, "content": post.content,
                 "timestamp": post.timestamp.isoformat() + "Z",
                 "edited_at": post.edited_at.isoformat() + "Z" if post.edited_at else None,
                 "author": { "id": post.user_id, "username": post.user.username,
                     "profile_pic": post.user.profile_pic_url or url_for('static', filename='images/free.png'),
-                    "role": post.user.role.value },
-                    "selected_frame_id": getattr(post.user, 'selected_frame_id', None),
+                    "role": post.user.role.value,
+                    "selected_frame_id": uf.get("active") },
                 "media_files": media_list, "likes_count": post.likes.count(),
                 "comments_count": post.comments.count(), "current_user_liked": post.id in user_likes,
                 "first_liker_name": first_liker_name,
@@ -778,13 +787,15 @@ def get_single_post(post_id):
     if mr:
         my_reaction = mr.type
 
+    uf = get_user_frames(post.user.id)
     post_data = {
         "id": post.id, "content": post.content,
         "timestamp": post.timestamp.isoformat() + "Z",
         "edited_at": post.edited_at.isoformat() + "Z" if post.edited_at else None,
         "author": { "id": post.user_id, "username": post.user.username,
             "profile_pic": post.user.profile_pic_url or url_for('static', filename='images/free.png'),
-            "role": post.user.role.value },
+            "role": post.user.role.value,
+            "selected_frame_id": uf.get("active") },
         "media_files": media_list, "likes_count": post.likes.count(),
         "comments_count": post.comments.count(), "current_user_liked": user_liked_post,
         "first_liker_name": first_liker_name,
@@ -867,6 +878,7 @@ def create_comment(post_id):
         
         db.session.commit()
         
+        uf = get_user_frames(new_comment.author.id)
         comment_data = { 
             "id": new_comment.id, 
             "content": new_comment.content, 
@@ -875,7 +887,8 @@ def create_comment(post_id):
                 "id": new_comment.user_id, 
                 "username": new_comment.author.username,
                 "profile_pic": new_comment.author.profile_pic_url or url_for('static', filename='images/free.png'),
-                "role": new_comment.author.role.value 
+                "role": new_comment.author.role.value,
+                "selected_frame_id": uf.get("active")
             } 
         }
         return jsonify({ 
@@ -898,12 +911,14 @@ def get_comments(post_id):
     comments = Comment.query.filter_by(post_id=post.id).order_by(Comment.id.asc()).all()
     comments_list = []
     for comment in comments:
+        uf = get_user_frames(comment.author.id)
         comments_list.append({
             "id": comment.id, "content": comment.content,
             "timestamp": comment.timestamp.isoformat() + "Z",
             "author": { "id": comment.user_id, "username": comment.author.username,
                 "profile_pic": comment.author.profile_pic_url or url_for('static', filename='images/free.png'),
-                "role": comment.author.role.value }
+                "role": comment.author.role.value,
+                "selected_frame_id": uf.get("active") }
         })
     return jsonify(comments_list)
 

@@ -568,7 +568,9 @@ function showContextMenu(postCard) {
         return `
             <div class="comment" id="comment-${comment.id}" data-comment-id="${comment.id}" data-author-id="${comment.author.id}">
                 ${actionsHTML}
-                <img src="${comment.author.profile_pic}" alt="${comment.author.username}" class="comment-author-pic">
+                <div class="avatar-wrapper" data-frame-id="${comment.author.selected_frame_id || ''}">
+                  <img src="${comment.author.profile_pic}" alt="${comment.author.username}" class="comment-author-pic">
+                </div>
                 <div class="comment-bubble">
                     <span class="comment-author-name">${comment.author.username}</span>
                     <p class="comment-content">${comment.content.replace(/\n/g, '<br>')}</p>
@@ -761,7 +763,9 @@ function showContextMenu(postCard) {
 
         postCard.innerHTML = `
             <div class="post-header">
-                <img src="${post.author.profile_pic}" alt="${post.author.username}" class="post-author-pic">
+                <div class="avatar-wrapper" data-frame-id="${post.author.selected_frame_id || ''}">
+                  <img src="${post.author.profile_pic}" alt="${post.author.username}" class="post-author-pic">
+                </div>
                 <div class="post-author-details">
                     <span class="post-author-name">${post.author.username}</span>
                     <div class="post-timestamp-container">

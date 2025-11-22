@@ -4,6 +4,7 @@ from flask_login import login_required, current_user
 from models import UserRole, db, FeatureUsageLog  # FeatureUsageLog modelini ekleyeceğiz
 from utils import record_log
 from collections import Counter
+from frames import get_user_frames
 
 features_bp = Blueprint('features', __name__, template_folder='templates', static_folder='static')
 
@@ -66,10 +67,13 @@ def features_page():
     # YENİ: Antenna linkini template'e gönder
     antenna_download_link = "https://www.mediafire.com/file/qgitbzwsa13jo79/Antenna+Config+4.1+ToolVision.7z/file"
         
+    uf = get_user_frames(current_user.id)
+    active_frame_id = uf.get("active")
     return render_template('features.html', 
                            user=current_user, 
                            features=processed_features,
-                           antenna_link=antenna_download_link) # GÜNCELLENDİ
+                           antenna_link=antenna_download_link,
+                           active_frame_id=active_frame_id) # GÜNCELLENDİ
 
 @features_bp.route('/features/log_usage', methods=['POST'])
 @login_required
