@@ -392,6 +392,10 @@ def create_post():
     content = request.form.get('content', '').strip()
     media_files = request.files.getlist('media_files')
     video_thumbnails = request.files.getlist('video_thumbnails')
+    try:
+        current_app.logger.info(f"Post create: received {len(media_files)} media files, {len(video_thumbnails)} video thumbnails")
+    except Exception:
+        pass
     crop_data_list_json = request.form.get('crop_data', '[]')
     captcha_answer = request.form.get('captcha_answer', None)
     sanitized_content = bleach.clean(content)

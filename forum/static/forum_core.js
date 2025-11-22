@@ -450,7 +450,7 @@ async function handleFormSubmit(e) {
             video.muted = true;
             video.src = URL.createObjectURL(file);
             const revoke = () => URL.revokeObjectURL(video.src);
-            video.addEventListener('loadeddata', () => {
+            video.addEventListener('loadedmetadata', () => {
                 try { video.currentTime = 0.1; } catch (_) {}
             });
             video.addEventListener('seeked', () => {
