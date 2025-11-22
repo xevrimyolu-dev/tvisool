@@ -448,8 +448,10 @@ async function handleFormSubmit(e) {
         initFd.append('file_type', 'video');
         initFd.append('total_size', String(file.size));
         const initRes = await fetch('/forum/uploads/init', { method: 'POST', headers: { 'X-CSRFToken': getCSRFToken() }, body: initFd });
+        if (!initRes.ok) throw new Error('chunk_init_failed');
         const initJson = await initRes.json();
         const uploadId = initJson.upload_id;
+        if (!uploadId) throw new Error('chunk_init_failed');
         const chunkSize = 4 * 1024 * 1024;
         const totalChunks = Math.ceil(file.size / chunkSize);
         const tasks = [];
@@ -462,19 +464,22 @@ async function handleFormSubmit(e) {
             fd.append('upload_id', uploadId);
             fd.append('index', String(index));
             fd.append('chunk', blob);
-            tasks.push(() => fetch('/forum/uploads/chunk', { method: 'POST', headers: { 'X-CSRFToken': getCSRFToken() }, body: fd }));
+            tasks.push(async () => {
+                const res = await fetch('/forum/uploads/chunk', { method: 'POST', headers: { 'X-CSRFToken': getCSRFToken() }, body: fd });
+                if (!res.ok) throw new Error('chunk_send_failed');
+            });
             index++;
         }
-        const concurrency = 3;
+        const concurrency = 4;
         let cursor = 0;
-        async function runNext() {
-            if (cursor >= tasks.length) return;
-            const t = tasks[cursor++];
-            await t();
-            return runNext();
-        }
         const runners = [];
-        for (let i = 0; i < concurrency; i++) runners.push(runNext());
+        async function worker() {
+            while (cursor < tasks.length) {
+                const t = tasks[cursor++];
+                await t();
+            }
+        }
+        for (let i = 0; i < concurrency; i++) runners.push(worker());
         await Promise.all(runners);
         const completeFd = new FormData();
         completeFd.append('upload_id', uploadId);
@@ -482,23 +487,28 @@ async function handleFormSubmit(e) {
         completeFd.append('file_type', 'video');
         completeFd.append('total_chunks', String(totalChunks));
         const compRes = await fetch('/forum/uploads/complete', { method: 'POST', headers: { 'X-CSRFToken': getCSRFToken() }, body: completeFd });
+        if (!compRes.ok) throw new Error('chunk_complete_failed');
         const compJson = await compRes.json();
         return compJson;
     }
 
-    const largeVideos = selectedFiles.filter(f => f.type.startsWith('video/'));
+    const largeVideos = selectedFiles.filter(f => f.type.startsWith('video/') && f.size > (8 * 1024 * 1024));
     const preUploaded = [];
     for (const vf of largeVideos) {
         try {
             const info = await uploadVideoInChunks(vf);
             if (info && info.file_url) preUploaded.push(info);
-        } catch (_) {}
+        } catch (err) {
+            preUploaded.push(null);
+        }
     }
 
     const formData = new FormData();
     formData.append('content', finalContent);
     selectedFiles.forEach(file => {
-        if (!file.type.startsWith('video/')) formData.append('media_files', file);
+        const isVideo = file.type.startsWith('video/');
+        const chunkedOk = isVideo ? preUploaded.some(x => x && x.original_filename === file.name) : false;
+        if (!isVideo || !chunkedOk) formData.append('media_files', file);
     });
     if (preUploaded.length > 0) formData.append('pre_uploaded_paths', JSON.stringify(preUploaded));
     formData.append('crop_data', JSON.stringify(croppedImageData));

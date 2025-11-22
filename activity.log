@@ -15260,3 +15260,31 @@ sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - c
 [2025-11-22 02:59:46] - INFO - Job "cleanup_files_task (trigger: interval[0:05:00], next run at: 2025-11-22 03:04:46 +03)" executed successfully
 [2025-11-22 03:04:46] - INFO - Running job "cleanup_files_task (trigger: interval[0:05:00], next run at: 2025-11-22 03:09:46 +03)" (scheduled at 2025-11-22 03:04:46.545124+03:00)
 [2025-11-22 03:04:46] - INFO - Job "cleanup_files_task (trigger: interval[0:05:00], next run at: 2025-11-22 03:09:46 +03)" executed successfully
+[2025-11-22 05:07:41] - INFO - Scheduler started
+[2025-11-22 05:07:41] - INFO - Added job "cleanup_files_task" to job store "default"
+[2025-11-22 05:07:41] - INFO - Added job "check_roles_task" to job store "default"
+[2025-11-22 05:07:41] - INFO - Added job "reset_captcha_fails_task" to job store "default"
+[2025-11-22 05:07:41] - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.147:5000
+[2025-11-22 05:07:41] - INFO - [33mPress CTRL+C to quit[0m
+[2025-11-22 05:07:43] - INFO - 127.0.0.1 - - [22/Nov/2025 05:07:43] "GET /?ide_webview_request_time=1763777263296 HTTP/1.1" 200 -
+[2025-11-22 05:07:43] - INFO - 127.0.0.1 - - [22/Nov/2025 05:07:43] "GET /static/css/welcome.css HTTP/1.1" 200 -
+[2025-11-22 05:07:43] - INFO - 127.0.0.1 - - [22/Nov/2025 05:07:43] "GET /static/js/welcome.js HTTP/1.1" 200 -
+[2025-11-22 05:07:43] - INFO - 127.0.0.1 - - [22/Nov/2025 05:07:43] "GET /static/images/vision.png HTTP/1.1" 200 -
+[2025-11-22 05:07:43] - INFO - 127.0.0.1 - - [22/Nov/2025 05:07:43] "[33mGET /static/videos/placeholder.jpg HTTP/1.1[0m" 404 -
+[2025-11-22 05:07:43] - INFO - 127.0.0.1 - - [22/Nov/2025 05:07:43] "[33mGET /static/videos/demo.mp4 HTTP/1.1[0m" 404 -
+[2025-11-22 05:07:43] - INFO - 127.0.0.1 - - [22/Nov/2025 05:07:43] "GET /static/js/auth_helpers.js HTTP/1.1" 200 -
+[2025-11-22 05:07:50] - INFO - 'zzz' için giriþ denemesi. Gelen fingerprint: a62d95fd0b3746e09769788fcc3e8da0
+[2025-11-22 05:07:50] - WARNING - Giriþ reddedildi: 'zzz' için boþ slot bulunamadý. Cihaz limiti dolu.
+[2025-11-22 05:07:50] - INFO - 127.0.0.1 - - [22/Nov/2025 05:07:50] "[32mPOST /login HTTP/1.1[0m" 302 -
+[2025-11-22 05:07:50] - INFO - 127.0.0.1 - - [22/Nov/2025 05:07:50] "GET /?from_=login HTTP/1.1" 200 -
+[2025-11-22 05:07:50] - INFO - 127.0.0.1 - - [22/Nov/2025 05:07:50] "GET /static/css/welcome.css HTTP/1.1" 200 -
+[2025-11-22 05:07:50] - INFO - 127.0.0.1 - - [22/Nov/2025 05:07:50] "[36mGET /static/js/welcome.js HTTP/1.1[0m" 304 -
+[2025-11-22 05:07:50] - INFO - 127.0.0.1 - - [22/Nov/2025 05:07:50] "[33mGET /static/videos/placeholder.jpg HTTP/1.1[0m" 404 -
+[2025-11-22 05:07:50] - INFO - 127.0.0.1 - - [22/Nov/2025 05:07:50] "[36mGET /static/images/vision.png HTTP/1.1[0m" 304 -
+[2025-11-22 05:07:50] - INFO - 127.0.0.1 - - [22/Nov/2025 05:07:50] "[33mGET /static/videos/demo.mp4 HTTP/1.1[0m" 404 -
+[2025-11-22 05:07:50] - INFO - 127.0.0.1 - - [22/Nov/2025 05:07:50] "[36mGET /static/js/auth_helpers.js HTTP/1.1[0m" 304 -
+[2025-11-22 05:12:41] - INFO - Running job "cleanup_files_task (trigger: interval[0:05:00], next run at: 2025-11-22 05:12:41 +03)" (scheduled at 2025-11-22 05:12:41.022892+03:00)
+[2025-11-22 05:12:41] - INFO - Job "cleanup_files_task (trigger: interval[0:05:00], next run at: 2025-11-22 05:17:41 +03)" executed successfully

@@ -601,7 +601,6 @@ def create_post():
             
             elif file_type == 'video':
                 file.save(save_path_file)
-                # No server-side thumbnail creation; handled at render time on client
 
                 # Video işleme
                 app_context = current_app._get_current_object()

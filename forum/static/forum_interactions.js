@@ -816,7 +816,6 @@ function showContextMenu(postCard) {
                 </form>
             </div>
         `;
-        // Generate thumbnails dynamically for videos without server-provided thumbnail
         const anchors = postCard.querySelectorAll('.video-thumbnail-container');
         anchors.forEach((a) => {
             const img = a.querySelector('img');
