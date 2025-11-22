@@ -492,7 +492,8 @@ async function handleFormSubmit(e) {
         return compJson;
     }
 
-    const largeVideos = selectedFiles.filter(f => f.type.startsWith('video/') && f.size > (8 * 1024 * 1024));
+    const useChunks = false;
+    const largeVideos = useChunks ? selectedFiles.filter(f => f.type.startsWith('video/') && f.size > (8 * 1024 * 1024)) : [];
     const preUploaded = [];
     for (const vf of largeVideos) {
         try {
