@@ -607,10 +607,9 @@ function showContextMenu(postCard) {
                 if (media.type === 'image') {
                     mediaHTML += `<img src="${media.url}" alt="${getLang('alt_post_image')}" loading="lazy">`;
                 } else if (media.type === 'video') {
-                    const poster = media.thumbnail_url || '';
                     mediaHTML += `
                         <a href="#" class="video-thumbnail-container" data-video-url="${media.url}">
-                            <img src="${poster}" alt="${getLang('alt_video_thumbnail')}" loading="lazy">
+                            <img src="${media.thumbnail_url || ''}" alt="${getLang('alt_video_thumbnail')}" loading="lazy">
                             <div class="video-play-button"></div>
                         </a>
                     `;
@@ -817,6 +816,32 @@ function showContextMenu(postCard) {
                 </form>
             </div>
         `;
+        // Generate thumbnails dynamically for videos without server-provided thumbnail
+        const anchors = postCard.querySelectorAll('.video-thumbnail-container');
+        anchors.forEach((a) => {
+            const img = a.querySelector('img');
+            if (img && !img.getAttribute('src')) {
+                const src = a.dataset.videoUrl;
+                const video = document.createElement('video');
+                video.preload = 'metadata';
+                video.muted = true;
+                video.src = src;
+                video.addEventListener('loadedmetadata', () => {
+                    try { video.currentTime = 0.1; } catch(_){}
+                });
+                video.addEventListener('seeked', () => {
+                    const w = video.videoWidth || 320;
+                    const h = video.videoHeight || 180;
+                    const canvas = document.createElement('canvas');
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(video, 0, 0, w, h);
+                    try { img.src = canvas.toDataURL('image/jpeg', 0.8); } catch(e) {}
+                });
+                video.addEventListener('error', () => {});
+            }
+        });
         const mediaContainerEl = postCard.querySelector('.post-media-container');
         if (mediaContainerEl) {
             const slider = mediaContainerEl.querySelector('.media-slider');

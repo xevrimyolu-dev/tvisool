@@ -343,24 +343,7 @@ def compress_and_tag_video(video_path):
         current_app.logger.error(f"Video sıkıştırma genel hata: {e}")
 
 def generate_video_thumbnail(video_path, thumbnail_path):
-    """
-    Bir videonun ilk saniyesinden bir kare yakalar ve bunu bir JPEG olarak kaydeder.
-    """
-    try:
-        (
-            ffmpeg
-            .input(str(video_path), ss=1)
-            .output(str(thumbnail_path), vframes=1, qp=4)
-            .run(capture_stdout=True, capture_stderr=True, overwrite_output=True)
-        )
-        current_app.logger.info(f"Video için kapak fotoğrafı oluşturuldu: {thumbnail_path}")
-        return True
-    except ffmpeg.Error as e:
-        current_app.logger.error(f"Kapak fotoğrafı oluşturulurken ffmpeg hatası: {e.stderr.decode()}")
-        return False
-    except Exception as e:
-        current_app.logger.error(f"Kapak fotoğrafı oluşturulurken genel hata: {e}")
-        return False
+    return False
 
 # --- Arka plan video işleme fonksiyonu (Artık daha hızlı) ---
 def process_video_in_background(app, video_path):
@@ -391,11 +374,6 @@ def create_post():
     # --- Form Verilerini Al ---
     content = request.form.get('content', '').strip()
     media_files = request.files.getlist('media_files')
-    video_thumbnails = request.files.getlist('video_thumbnails')
-    try:
-        current_app.logger.info(f"Post create: received {len(media_files)} media files, {len(video_thumbnails)} video thumbnails")
-    except Exception:
-        pass
     crop_data_list_json = request.form.get('crop_data', '[]')
     captcha_answer = request.form.get('captcha_answer', None)
     sanitized_content = bleach.clean(content)
@@ -545,7 +523,6 @@ def create_post():
     
     try:
         image_crop_index = 0
-        video_thumb_index = 0
         files_to_process = images + videos + audios + documents
         
         for file in files_to_process:
@@ -622,24 +599,7 @@ def create_post():
             
             elif file_type == 'video':
                 file.save(save_path_file)
-
-                thumbnail_dir = save_path_dir / 'thumbnails'
-                thumbnail_dir.mkdir(parents=True, exist_ok=True)
-                thumbnail_filename = f"{unique_filename_base}.jpg"
-                thumbnail_save_path = thumbnail_dir / thumbnail_filename
-
-                if video_thumb_index < len(video_thumbnails):
-                    thumb_file = video_thumbnails[video_thumb_index]
-                    try:
-                        thumb_file.seek(0)
-                    except Exception:
-                        pass
-                    thumb_file.save(thumbnail_save_path)
-                    thumbnail_url_for_db = f"{file_type}/thumbnails/{thumbnail_filename}"
-                    video_thumb_index += 1
-                else:
-                    if generate_video_thumbnail(save_path_file, thumbnail_save_path):
-                        thumbnail_url_for_db = f"{file_type}/thumbnails/{thumbnail_filename}"
+                # No server-side thumbnail creation; handled at render time on client
 
                 # Video işleme
                 app_context = current_app._get_current_object()
@@ -742,7 +702,7 @@ def get_all_posts_with_like_status():
                 thumbnail_url = (
                     url_for('serve_user_media', filename=media.thumbnail_url)
                     if media.thumbnail_url
-                    else url_for('static', filename='images/video_1_thumbnail.jpg')
+                    else None
                 )
                 
                 media_list.append({
@@ -803,7 +763,7 @@ def get_single_post(post_id):
         thumbnail_url = (
             url_for('serve_user_media', filename=media.thumbnail_url)
             if media.thumbnail_url
-            else url_for('static', filename='images/video_1_thumbnail.jpg')
+            else None
         )
         
         media_list.append({
@@ -1115,7 +1075,7 @@ def get_user_posts(user_id):
             thumbnail_url = (
                 url_for('serve_user_media', filename=media.thumbnail_url)
                 if media.thumbnail_url
-                else url_for('static', filename='images/video_1_thumbnail.jpg')
+                else None
             )
             
             media_list.append({
@@ -1177,7 +1137,7 @@ def search_posts():
                 thumbnail_url = (
                     url_for('serve_user_media', filename=media.thumbnail_url)
                     if media.thumbnail_url
-                    else url_for('static', filename='images/video_1_thumbnail.jpg')
+                    else None
                 )
                 
                 media_list.append({

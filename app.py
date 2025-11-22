@@ -2930,7 +2930,7 @@ def admin_get_reported_posts():
                     thumbnail_url = (
                         url_for('serve_user_media', filename=media.thumbnail_url)
                         if getattr(media, 'thumbnail_url', None)
-                        else url_for('static', filename='images/video_1_thumbnail.jpg')
+                        else None
                     )
                     media_list.append({ 'url': media_url, 'thumbnail_url': thumbnail_url, 'type': media.file_type })
 
