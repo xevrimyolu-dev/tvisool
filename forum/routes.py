@@ -374,6 +374,7 @@ def create_post():
     # --- Form Verilerini Al ---
     content = request.form.get('content', '').strip()
     media_files = request.files.getlist('media_files')
+    pre_uploaded_paths_json = request.form.get('pre_uploaded_paths', '[]')
     crop_data_list_json = request.form.get('crop_data', '[]')
     captcha_answer = request.form.get('captcha_answer', None)
     sanitized_content = bleach.clean(content)
@@ -433,10 +434,11 @@ def create_post():
     
     try:
         crop_data_list = json.loads(crop_data_list_json)
+        pre_uploaded_paths = json.loads(pre_uploaded_paths_json)
     except json.JSONDecodeError:
         return jsonify({"error_key": "invalid_crop_data"}), 400
 
-    if not sanitized_content and not media_files:
+    if not sanitized_content and not media_files and not pre_uploaded_paths:
         return jsonify({"error_key": "post_content_or_media_required"}), 400
 
     if len(sanitized_content) > MAX_CONTENT_LENGTH_CHARS:
@@ -621,6 +623,19 @@ def create_post():
                 thumbnail_url=thumbnail_url_for_db
             )
             db.session.add(new_media)
+        for item in pre_uploaded_paths:
+            p_type = item.get('file_type')
+            p_url = item.get('file_url')
+            p_name = item.get('original_filename') or ''
+            if not p_type or not p_url:
+                continue
+            db.session.add(PostMedia(
+                post=new_post,
+                file_url=p_url,
+                file_type=p_type,
+                original_filename=p_name,
+                thumbnail_url=None
+            ))
         
         # Başarılı gönderiden sonra kullanıcının son gönderi zamanını güncelle
         current_user.last_post_time = datetime.utcnow()
@@ -1104,6 +1119,80 @@ def get_user_posts(user_id):
 @login_required
 def serve_user_media(filename):
     return send_from_directory(current_app.config['USER_MEDIA_FOLDER'], filename)
+
+@forum_bp.route("/uploads/init", methods=["POST"])
+@login_required
+def init_upload():
+    filename = request.form.get('filename', '')
+    file_type = request.form.get('file_type', '')
+    total_size = request.form.get('total_size', '')
+    if not filename or not file_type:
+        return jsonify({"error": "invalid_params"}), 400
+    upload_id = uuid.uuid4().hex
+    tmp_dir = Path(current_app.config['USER_MEDIA_FOLDER']) / 'tmp' / 'uploads' / upload_id
+    tmp_dir.mkdir(parents=True, exist_ok=True)
+    return jsonify({"upload_id": upload_id})
+
+@forum_bp.route("/uploads/chunk", methods=["POST"])
+@login_required
+def upload_chunk():
+    upload_id = request.form.get('upload_id', '')
+    index = request.form.get('index', '')
+    chunk = request.files.get('chunk')
+    if not upload_id or index is None or not chunk:
+        return jsonify({"error": "invalid_params"}), 400
+    tmp_dir = Path(current_app.config['USER_MEDIA_FOLDER']) / 'tmp' / 'uploads' / upload_id
+    if not tmp_dir.exists():
+        return jsonify({"error": "upload_not_found"}), 404
+    part_path = tmp_dir / f"{int(index):06d}.part"
+    chunk.save(part_path)
+    return jsonify({"ok": True})
+
+@forum_bp.route("/uploads/complete", methods=["POST"])
+@login_required
+def complete_upload():
+    upload_id = request.form.get('upload_id', '')
+    original_filename = request.form.get('filename', '')
+    file_type = request.form.get('file_type', '')
+    total_chunks = int(request.form.get('total_chunks', '0'))
+    if not upload_id or not original_filename or not file_type or total_chunks <= 0:
+        return jsonify({"error": "invalid_params"}), 400
+    tmp_dir = Path(current_app.config['USER_MEDIA_FOLDER']) / 'tmp' / 'uploads' / upload_id
+    if not tmp_dir.exists():
+        return jsonify({"error": "upload_not_found"}), 404
+    safe_original = secure_filename(original_filename)
+    ext = safe_original.rsplit('.', 1)[1].lower() if '.' in safe_original else ''
+    unique_id = uuid.uuid4().hex[:8]
+    base = f"toolvision_{unique_id}_{Path(safe_original).stem}"
+    save_dir = Path(current_app.config['USER_MEDIA_FOLDER']) / file_type
+    save_dir.mkdir(parents=True, exist_ok=True)
+    final_path = save_dir / f"{base}.{ext}"
+    with open(final_path, 'wb') as out:
+        for i in range(total_chunks):
+            part_path = tmp_dir / f"{i:06d}.part"
+            if not part_path.exists():
+                return jsonify({"error": "missing_chunk", "index": i}), 400
+            with open(part_path, 'rb') as inp:
+                out.write(inp.read())
+    for p in sorted(tmp_dir.glob('*.part')):
+        try:
+            p.unlink()
+        except Exception:
+            pass
+    try:
+        tmp_dir.rmdir()
+    except Exception:
+        pass
+    if file_type == 'video':
+        app_context = current_app._get_current_object()
+        t = threading.Thread(target=process_video_in_background, args=(app_context, str(final_path)))
+        t.daemon = True
+        t.start()
+    return jsonify({
+        "file_url": f"{file_type}/{final_path.name}",
+        "file_type": file_type,
+        "original_filename": original_filename
+    })
 
 @forum_bp.route("/search", methods=["GET"])
 @login_required

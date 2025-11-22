@@ -442,11 +442,65 @@ async function handleFormSubmit(e) {
         return;
     }
 
+    async function uploadVideoInChunks(file) {
+        const initFd = new FormData();
+        initFd.append('filename', file.name);
+        initFd.append('file_type', 'video');
+        initFd.append('total_size', String(file.size));
+        const initRes = await fetch('/forum/uploads/init', { method: 'POST', headers: { 'X-CSRFToken': getCSRFToken() }, body: initFd });
+        const initJson = await initRes.json();
+        const uploadId = initJson.upload_id;
+        const chunkSize = 4 * 1024 * 1024;
+        const totalChunks = Math.ceil(file.size / chunkSize);
+        const tasks = [];
+        let index = 0;
+        while (index < totalChunks) {
+            const start = index * chunkSize;
+            const end = Math.min(start + chunkSize, file.size);
+            const blob = file.slice(start, end);
+            const fd = new FormData();
+            fd.append('upload_id', uploadId);
+            fd.append('index', String(index));
+            fd.append('chunk', blob);
+            tasks.push(() => fetch('/forum/uploads/chunk', { method: 'POST', headers: { 'X-CSRFToken': getCSRFToken() }, body: fd }));
+            index++;
+        }
+        const concurrency = 3;
+        let cursor = 0;
+        async function runNext() {
+            if (cursor >= tasks.length) return;
+            const t = tasks[cursor++];
+            await t();
+            return runNext();
+        }
+        const runners = [];
+        for (let i = 0; i < concurrency; i++) runners.push(runNext());
+        await Promise.all(runners);
+        const completeFd = new FormData();
+        completeFd.append('upload_id', uploadId);
+        completeFd.append('filename', file.name);
+        completeFd.append('file_type', 'video');
+        completeFd.append('total_chunks', String(totalChunks));
+        const compRes = await fetch('/forum/uploads/complete', { method: 'POST', headers: { 'X-CSRFToken': getCSRFToken() }, body: completeFd });
+        const compJson = await compRes.json();
+        return compJson;
+    }
+
+    const largeVideos = selectedFiles.filter(f => f.type.startsWith('video/'));
+    const preUploaded = [];
+    for (const vf of largeVideos) {
+        try {
+            const info = await uploadVideoInChunks(vf);
+            if (info && info.file_url) preUploaded.push(info);
+        } catch (_) {}
+    }
+
     const formData = new FormData();
     formData.append('content', finalContent);
     selectedFiles.forEach(file => {
-        formData.append('media_files', file);
+        if (!file.type.startsWith('video/')) formData.append('media_files', file);
     });
+    if (preUploaded.length > 0) formData.append('pre_uploaded_paths', JSON.stringify(preUploaded));
     formData.append('crop_data', JSON.stringify(croppedImageData));
 
     if (composerSubmitBtn) {
@@ -509,13 +563,15 @@ async function submitPost(formData) {
             body: formData
         });
 
-        // Yanıtın içeriğini (JSON) okumayı dene
+        // JSON içeriği yalnızca içerik türü uygunsa oku
         let result = {};
-        try {
-            result = await response.json();
-        } catch (e) {
-            // JSON okunamadıysa boş obje kalsın
-            console.warn("Sunucu yanıtı JSON değil:", e);
+        const ct = response.headers.get('Content-Type') || '';
+        if (ct.includes('application/json')) {
+            try {
+                result = await response.json();
+            } catch (e) {
+                console.warn("Sunucu yanıtı JSON değil:", e);
+            }
         }
 
         // --- 429 (Çok Hızlı İstek / Aktif Bekleme) ---
