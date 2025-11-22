@@ -434,11 +434,9 @@ def check_receipt_keywords(image_path):
 @app.route('/subscriptions')
 @login_required
 def subscriptions_page():
-    # Fiyat verilerini JavaScript'in anlayacağı bir formata çevirelim
-    subscription_data_json = json.dumps(SUBSCRIPTION_DATA)
     uf = get_user_frames(current_user.id)
     active_frame_id = uf.get("active")
-    return render_template('subscriptions.html', user=current_user, subscription_data=subscription_data_json, active_frame_id=active_frame_id)
+    return render_template('subscriptions.html', user=current_user, subscription_data=SUBSCRIPTION_DATA, active_frame_id=active_frame_id)
 
 @app.route('/user/frames', methods=['GET', 'POST'])
 @login_required
@@ -1500,14 +1498,28 @@ def update_profile_pic():
 
     # --- YENİ "HARDCORE" SIKIŞTIRMA ALGORİTMASI ---
     try:
-        # 1. Resmi Pillow ile aç
         img = Image.open(file.stream)
-
-        # 2. Yönü düzelt (Telefondan yüklenen ters resimler için)
         img = ImageOps.exif_transpose(img)
+        crop_json = request.form.get('crop_data')
+        if crop_json:
+            try:
+                cd = json.loads(crop_json)
+                x = int(cd.get('x', 0))
+                y = int(cd.get('y', 0))
+                w = int(cd.get('width', 0))
+                h = int(cd.get('height', 0))
+                if w > 0 and h > 0:
+                    if x < 0: x = 0
+                    if y < 0: y = 0
+                    if x >= img.width: x = img.width - 1
+                    if y >= img.height: y = img.height - 1
+                    w = min(w, img.width - x)
+                    h = min(h, img.height - y)
+                    img = img.crop((x, y, x + w, y + h))
+            except Exception:
+                pass
 
-        # 3. YENİ BOYUT: 96x96'ya küçült (Retina ekranlar için 50x50'den biraz büyük)
-        target_size = (96, 96) # 256x256'dan 96x96'ya düşürüldü
+        target_size = (96, 96)
         img = img.resize(target_size, Image.Resampling.LANCZOS)
 
         # 4. Şeffaflık (PNG) varsa, beyaz arka planla birleştir ve RGB formatına dönüştür

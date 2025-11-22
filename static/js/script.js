@@ -4604,25 +4604,32 @@ if (profilePicInput) {
     profilePicInput.addEventListener('change', async (event) => {
         const file = event.target.files[0];
         if (!file) return;
-        const formData = new FormData();
-        formData.append('profile_pic', file);
-        try {
-            const response = await fetch('/update_profile_pic', {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': getCSRFToken()
-                },
-                body: formData
-            });
-            const data = await response.json();
-            if (response.ok && data.success) {
-                const newUrl = data.profile_pic_url + '?t=' + new Date().getTime();
-                profilePic.src = newUrl;
-                const modalPic = document.getElementById('modalProfilePic');
-                if (modalPic) modalPic.src = newUrl;
+        window.showImageCropper([file], async (cropData) => {
+            if (!cropData || cropData.length === 0 || !cropData[0]) return;
+            const formData = new FormData();
+            formData.append('profile_pic', file);
+            formData.append('crop_data', JSON.stringify(cropData[0]));
+            try {
+                const response = await fetch('/update_profile_pic', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCSRFToken()
+                    },
+                    body: formData
+                });
+                const data = await response.json();
+                if (response.ok && data.success) {
+                    const newUrl = data.profile_pic_url + '?t=' + new Date().getTime();
+                    profilePic.src = newUrl;
+                    const modalPic = document.getElementById('modalProfilePic');
+                    if (modalPic) modalPic.src = newUrl;
+                } else {
+                    alert(data.error || 'Profil resmi yüklenirken bir hata oluştu.');
+                }
+            } catch (error) {
+                alert('Profil resmi yüklenirken bir ağ hatası oluştu.');
             }
-            else { alert(data.error || 'Profil resmi yüklenirken bir hata oluştu.'); }
-        } catch (error) { alert('Profil resmi yüklenirken bir ağ hatası oluştu.'); }
+        });
     });
 }
 
