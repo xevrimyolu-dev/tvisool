@@ -2776,6 +2776,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const headerTitle = document.getElementById('headerTitle');
     const selectButtons = document.querySelectorAll('.select-btn');
     const profilePic = document.getElementById('profilePic');
+    const profilePicLabel = document.querySelector('.profile-pic-label');
     const loadingScreen = document.getElementById('login-loading-screen');
     const profilePicInput = document.getElementById('profilePicInput');
     const userRoleButton = document.getElementById('userRoleButton');
@@ -2898,7 +2899,7 @@ async function checkLocalBridgeStatus() {
 // Sayfa yüklendikten 2 saniye sonra testi otomatik başlat
     setTimeout(() => { if (!document.hidden && isLocalBridgeCheckEnabled()) checkLocalBridgeStatus(); }, 2000);
 
-    const availableFramesGrid = document.getElementById('availableFramesGrid');
+    let availableFramesGrid = document.getElementById('availableFramesGrid');
     const activeFrameSelect = document.getElementById('activeFrameSelect');
     const saveFramesBtn = document.getElementById('saveFramesBtn');
     const framesPopover = document.getElementById('framesPopover');
@@ -3054,6 +3055,80 @@ async function checkLocalBridgeStatus() {
     // No explicit save button; frames are applied immediately on click
 
     loadUserFrames();
+
+    function openAvatarManageModal() {
+        const existing = document.querySelector('.avatar-manage-backdrop');
+        if (existing) existing.remove();
+        const backdropEl = document.createElement('div');
+        backdropEl.className = 'confirmation-modal-backdrop avatar-manage-backdrop';
+        const modalEl = document.createElement('div');
+        modalEl.className = 'confirmation-modal-content';
+        modalEl.style.maxWidth = '480px';
+        modalEl.style.alignItems = 'center';
+        const headerEl = document.createElement('div');
+        headerEl.style.cssText = 'width:100%;align-self:stretch;display:flex;justify-content:flex-end;align-items:center;margin-bottom:10px;';
+        const closeXBtn = document.createElement('button');
+        closeXBtn.className = 'modal-close';
+        closeXBtn.textContent = '×';
+        headerEl.appendChild(closeXBtn);
+        const wrap = document.createElement('div');
+        wrap.className = 'avatar-wrapper';
+        wrap.style.cssText = 'align-self:center;margin:10px auto;';
+        wrap.setAttribute('data-frame-id', activeFrame || '');
+        const imgEl = document.createElement('img');
+        imgEl.src = profilePic ? profilePic.src : '';
+        imgEl.className = 'profile-pic';
+        imgEl.id = 'modalProfilePic';
+        imgEl.style.width = '140px';
+        imgEl.style.height = '140px';
+        imgEl.style.display = 'block';
+        imgEl.style.margin = '0 auto';
+        wrap.appendChild(imgEl);
+        const actions = document.createElement('div');
+        actions.className = 'confirmation-modal-actions';
+        const addFrameBtn = document.createElement('button');
+        addFrameBtn.className = 'confirmation-modal-btn';
+        addFrameBtn.textContent = 'Çerçeve Ekle';
+        const chooseBtn = document.createElement('button');
+        chooseBtn.className = 'confirmation-modal-btn';
+        chooseBtn.textContent = 'Yeni Fotoğraf';
+        actions.appendChild(addFrameBtn);
+        actions.appendChild(chooseBtn);
+        const grid = document.createElement('div');
+        grid.id = 'availableFramesGrid';
+        grid.className = 'frames-grid';
+        grid.style.display = 'grid';
+        grid.style.gridTemplateColumns = 'repeat(3, 1fr)';
+        modalEl.appendChild(headerEl);
+        modalEl.appendChild(wrap);
+        modalEl.appendChild(actions);
+        modalEl.appendChild(grid);
+        backdropEl.appendChild(modalEl);
+        document.body.appendChild(backdropEl);
+        availableFramesGrid = grid;
+        addFrameBtn.addEventListener('click', () => {
+            grid.style.display = 'grid';
+            loadUserFrames();
+            grid.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+        chooseBtn.addEventListener('click', () => {
+            if (profilePicInput) profilePicInput.click();
+        });
+        closeXBtn.addEventListener('click', () => {
+            const backdrop = document.querySelector('.avatar-manage-backdrop');
+            if (backdrop) backdrop.remove();
+        });
+        backdropEl.addEventListener('click', (e) => {
+            if (e.target === backdropEl) backdropEl.remove();
+        });
+    }
+
+    if (profilePicLabel) {
+        profilePicLabel.addEventListener('click', (e) => {
+            e.preventDefault();
+            openAvatarManageModal();
+        });
+    }
 
 
     async function logFrontendFailure(actionType, fileName, fileSizeInBytes, limitInBytes) {
@@ -4540,7 +4615,12 @@ if (profilePicInput) {
                 body: formData
             });
             const data = await response.json();
-            if (response.ok && data.success) { profilePic.src = data.profile_pic_url + '?t=' + new Date().getTime(); }
+            if (response.ok && data.success) {
+                const newUrl = data.profile_pic_url + '?t=' + new Date().getTime();
+                profilePic.src = newUrl;
+                const modalPic = document.getElementById('modalProfilePic');
+                if (modalPic) modalPic.src = newUrl;
+            }
             else { alert(data.error || 'Profil resmi yüklenirken bir hata oluştu.'); }
         } catch (error) { alert('Profil resmi yüklenirken bir ağ hatası oluştu.'); }
     });
