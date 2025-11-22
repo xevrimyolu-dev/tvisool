@@ -391,6 +391,7 @@ def create_post():
     # --- Form Verilerini Al ---
     content = request.form.get('content', '').strip()
     media_files = request.files.getlist('media_files')
+    video_thumbnails = request.files.getlist('video_thumbnails')
     crop_data_list_json = request.form.get('crop_data', '[]')
     captcha_answer = request.form.get('captcha_answer', None)
     sanitized_content = bleach.clean(content)
@@ -540,6 +541,7 @@ def create_post():
     
     try:
         image_crop_index = 0
+        video_thumb_index = 0
         files_to_process = images + videos + audios + documents
         
         for file in files_to_process:
@@ -617,14 +619,23 @@ def create_post():
             elif file_type == 'video':
                 file.save(save_path_file)
 
-                # Video thumbnail oluşturma
                 thumbnail_dir = save_path_dir / 'thumbnails'
                 thumbnail_dir.mkdir(parents=True, exist_ok=True)
                 thumbnail_filename = f"{unique_filename_base}.jpg"
                 thumbnail_save_path = thumbnail_dir / thumbnail_filename
-                
-                if generate_video_thumbnail(save_path_file, thumbnail_save_path):
+
+                if video_thumb_index < len(video_thumbnails):
+                    thumb_file = video_thumbnails[video_thumb_index]
+                    try:
+                        thumb_file.seek(0)
+                    except Exception:
+                        pass
+                    thumb_file.save(thumbnail_save_path)
                     thumbnail_url_for_db = f"{file_type}/thumbnails/{thumbnail_filename}"
+                    video_thumb_index += 1
+                else:
+                    if generate_video_thumbnail(save_path_file, thumbnail_save_path):
+                        thumbnail_url_for_db = f"{file_type}/thumbnails/{thumbnail_filename}"
 
                 # Video işleme
                 app_context = current_app._get_current_object()

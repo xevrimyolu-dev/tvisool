@@ -442,10 +442,50 @@ async function handleFormSubmit(e) {
         return;
     }
 
+    const videoFiles = selectedFiles.filter(f => f.type.startsWith('video/'));
+    async function createVideoThumbnailBlob(file) {
+        return new Promise((resolve, reject) => {
+            const video = document.createElement('video');
+            video.preload = 'metadata';
+            video.muted = true;
+            video.src = URL.createObjectURL(file);
+            const revoke = () => URL.revokeObjectURL(video.src);
+            video.addEventListener('loadeddata', () => {
+                try { video.currentTime = 0.1; } catch (_) {}
+            });
+            video.addEventListener('seeked', () => {
+                const w = video.videoWidth || 320;
+                const h = video.videoHeight || 180;
+                const canvas = document.createElement('canvas');
+                canvas.width = w;
+                canvas.height = h;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, w, h);
+                canvas.toBlob((blob) => {
+                    revoke();
+                    if (blob) resolve(blob); else reject(new Error('thumbnail_error'));
+                }, 'image/jpeg', 0.8);
+            });
+            video.addEventListener('error', () => { revoke(); reject(new Error('thumbnail_error')); });
+        });
+    }
+
+    const generatedThumbs = [];
+    for (const vf of videoFiles) {
+        try { const b = await createVideoThumbnailBlob(vf); generatedThumbs.push({ file: vf, blob: b }); }
+        catch (_) { generatedThumbs.push({ file: vf, blob: null }); }
+    }
+
     const formData = new FormData();
     formData.append('content', finalContent);
     selectedFiles.forEach(file => {
         formData.append('media_files', file);
+    });
+    generatedThumbs.forEach(({ file, blob }) => {
+        if (blob) {
+            const base = file.name.replace(/\.[^/.]+$/, '');
+            formData.append('video_thumbnails', blob, `${base}.jpg`);
+        }
     });
     formData.append('crop_data', JSON.stringify(croppedImageData));
 
