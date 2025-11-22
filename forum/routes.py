@@ -15,7 +15,6 @@ from flask_login import login_required, current_user
 from sqlalchemy import desc, or_
 from PIL import Image, ImageDraw, ImageFont, ImageStat
 import numpy as np
-import ffmpeg
 from collections import Counter
 
 from extensions import db
@@ -31,22 +30,19 @@ forum_bp = Blueprint('forum', __name__, static_folder='static', static_url_path=
 
 # --- AYARLAR VE SABİTLER (GÜNCELLENDİ) ---
 IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-VIDEO_EXTENSIONS = {'mp4', 'mov'}
 AUDIO_EXTENSIONS = {'mp3', 'wav', 'ogg', 'm4a', 'aac'}
 DOCUMENT_EXTENSIONS = {
     'docx', 'pdf', 'txt', 'xls', 'html', 'zip', 'rar', '7z',
     'tar', 'gz', 'css', 'js', 'php', 'py', 'json', 'xml', 'cs', 'sql', 'cpp'
 }
-ALLOWED_EXTENSIONS = IMAGE_EXTENSIONS | VIDEO_EXTENSIONS | AUDIO_EXTENSIONS | DOCUMENT_EXTENSIONS
+ALLOWED_EXTENSIONS = IMAGE_EXTENSIONS | AUDIO_EXTENSIONS | DOCUMENT_EXTENSIONS
 
 # Resim Limitleri
 MAX_IMAGE_COUNT = 7
 MAX_IMAGE_SIZE_MB = 6
 MAX_TOTAL_IMAGE_SIZE_MB = 42
 
-# Video Limitleri
-MAX_VIDEO_COUNT = 1
-MAX_VIDEO_SIZE_MB = 50
+# Video kaldırıldı
 
 # YENİ: Ses Limiti
 MAX_AUDIO_COUNT = 1
@@ -307,52 +303,7 @@ def add_watermark_to_image(image_path):
         current_app.logger.error(f"Resme filigran eklenirken hata: {e} | Dosya: {image_path}")
         pass
 
-def compress_and_tag_video(video_path):
-    """
-    Videoyu H.264 (libx264) ile yeniden kodlayarak dosya boyutunu ciddi şekilde düşürür,
-    kaliteyi korunmaya yakın tutar (CRF=20, preset=medium), hızlı başlatma için 'faststart' uygular
-    ve meta veriye 'TOOLVISION' açıklamasını ekler. Başarılıysa çıktıyı atomik olarak değiştirir.
-    """
-    try:
-        src = Path(video_path)
-        tmp = src.with_name(f"{src.stem}_compressed.mp4")
-
-        in_stream = ffmpeg.input(str(src))
-        out_stream = ffmpeg.output(
-            in_stream,
-            str(tmp),
-            vcodec='libx264',
-            crf=20,
-            preset='medium',
-            pix_fmt='yuv420p',
-            acodec='aac',
-            audio_bitrate='192k',
-            movflags='+faststart',
-            metadata='comment=TOOLVISION'
-        )
-
-        ffmpeg.run(out_stream, overwrite_output=True, quiet=True)
-
-        if os.path.exists(tmp):
-            os.replace(tmp, src)
-            current_app.logger.info(f"Video sıkıştırıldı ve etiketlendi: {video_path}")
-        else:
-            current_app.logger.error(f"Sıkıştırılmış video oluşturulamadı: {tmp}")
-    except ffmpeg.Error as e:
-        current_app.logger.error(f"Video sıkıştırma hatası: {e.stderr.decode('utf8')}")
-    except Exception as e:
-        current_app.logger.error(f"Video sıkıştırma genel hata: {e}")
-
-def generate_video_thumbnail(video_path, thumbnail_path):
-    return False
-
-# --- Arka plan video işleme fonksiyonu (Artık daha hızlı) ---
-def process_video_in_background(app, video_path):
-    """
-    Flask uygulama bağlamında videoyu sıkıştır ve etiketle.
-    """
-    with app.app_context():
-        compress_and_tag_video(video_path)
+ 
 
 @forum_bp.route("/posts/create", methods=["POST"])
 @login_required
@@ -445,16 +396,14 @@ def create_post():
     if len(sanitized_content) > MAX_CONTENT_LENGTH_CHARS:
         return jsonify({"error_key": "content_too_long", "limit": MAX_CONTENT_LENGTH_CHARS}), 400
 
-    # Dosyaları türlerine göre ayır (video desteklenmez)
-    images, videos, audios, documents = [], [], [], []
+    # Dosyaları türlerine göre ayır
+    images, audios, documents = [], [], []
     
     for file in media_files:
         if file and file.filename != '':
             ext = file.filename.rsplit('.', 1)[1].lower()
             if ext in IMAGE_EXTENSIONS:
                 images.append(file)
-            elif ext in VIDEO_EXTENSIONS:
-                return jsonify({"error_key": "video_upload_disabled"}), 400
             elif ext in AUDIO_EXTENSIONS:
                 audios.append(file)
             elif ext in DOCUMENT_EXTENSIONS:
@@ -463,7 +412,7 @@ def create_post():
                 return jsonify({"error_key": "unsupported_file_type", "filename": file.filename}), 400
 
     # --- YENİ VE DAHA KATI KONTROL MANTIĞI ---
-    media_types_count = sum([1 for media_list in [videos, audios, documents] if media_list])
+    media_types_count = sum([1 for media_list in [audios, documents] if media_list])
     if media_types_count > 1:
         return jsonify({"error_key": "media_mix_error_1"}), 400
     if media_types_count > 0 and images:
@@ -487,8 +436,7 @@ def create_post():
         if total_image_size > MAX_TOTAL_IMAGE_SIZE_MB * 1024 * 1024:
             return jsonify({"error_key": "image_total_size_limit", "limit": MAX_TOTAL_IMAGE_SIZE_MB}), 413
 
-    # Video tamamen kapalı
-    videos = []
+    # Video kaldırıldı
 
     # Ses kontrolleri
     if audios:
@@ -528,7 +476,6 @@ def create_post():
             unique_filename_base = f"toolvision_{unique_id}_{Path(safe_original_filename).stem}"
 
             file_type = 'image' if extension in IMAGE_EXTENSIONS else \
-                        'video' if extension in VIDEO_EXTENSIONS else \
                         'audio' if extension in AUDIO_EXTENSIONS else \
                         'document' if extension in DOCUMENT_EXTENSIONS else 'file'
             

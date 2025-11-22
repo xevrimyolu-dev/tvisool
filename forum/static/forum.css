@@ -14,13 +14,14 @@
   background-color: var(--secondary-bg);
   border: 1px solid var(--tertiary-bg);
   border-radius: 12px;
-  padding: 15px;
+  padding: 10px;
   width: 100%;
   max-width: 600px;
   display: flex;
   gap: 15px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transition: max-width 0.3s ease-in-out;
+  margin-bottom: 60px;
 }
 
 
@@ -106,16 +107,16 @@
   color: var(--text-color);
   font-size: 1.1rem;
   resize: none;
-  min-height: 60px;
+  min-height: 40px;
   font-family: inherit;
-  padding: 8px 0;
+  padding: 4px 0;
 }
 
 .composer-preview {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 4px;
 }
 .preview-item {
   position: relative;
@@ -146,9 +147,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 15px;
+  margin-top: 8px;
   border-top: 1px solid var(--tertiary-bg);
-  padding-top: 10px;
+  padding-top: 6px;
   flex-wrap: wrap;
   gap: 10px;
 }

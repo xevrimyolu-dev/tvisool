@@ -8,9 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const charCounter = document.getElementById('char-counter');
 
     const MAX_IMAGE_COUNT = 7;
-    const MAX_VIDEO_COUNT = 1;
+    const MAX_IMAGE_SIZE_MB = 6;
+    const MAX_TOTAL_IMAGE_SIZE_MB = 42;
     const MAX_AUDIO_COUNT = 1;
+    const MAX_AUDIO_SIZE_MB = 20;
     const MAX_DOCUMENT_COUNT = 1;
+    const MAX_DOCUMENT_SIZE_MB = 70;
     const MAX_CONTENT_CHARS = 1000;
 
     let selectedFiles = [];
@@ -236,22 +239,17 @@ function showSpamCaptchaModal(onConfirm) {
         let newFiles = Array.from(composerFileInput.files);
         if (newFiles.length === 0) return;
 
-        if (newFiles.some(f => f.type.startsWith('video/'))) {
-            showToastNotification(getLang('video_upload_disabled') || 'Video yükleme devre dışı.', 'error');
-            composerFileInput.value = '';
-            return;
-        }
+        
 
         if (newFiles.some(f => f.type.startsWith('image/'))) {
             croppedImageData = [];
         }
 
         const currentImages = selectedFiles.filter(f => f.type.startsWith('image/'));
-        const currentVideos = [];
         const currentAudios = selectedFiles.filter(f => f.type.startsWith('audio/'));
         const currentDocs = selectedFiles.filter(f => !f.type.startsWith('image/') && !f.type.startsWith('audio/'));
 
-        if (currentVideos.length > 0 || currentAudios.length > 0 || currentDocs.length > 0) {
+        if (currentAudios.length > 0 || currentDocs.length > 0) {
             showToastNotification(getLang('media_mix_error_1'), 'error');
             composerFileInput.value = '';
             return;
@@ -259,7 +257,6 @@ function showSpamCaptchaModal(onConfirm) {
 
         const newFileTypes = new Set(newFiles.map(file => {
             if (file.type.startsWith('image/')) return 'image';
-            if (file.type.startsWith('video/')) return 'document';
             if (file.type.startsWith('audio/')) return 'audio';
             return 'document';
         }));
@@ -282,9 +279,52 @@ function showSpamCaptchaModal(onConfirm) {
             return;
         }
 
-        let filesToAdd = [];
+        // --- BOYUT KONTROLLERİ: YÜKLEMEDEN ÖNCE ---
+        // Resimler için tekil ve toplam boyut kontrolü
+        const bytesPerMB = 1024 * 1024;
+        const currentImagesTotalSize = currentImages.reduce((sum, f) => sum + (f.size || 0), 0);
 
         const newImageFiles = newFiles.filter(f => f.type.startsWith('image/'));
+        // Tekil sınır
+        for (const img of newImageFiles) {
+            if ((img.size || 0) > MAX_IMAGE_SIZE_MB * bytesPerMB) {
+                showToastNotification(getLang('image_size_limit', { filename: img.name, limit: MAX_IMAGE_SIZE_MB }), 'error');
+                composerFileInput.value = '';
+                return;
+            }
+        }
+        // Toplam sınır
+        const newImagesTotalSize = newImageFiles.reduce((sum, f) => sum + (f.size || 0), 0);
+        if (newImageFiles.length > 0 && (currentImagesTotalSize + newImagesTotalSize) > MAX_TOTAL_IMAGE_SIZE_MB * bytesPerMB) {
+            showToastNotification(getLang('image_total_size_limit', { limit: MAX_TOTAL_IMAGE_SIZE_MB }), 'error');
+            composerFileInput.value = '';
+            return;
+        }
+
+        // Ses dosyası tekil boyut sınırı
+        const newAudioFiles = newFiles.filter(f => f.type.startsWith('audio/'));
+        if (newAudioFiles.length > 0) {
+            const audioFile = newAudioFiles[0];
+            if ((audioFile.size || 0) > MAX_AUDIO_SIZE_MB * bytesPerMB) {
+                showToastNotification(getLang('audio_size_limit', { limit: MAX_AUDIO_SIZE_MB }), 'error');
+                composerFileInput.value = '';
+                return;
+            }
+        }
+
+        // Belge dosyası tekil boyut sınırı
+        const newDocFiles = newFiles.filter(f => !f.type.startsWith('image/') && !f.type.startsWith('video/') && !f.type.startsWith('audio/'));
+        if (newDocFiles.length > 0) {
+            const docFile = newDocFiles[0];
+            if ((docFile.size || 0) > MAX_DOCUMENT_SIZE_MB * bytesPerMB) {
+                showToastNotification(getLang('doc_size_limit', { limit: MAX_DOCUMENT_SIZE_MB }), 'error');
+                composerFileInput.value = '';
+                return;
+            }
+        }
+
+        let filesToAdd = [];
+
         if (newImageFiles.length > 0) {
             const availableSlots = MAX_IMAGE_COUNT - currentImages.length;
             if (availableSlots <= 0) {
