@@ -1193,6 +1193,37 @@ def complete_upload():
         "original_filename": original_filename
     })
 
+@forum_bp.route("/posts/<int:post_id>/attach_media", methods=["POST"])
+@login_required
+def attach_media(post_id):
+    post = db.session.get(Post, post_id)
+    if not post:
+        return jsonify({"error_key": "post_not_found"}), 404
+    if post.user_id != current_user.id:
+        return jsonify({"error_key": "attach_unauthorized"}), 403
+    file_url = request.form.get('file_url')
+    file_type = request.form.get('file_type')
+    original_filename = request.form.get('original_filename', '')
+    thumbnail_url = request.form.get('thumbnail_url')
+    if not file_url or not file_type:
+        return jsonify({"error_key": "invalid_params"}), 400
+    media = PostMedia(
+        post=post,
+        file_url=file_url,
+        file_type=file_type,
+        original_filename=original_filename,
+        thumbnail_url=thumbnail_url
+    )
+    db.session.add(media)
+    db.session.commit()
+    return jsonify({
+        "id": media.id,
+        "url": url_for('serve_user_media', filename=media.file_url),
+        "type": media.file_type,
+        "original_name": media.original_filename,
+        "thumbnail_url": url_for('serve_user_media', filename=media.thumbnail_url) if media.thumbnail_url else None
+    }), 201
+
 @forum_bp.route("/search", methods=["GET"])
 @login_required
 def search_posts():

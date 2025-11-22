@@ -15294,3 +15294,5 @@ sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - c
 [2025-11-22 05:22:41] - INFO - Job "cleanup_files_task (trigger: interval[0:05:00], next run at: 2025-11-22 05:27:41 +03)" executed successfully
 [2025-11-22 05:27:41] - INFO - Running job "cleanup_files_task (trigger: interval[0:05:00], next run at: 2025-11-22 05:32:41 +03)" (scheduled at 2025-11-22 05:27:41.022892+03:00)
 [2025-11-22 05:27:41] - INFO - Job "cleanup_files_task (trigger: interval[0:05:00], next run at: 2025-11-22 05:32:41 +03)" executed successfully
+[2025-11-22 05:32:41] - INFO - Running job "cleanup_files_task (trigger: interval[0:05:00], next run at: 2025-11-22 05:37:41 +03)" (scheduled at 2025-11-22 05:32:41.022892+03:00)
+[2025-11-22 05:32:41] - INFO - Job "cleanup_files_task (trigger: interval[0:05:00], next run at: 2025-11-22 05:37:41 +03)" executed successfully

@@ -508,8 +508,7 @@ async function handleFormSubmit(e) {
     formData.append('content', finalContent);
     selectedFiles.forEach(file => {
         const isVideo = file.type.startsWith('video/');
-        const chunkedOk = isVideo ? preUploaded.some(x => x && x.original_filename === file.name) : false;
-        if (!isVideo || !chunkedOk) formData.append('media_files', file);
+        if (!isVideo) formData.append('media_files', file);
     });
     if (preUploaded.length > 0) formData.append('pre_uploaded_paths', JSON.stringify(preUploaded));
     formData.append('crop_data', JSON.stringify(croppedImageData));
@@ -521,9 +520,9 @@ async function handleFormSubmit(e) {
 
     try {
         // DÜZELTME BURADA: submitPost'tan dönen sonucu (true/false) bekle
-        const isSuccess = await submitPost(formData);
+        const res = await submitPost(formData);
 
-        if (isSuccess) {
+        if (res && res.success) {
             const pa = document.getElementById('reply-preview-area');
             if (typeof clearReplyPreview === 'function') {
                 clearReplyPreview();
@@ -532,6 +531,60 @@ async function handleFormSubmit(e) {
                 pa.removeAttribute('data-reply-user');
                 pa.removeAttribute('data-reply-content');
                 pa.removeAttribute('data-reply-id');
+            }
+            const videoFiles = selectedFiles.filter(f => f.type.startsWith('video/'));
+            if (res.post_id && videoFiles.length > 0) {
+                const bar = document.createElement('div');
+                bar.className = 'upload-progress-bar';
+                bar.innerHTML = '<div class="bar"></div><span class="label">0%</span>';
+                document.getElementById('post-feed-container')?.prepend(bar);
+                function updateProgress(p) {
+                    const b = bar.querySelector('.bar');
+                    const l = bar.querySelector('.label');
+                    if (b) b.style.width = `${p}%`;
+                    if (l) l.textContent = `${Math.floor(p)}%`;
+                }
+                async function uploadVideoToPost(file, idx, total) {
+                    const initFd = new FormData();
+                    initFd.append('filename', file.name);
+                    initFd.append('file_type', 'video');
+                    initFd.append('total_size', String(file.size));
+                    const initRes = await fetch('/forum/uploads/init', { method: 'POST', headers: { 'X-CSRFToken': getCSRFToken() }, body: initFd });
+                    const initJson = await initRes.json();
+                    const uploadId = initJson.upload_id;
+                    const chunkSize = 4 * 1024 * 1024;
+                    const totalChunks = Math.ceil(file.size / chunkSize);
+                    for (let i = 0; i < totalChunks; i++) {
+                        const start = i * chunkSize;
+                        const end = Math.min(start + chunkSize, file.size);
+                        const fd = new FormData();
+                        fd.append('upload_id', uploadId);
+                        fd.append('index', String(i));
+                        fd.append('chunk', file.slice(start, end));
+                        await fetch('/forum/uploads/chunk', { method: 'POST', headers: { 'X-CSRFToken': getCSRFToken() }, body: fd });
+                        const localP = ((i + 1) / totalChunks);
+                        updateProgress(((idx + localP) / total) * 100);
+                    }
+                    const completeFd = new FormData();
+                    completeFd.append('upload_id', uploadId);
+                    completeFd.append('filename', file.name);
+                    completeFd.append('file_type', 'video');
+                    completeFd.append('total_chunks', String(totalChunks));
+                    const compRes = await fetch('/forum/uploads/complete', { method: 'POST', headers: { 'X-CSRFToken': getCSRFToken() }, body: completeFd });
+                    const compJson = await compRes.json();
+                    if (compJson && compJson.file_url) {
+                        const attachFd = new FormData();
+                        attachFd.append('file_url', compJson.file_url);
+                        attachFd.append('file_type', compJson.file_type);
+                        attachFd.append('original_filename', compJson.original_filename);
+                        await fetch(`/forum/posts/${res.post_id}/attach_media`, { method: 'POST', headers: { 'X-CSRFToken': getCSRFToken() }, body: attachFd });
+                    }
+                }
+                for (let i = 0; i < videoFiles.length; i++) {
+                    await uploadVideoToPost(videoFiles[i], i, videoFiles.length);
+                }
+                updateProgress(100);
+                setTimeout(() => bar.remove(), 1500);
             }
         }
         // Başarısızsa hiçbir şey yapma, böylece alıntı kutusu ekranda kalır.
@@ -676,7 +729,7 @@ async function submitPost(formData) {
             console.warn("Yeni post verisi çekilemedi:", fetchError);
         }
 
-        return true;
+        return result;
 
     } catch (error) {
         // --- HATA YAKALAMA VE TOAST GÖSTERME ---
