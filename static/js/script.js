@@ -201,6 +201,7 @@ const translations = {
         'edit_content_empty': 'Gönderi içeriği boş olamaz.',
         'edit_too_long': 'Gönderi içeriği {limit} karakteri aşamaz.',
         'post_edit_success': 'Gönderi başarıyla güncellendi.',
+        'frame_added_success': 'Çerçeve başarıyla güncellendi.',
         'post_edit_error': 'Gönderi düzenlenirken bir hata oluştu.',
         'search_query_empty': 'Arama sorgusu boş olamaz.',
         'search_query_too_short': 'Arama sorgusu en az 2 karakter olmalıdır.',
@@ -550,6 +551,7 @@ const translations = {
         'edit_content_empty': "Post content cannot be empty.",
         'edit_too_long': "Post content cannot exceed {limit} characters.",
         'post_edit_success': "Post updated successfully.",
+        'frame_added_success': 'Frame added successfully.',
         'post_edit_error': "An error occurred while editing the post.",
         'search_query_empty': "Search query cannot be empty.",
         'search_query_too_short': "Search query must be at least 2 characters.",
@@ -904,6 +906,7 @@ const translations = {
         'edit_content_empty': 'Le contenu de la publication ne peut pas être vide.',
         'edit_too_long': 'Le contenu de la publication ne peut pas dépasser {limit} caractères.',
         'post_edit_success': 'Publication mise à jour avec succès.',
+        'frame_added_success': 'Cadre ajouté avec succès.',
         'post_edit_error': 'Une erreur est survenue lors de la modification de la publication.',
         'search_query_empty': 'La requête de recherche ne peut pas être vide.',
         'search_query_too_short': 'La requête de recherche doit comporter au moins 2 caractères.',
@@ -1266,6 +1269,7 @@ const translations = {
         'edit_content_empty': '帖子内容不能为空。',
         'edit_too_long': '帖子内容不能超过 {limit} 个字符。',
         'post_edit_success': '帖子更新成功。',
+        'frame_added_success': '框架已成功添加。',
         'post_edit_error': '编辑帖子时出错。',
         'search_query_empty': '搜索查询不能为空。',
         'search_query_too_short': '搜索查询必须至少 2 个字符。',
@@ -1605,6 +1609,7 @@ const translations = {
         'edit_content_empty': 'El contenido de la publicación не puede estar vacío.',
         'edit_too_long': 'El contenido de la publicación no puede exceder los {limit} caracteres.',
         'post_edit_success': 'Publicación actualizada con éxito.',
+        'frame_added_success': 'Marco añadido con éxito.',
         'post_edit_error': 'Ocurrió un error al editar la publicación.',
         'search_query_empty': 'La consulta de búsqueda no puede estar vacía.',
         'search_query_too_short': 'La consulta de búsqueda debe tener al menos 2 caracteres.',
@@ -1924,6 +1929,7 @@ const translations = {
         'edit_content_empty': '投稿内容は空にできません。',
         'edit_too_long': '投稿内容は {limit} 文字を超えることはできません。',
         'post_edit_success': '投稿が正常に更新されました。',
+        'frame_added_success': 'フレームが正常に追加されました。',
         'post_edit_error': '投稿の編集中にエラーが発生しました。',
         'search_query_empty': '検索クエリは空にできません。',
         'search_query_too_short': '検索クエリは2文字以上である必要があります。',
@@ -2274,6 +2280,7 @@ const translations = {
         'edit_content_empty': '게시물 내용은 비워둘 수 없습니다.',
         'edit_too_long': '게시물 내용은 {limit}자를 초과할 수 없습니다.',
         'post_edit_success': '게시물이 성공적으로 업데이트되었습니다.',
+        'frame_added_success': '프레임이 성공적으로 추가되었습니다.',
         'post_edit_error': '게시물을 수정하는 중 오류가 발생했습니다.',
         'search_query_empty': '검색어는 비워둘 수 없습니다.',
         'search_query_too_short': '검색어는 2자 이상이어야 합니다.',
@@ -2606,6 +2613,7 @@ const translations = {
         'edit_content_empty': 'पोस्ट सामग्री खाली नहीं हो सकती।',
         'edit_too_long': 'पोस्ट सामग्री {limit} वर्णों से अधिक नहीं हो सकती।',
         'post_edit_success': 'पोस्ट सफलतापूर्वक अपडेट किया गया।',
+        'frame_added_success': 'फ़्रेम सफलतापूर्वक जोड़ा गया।',
         'post_edit_error': 'पोस्ट संपादित करते समय एक त्रुटि हुई।',
         'search_query_empty': 'खोज क्वेरी खाली नहीं हो सकती।',
         'search_query_too_short': 'खोज क्वेरी कम से कम 2 वर्णों की होनी चाहिए।',
@@ -3046,7 +3054,10 @@ async function checkLocalBridgeStatus() {
             activeFrame = d.active || activeFrame;
             applyActiveFrameEverywhere();
             const lang = localStorage.getItem('userLanguage') || 'en';
-            showToast((translations[lang] && translations[lang]['post_edit_success']) || 'Saved', 'success');
+            const msg = (translations[lang] && translations[lang]['frame_added_success']) ||
+                        (translations['en'] && translations['en']['frame_added_success']) ||
+                        'Frame added successfully';
+            showToast(msg, 'success');
         } catch (e) {}
     }
 

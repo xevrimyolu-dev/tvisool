@@ -22847,3 +22847,298 @@ sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - c
 [2025-11-22 17:36:40] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:40] "[36mGET /forum/user_media/image/toolvision_166dfd6d_Ekran_goruntusu_2024-03-28_223023.png HTTP/1.1[0m" 304 -
 [2025-11-22 17:36:40] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:40] "[36mGET /forum/user_media/image/toolvision_914c053c_Ekran_goruntusu_2024-04-28_211620.png HTTP/1.1[0m" 304 -
 [2025-11-22 17:36:40] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:40] "[36mGET /profile_pics/4_131450094815411599659d7a93351aee_Ekran_goruntusu_2024-04-28_212119.webp HTTP/1.1[0m" 304 -
+[2025-11-22 17:36:48] - INFO - Scheduler started
+[2025-11-22 17:36:48] - INFO - Added job "cleanup_files_task" to job store "default"
+[2025-11-22 17:36:48] - INFO - Added job "check_roles_task" to job store "default"
+[2025-11-22 17:36:48] - INFO - Added job "reset_captcha_fails_task" to job store "default"
+[2025-11-22 17:36:48] - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.147:5000
+[2025-11-22 17:36:48] - INFO - [33mPress CTRL+C to quit[0m
+[2025-11-22 17:36:52] - INFO - The CSRF token is missing.
+[2025-11-22 17:36:52] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:52] "[31m[1mPOST /record_page_visit HTTP/1.1[0m" 400 -
+[2025-11-22 17:36:52] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:52] "GET /forum/ HTTP/1.1" 200 -
+[2025-11-22 17:36:52] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:52] "GET /static/css/style.css HTTP/1.1" 200 -
+[2025-11-22 17:36:52] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:52] "GET /forum/forum/static/forum.css HTTP/1.1" 200 -
+[2025-11-22 17:36:52] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:52] "GET /forum/forum/static/cut.css HTTP/1.1" 200 -
+[2025-11-22 17:36:52] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:52] "GET /static/images/tr.png HTTP/1.1" 200 -
+[2025-11-22 17:36:52] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:52] "GET /profile_pics/7_94556aa571154cfd95fd7c7f6db39033_Ekran_goruntusu_2024-03-28_223023.webp HTTP/1.1" 200 -
+[2025-11-22 17:36:52] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:52] "GET /static/css/subscriptions.css HTTP/1.1" 200 -
+[2025-11-22 17:36:52] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:52] "GET /static/images/ja.png HTTP/1.1" 200 -
+[2025-11-22 17:36:52] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:52] "GET /static/images/ko.png HTTP/1.1" 200 -
+[2025-11-22 17:36:52] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:52] "GET /static/images/zh.png HTTP/1.1" 200 -
+[2025-11-22 17:36:52] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:52] "GET /static/images/en.png HTTP/1.1" 200 -
+[2025-11-22 17:36:52] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:52] "GET /static/images/hi.png HTTP/1.1" 200 -
+[2025-11-22 17:36:52] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:52] "GET /static/images/fr.png HTTP/1.1" 200 -
+[2025-11-22 17:36:53] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:53] "GET /static/images/es.png HTTP/1.1" 200 -
+[2025-11-22 17:36:53] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:53] "GET /static/js/script.js HTTP/1.1" 200 -
+[2025-11-22 17:36:53] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:53] "GET /static/js/subscriptions.js HTTP/1.1" 200 -
+[2025-11-22 17:36:53] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:53] "GET /static/js/auth_helpers.js HTTP/1.1" 200 -
+[2025-11-22 17:36:53] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:53] "GET /forum/forum/static/cut.js HTTP/1.1" 200 -
+[2025-11-22 17:36:53] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:53] "GET /forum/forum/static/forum_core.js HTTP/1.1" 200 -
+[2025-11-22 17:36:53] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:53] "GET /forum/forum/static/forum_interactions.js HTTP/1.1" 200 -
+[2025-11-22 17:36:53] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:53] "GET /get_user_limits HTTP/1.1" 200 -
+[2025-11-22 17:36:53] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:53] "POST /update_language HTTP/1.1" 200 -
+[2025-11-22 17:36:53] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:53] "GET /forum/user/status HTTP/1.1" 200 -
+[2025-11-22 17:36:53] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:53] "GET /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:36:54] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:54] "GET /forum/posts/all_with_like_status HTTP/1.1" 200 -
+[2025-11-22 17:36:54] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:54] "[36mGET /profile_pics/6_3c21f30db6214f3eafcaef6c0de7a551_Ekran_goruntusu_2024-08-15_172820.webp HTTP/1.1[0m" 304 -
+[2025-11-22 17:36:54] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:54] "[36mGET /static/images/free.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:36:54] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:54] "[36mGET /forum/user_media/image/toolvision_914c053c_Ekran_goruntusu_2024-04-28_211620.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:36:54] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:54] "[36mGET /profile_pics/4_131450094815411599659d7a93351aee_Ekran_goruntusu_2024-04-28_212119.webp HTTP/1.1[0m" 304 -
+[2025-11-22 17:36:54] - INFO - 127.0.0.1 - - [22/Nov/2025 17:36:54] "[36mGET /forum/user_media/image/toolvision_166dfd6d_Ekran_goruntusu_2024-03-28_223023.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:37:07] - INFO - 127.0.0.1 - - [22/Nov/2025 17:37:07] "POST /update_profile_pic HTTP/1.1" 200 -
+[2025-11-22 17:37:07] - INFO - 127.0.0.1 - - [22/Nov/2025 17:37:07] "GET /profile_pics/7_9cfe1fa229134b2793c038660b02f332_Ekran_goruntusu_2024-03-28_223023.webp?t=1763822227244 HTTP/1.1" 200 -
+[2025-11-22 17:37:24] - INFO - 127.0.0.1 - - [22/Nov/2025 17:37:24] "POST /update_profile_pic HTTP/1.1" 200 -
+[2025-11-22 17:37:24] - INFO - 127.0.0.1 - - [22/Nov/2025 17:37:24] "GET /profile_pics/7_b38dd65e86fd43ad8c621d5a5508eafb_Ekran_goruntusu_2024-05-01_172521.webp?t=1763822244528 HTTP/1.1" 200 -
+[2025-11-22 17:37:40] - INFO - 127.0.0.1 - - [22/Nov/2025 17:37:40] "POST /update_profile_pic HTTP/1.1" 200 -
+[2025-11-22 17:37:40] - INFO - 127.0.0.1 - - [22/Nov/2025 17:37:40] "GET /profile_pics/7_64d0cf04dc114ab4b710b3f1ba1f4915_Ekran_goruntusu_2024-04-28_212119.webp?t=1763822260043 HTTP/1.1" 200 -
+[2025-11-22 17:37:49] - INFO - 127.0.0.1 - - [22/Nov/2025 17:37:49] "POST /update_profile_pic HTTP/1.1" 200 -
+[2025-11-22 17:37:49] - INFO - 127.0.0.1 - - [22/Nov/2025 17:37:49] "GET /profile_pics/7_9003a2495f094a59bc9858bf5e9aea25_Ekran_goruntusu_2024-05-01_172521.webp?t=1763822269526 HTTP/1.1" 200 -
+[2025-11-22 17:37:54] - INFO - 127.0.0.1 - - [22/Nov/2025 17:37:54] "GET /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:37:55] - INFO - 127.0.0.1 - - [22/Nov/2025 17:37:55] "POST /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:37:55] - INFO - 127.0.0.1 - - [22/Nov/2025 17:37:55] "POST /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:38:01] - INFO - 127.0.0.1 - - [22/Nov/2025 17:38:01] "GET /get_user_limits HTTP/1.1" 200 -
+[2025-11-22 17:38:01] - INFO - 127.0.0.1 - - [22/Nov/2025 17:38:01] "POST /update_language HTTP/1.1" 200 -
+[2025-11-22 17:38:01] - INFO - 127.0.0.1 - - [22/Nov/2025 17:38:01] "GET /forum/posts/all_with_like_status HTTP/1.1" 200 -
+[2025-11-22 17:38:02] - INFO - 127.0.0.1 - - [22/Nov/2025 17:38:02] "GET /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:38:03] - INFO - 127.0.0.1 - - [22/Nov/2025 17:38:03] "POST /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:38:45] - INFO - 127.0.0.1 - - [22/Nov/2025 17:38:45] "POST /update_profile_pic HTTP/1.1" 200 -
+[2025-11-22 17:38:46] - INFO - 127.0.0.1 - - [22/Nov/2025 17:38:46] "GET /profile_pics/7_50be55cecbd94f658274ee71f6751745_Ekran_goruntusu_2024-03-28_223023.webp?t=1763822325756 HTTP/1.1" 200 -
+[2025-11-22 17:38:59] - INFO - 127.0.0.1 - - [22/Nov/2025 17:38:59] "POST /update_profile_pic HTTP/1.1" 200 -
+[2025-11-22 17:38:59] - INFO - 127.0.0.1 - - [22/Nov/2025 17:38:59] "GET /profile_pics/7_766f51c6ad5a46d4b5bf4cec09abe36c_Ekran_goruntusu_2024-07-25_012545.webp?t=1763822339419 HTTP/1.1" 200 -
+[2025-11-22 17:39:02] - INFO - 127.0.0.1 - - [22/Nov/2025 17:39:02] "GET /forum/posts/all_with_like_status HTTP/1.1" 200 -
+[2025-11-22 17:39:03] - INFO - 127.0.0.1 - - [22/Nov/2025 17:39:03] "[36mGET /media/image/toolvision_914c053c_Ekran_goruntusu_2024-04-28_211620.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:39:03] - INFO - 127.0.0.1 - - [22/Nov/2025 17:39:03] "[36mGET /media/image/toolvision_1989cea7_Ekran_goruntusu_2024-04-28_212119.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:39:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:39:09] "POST /update_profile_pic HTTP/1.1" 200 -
+[2025-11-22 17:39:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:39:09] "GET /profile_pics/7_922b802d02f74160870ddcc305eceb47_Ekran_goruntusu_2024-04-28_212119.webp?t=1763822349004 HTTP/1.1" 200 -
+[2025-11-22 17:40:56] - INFO - 127.0.0.1 - - [22/Nov/2025 17:40:56] "GET /forum/ HTTP/1.1" 200 -
+[2025-11-22 17:40:56] - INFO - 127.0.0.1 - - [22/Nov/2025 17:40:56] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2025-11-22 17:40:56] - INFO - 127.0.0.1 - - [22/Nov/2025 17:40:56] "[36mGET /static/css/subscriptions.css HTTP/1.1[0m" 304 -
+[2025-11-22 17:40:56] - INFO - 127.0.0.1 - - [22/Nov/2025 17:40:56] "[36mGET /forum/forum/static/cut.css HTTP/1.1[0m" 304 -
+[2025-11-22 17:40:56] - INFO - 127.0.0.1 - - [22/Nov/2025 17:40:56] "[36mGET /forum/forum/static/forum.css HTTP/1.1[0m" 304 -
+[2025-11-22 17:40:56] - INFO - 127.0.0.1 - - [22/Nov/2025 17:40:56] "GET /profile_pics/7_922b802d02f74160870ddcc305eceb47_Ekran_goruntusu_2024-04-28_212119.webp HTTP/1.1" 200 -
+[2025-11-22 17:40:56] - INFO - 127.0.0.1 - - [22/Nov/2025 17:40:56] "[36mGET /static/images/tr.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:40:57] - INFO - 127.0.0.1 - - [22/Nov/2025 17:40:57] "[36mGET /static/images/zh.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:40:57] - INFO - 127.0.0.1 - - [22/Nov/2025 17:40:57] "[36mGET /static/images/ja.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:40:57] - INFO - 127.0.0.1 - - [22/Nov/2025 17:40:57] "[36mGET /static/images/ko.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:40:57] - INFO - 127.0.0.1 - - [22/Nov/2025 17:40:57] "[36mGET /static/images/hi.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:40:57] - INFO - 127.0.0.1 - - [22/Nov/2025 17:40:57] "[36mGET /static/images/fr.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:40:57] - INFO - 127.0.0.1 - - [22/Nov/2025 17:40:57] "[36mGET /static/images/en.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:40:57] - INFO - 127.0.0.1 - - [22/Nov/2025 17:40:57] "[36mGET /static/js/auth_helpers.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:40:57] - INFO - 127.0.0.1 - - [22/Nov/2025 17:40:57] "GET /static/js/script.js HTTP/1.1" 200 -
+[2025-11-22 17:40:57] - INFO - 127.0.0.1 - - [22/Nov/2025 17:40:57] "[36mGET /static/js/subscriptions.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:40:57] - INFO - 127.0.0.1 - - [22/Nov/2025 17:40:57] "[36mGET /forum/forum/static/cut.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:40:57] - INFO - 127.0.0.1 - - [22/Nov/2025 17:40:57] "[36mGET /static/images/es.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:40:57] - INFO - 127.0.0.1 - - [22/Nov/2025 17:40:57] "[36mGET /forum/forum/static/forum_core.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:41:06] - INFO - Scheduler started
+[2025-11-22 17:41:06] - INFO - Added job "cleanup_files_task" to job store "default"
+[2025-11-22 17:41:06] - INFO - Added job "check_roles_task" to job store "default"
+[2025-11-22 17:41:06] - INFO - Added job "reset_captcha_fails_task" to job store "default"
+[2025-11-22 17:41:06] - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.147:5000
+[2025-11-22 17:41:06] - INFO - [33mPress CTRL+C to quit[0m
+[2025-11-22 17:41:08] - INFO - The CSRF token is missing.
+[2025-11-22 17:41:08] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:08] "[31m[1mPOST /record_page_visit HTTP/1.1[0m" 400 -
+[2025-11-22 17:41:08] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:08] "GET /forum/ HTTP/1.1" 200 -
+[2025-11-22 17:41:08] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:08] "GET /static/css/style.css HTTP/1.1" 200 -
+[2025-11-22 17:41:08] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:08] "GET /forum/forum/static/forum.css HTTP/1.1" 200 -
+[2025-11-22 17:41:08] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:08] "GET /static/css/subscriptions.css HTTP/1.1" 200 -
+[2025-11-22 17:41:08] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:08] "GET /static/images/tr.png HTTP/1.1" 200 -
+[2025-11-22 17:41:08] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:08] "GET /forum/forum/static/cut.css HTTP/1.1" 200 -
+[2025-11-22 17:41:08] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:08] "GET /profile_pics/7_922b802d02f74160870ddcc305eceb47_Ekran_goruntusu_2024-04-28_212119.webp HTTP/1.1" 200 -
+[2025-11-22 17:41:08] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:08] "GET /static/images/hi.png HTTP/1.1" 200 -
+[2025-11-22 17:41:08] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:08] "GET /static/images/ko.png HTTP/1.1" 200 -
+[2025-11-22 17:41:08] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:08] "GET /static/images/zh.png HTTP/1.1" 200 -
+[2025-11-22 17:41:08] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:08] "GET /static/images/ja.png HTTP/1.1" 200 -
+[2025-11-22 17:41:08] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:08] "GET /static/images/en.png HTTP/1.1" 200 -
+[2025-11-22 17:41:08] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:08] "GET /static/images/fr.png HTTP/1.1" 200 -
+[2025-11-22 17:41:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:09] "GET /static/js/script.js HTTP/1.1" 200 -
+[2025-11-22 17:41:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:09] "GET /static/images/es.png HTTP/1.1" 200 -
+[2025-11-22 17:41:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:09] "GET /static/js/subscriptions.js HTTP/1.1" 200 -
+[2025-11-22 17:41:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:09] "GET /static/js/auth_helpers.js HTTP/1.1" 200 -
+[2025-11-22 17:41:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:09] "GET /forum/forum/static/cut.js HTTP/1.1" 200 -
+[2025-11-22 17:41:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:09] "GET /forum/forum/static/forum_core.js HTTP/1.1" 200 -
+[2025-11-22 17:41:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:09] "GET /forum/forum/static/forum_interactions.js HTTP/1.1" 200 -
+[2025-11-22 17:41:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:09] "GET /get_user_limits HTTP/1.1" 200 -
+[2025-11-22 17:41:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:09] "GET /forum/user/status HTTP/1.1" 200 -
+[2025-11-22 17:41:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:09] "POST /update_language HTTP/1.1" 200 -
+[2025-11-22 17:41:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:09] "GET /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:41:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:09] "GET /forum/posts/all_with_like_status HTTP/1.1" 200 -
+[2025-11-22 17:41:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:10] "[36mGET /profile_pics/6_3c21f30db6214f3eafcaef6c0de7a551_Ekran_goruntusu_2024-08-15_172820.webp HTTP/1.1[0m" 304 -
+[2025-11-22 17:41:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:10] "[36mGET /static/images/free.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:41:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:10] "[36mGET /forum/user_media/image/toolvision_166dfd6d_Ekran_goruntusu_2024-03-28_223023.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:41:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:10] "[36mGET /forum/user_media/image/toolvision_914c053c_Ekran_goruntusu_2024-04-28_211620.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:41:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:10] "[36mGET /profile_pics/4_131450094815411599659d7a93351aee_Ekran_goruntusu_2024-04-28_212119.webp HTTP/1.1[0m" 304 -
+[2025-11-22 17:41:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:10] "GET /forum/posts/all_with_like_status HTTP/1.1" 200 -
+[2025-11-22 17:41:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:10] "[36mGET /media/image/toolvision_1989cea7_Ekran_goruntusu_2024-04-28_212119.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:41:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:10] "[36mGET /media/image/toolvision_914c053c_Ekran_goruntusu_2024-04-28_211620.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:41:16] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:16] "GET /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:41:16] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:16] "POST /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:41:22] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:22] "GET /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:41:22] - INFO - 127.0.0.1 - - [22/Nov/2025 17:41:22] "POST /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:44:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:10] "GET /forum/ HTTP/1.1" 200 -
+[2025-11-22 17:44:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:10] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:10] "[36mGET /forum/forum/static/cut.css HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:10] "[36mGET /forum/forum/static/forum.css HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:10] "[36mGET /static/css/subscriptions.css HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:10] "[36mGET /static/images/tr.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:10] "[36mGET /profile_pics/7_922b802d02f74160870ddcc305eceb47_Ekran_goruntusu_2024-04-28_212119.webp HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:10] "[36mGET /static/images/ja.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:10] "[36mGET /static/images/zh.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:10] "[36mGET /static/images/ko.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:10] "[36mGET /static/images/en.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:10] "[36mGET /static/images/fr.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:10] "[36mGET /static/images/hi.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:11] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:11] "[36mGET /static/images/es.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:11] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:11] "GET /static/js/script.js HTTP/1.1" 200 -
+[2025-11-22 17:44:11] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:11] "[36mGET /forum/forum/static/cut.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:11] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:11] "[36mGET /static/js/subscriptions.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:11] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:11] "[36mGET /static/js/auth_helpers.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:11] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:11] "[36mGET /forum/forum/static/forum_core.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:11] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:11] "[36mGET /forum/forum/static/forum_interactions.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:11] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:11] "GET /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:44:11] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:11] "GET /forum/user/status HTTP/1.1" 200 -
+[2025-11-22 17:44:11] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:11] "GET /get_user_limits HTTP/1.1" 200 -
+[2025-11-22 17:44:11] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:11] "POST /update_language HTTP/1.1" 200 -
+[2025-11-22 17:44:12] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:12] "GET /forum/posts/all_with_like_status HTTP/1.1" 200 -
+[2025-11-22 17:44:12] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:12] "[36mGET /profile_pics/6_3c21f30db6214f3eafcaef6c0de7a551_Ekran_goruntusu_2024-08-15_172820.webp HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:12] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:12] "[36mGET /forum/user_media/image/toolvision_166dfd6d_Ekran_goruntusu_2024-03-28_223023.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:12] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:12] "[36mGET /static/images/free.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:12] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:12] "[36mGET /profile_pics/4_131450094815411599659d7a93351aee_Ekran_goruntusu_2024-04-28_212119.webp HTTP/1.1[0m" 304 -
+[2025-11-22 17:44:12] - INFO - 127.0.0.1 - - [22/Nov/2025 17:44:12] "[36mGET /forum/user_media/image/toolvision_914c053c_Ekran_goruntusu_2024-04-28_211620.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:45:00] - INFO - Scheduler started
+[2025-11-22 17:45:00] - INFO - Added job "cleanup_files_task" to job store "default"
+[2025-11-22 17:45:00] - INFO - Added job "check_roles_task" to job store "default"
+[2025-11-22 17:45:00] - INFO - Added job "reset_captcha_fails_task" to job store "default"
+[2025-11-22 17:45:00] - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.147:5000
+[2025-11-22 17:45:00] - INFO - [33mPress CTRL+C to quit[0m
+[2025-11-22 17:45:02] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:02] "GET /forum/ HTTP/1.1" 200 -
+[2025-11-22 17:45:02] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:02] "GET /static/css/style.css HTTP/1.1" 200 -
+[2025-11-22 17:45:02] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:02] "GET /forum/forum/static/forum.css HTTP/1.1" 200 -
+[2025-11-22 17:45:02] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:02] "GET /static/images/tr.png HTTP/1.1" 200 -
+[2025-11-22 17:45:02] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:02] "GET /static/css/subscriptions.css HTTP/1.1" 200 -
+[2025-11-22 17:45:02] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:02] "GET /profile_pics/7_922b802d02f74160870ddcc305eceb47_Ekran_goruntusu_2024-04-28_212119.webp HTTP/1.1" 200 -
+[2025-11-22 17:45:02] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:02] "GET /forum/forum/static/cut.css HTTP/1.1" 200 -
+[2025-11-22 17:45:02] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:02] "GET /static/images/ja.png HTTP/1.1" 200 -
+[2025-11-22 17:45:02] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:02] "GET /static/images/ko.png HTTP/1.1" 200 -
+[2025-11-22 17:45:03] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:03] "GET /static/images/en.png HTTP/1.1" 200 -
+[2025-11-22 17:45:03] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:03] "GET /static/images/zh.png HTTP/1.1" 200 -
+[2025-11-22 17:45:03] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:03] "GET /static/images/hi.png HTTP/1.1" 200 -
+[2025-11-22 17:45:03] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:03] "GET /static/images/fr.png HTTP/1.1" 200 -
+[2025-11-22 17:45:03] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:03] "GET /static/images/es.png HTTP/1.1" 200 -
+[2025-11-22 17:45:03] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:03] "GET /static/js/script.js HTTP/1.1" 200 -
+[2025-11-22 17:45:03] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:03] "GET /forum/forum/static/cut.js HTTP/1.1" 200 -
+[2025-11-22 17:45:03] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:03] "GET /static/js/auth_helpers.js HTTP/1.1" 200 -
+[2025-11-22 17:45:03] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:03] "GET /static/js/subscriptions.js HTTP/1.1" 200 -
+[2025-11-22 17:45:03] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:03] "GET /forum/forum/static/forum_core.js HTTP/1.1" 200 -
+[2025-11-22 17:45:03] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:03] "GET /forum/forum/static/forum_interactions.js HTTP/1.1" 200 -
+[2025-11-22 17:45:03] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:03] "GET /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:45:03] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:03] "GET /get_user_limits HTTP/1.1" 200 -
+[2025-11-22 17:45:03] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:03] "GET /forum/user/status HTTP/1.1" 200 -
+[2025-11-22 17:45:03] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:03] "POST /update_language HTTP/1.1" 200 -
+[2025-11-22 17:45:04] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:04] "GET /forum/posts/all_with_like_status HTTP/1.1" 200 -
+[2025-11-22 17:45:04] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:04] "[36mGET /profile_pics/6_3c21f30db6214f3eafcaef6c0de7a551_Ekran_goruntusu_2024-08-15_172820.webp HTTP/1.1[0m" 304 -
+[2025-11-22 17:45:04] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:04] "[36mGET /static/images/free.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:45:04] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:04] "[36mGET /forum/user_media/image/toolvision_166dfd6d_Ekran_goruntusu_2024-03-28_223023.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:45:04] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:04] "[36mGET /profile_pics/4_131450094815411599659d7a93351aee_Ekran_goruntusu_2024-04-28_212119.webp HTTP/1.1[0m" 304 -
+[2025-11-22 17:45:04] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:04] "[36mGET /forum/user_media/image/toolvision_914c053c_Ekran_goruntusu_2024-04-28_211620.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:45:06] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:06] "[36mGET /media/image/toolvision_1989cea7_Ekran_goruntusu_2024-04-28_212119.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:45:06] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:06] "[36mGET /media/image/toolvision_914c053c_Ekran_goruntusu_2024-04-28_211620.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:45:06] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:06] "GET /forum/posts/all_with_like_status HTTP/1.1" 200 -
+[2025-11-22 17:45:16] - INFO - 127.0.0.1 - - [22/Nov/2025 17:45:16] "GET /forum/posts/all_with_like_status HTTP/1.1" 200 -
+[2025-11-22 17:46:00] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:00] "[36mGET /media/image/toolvision_b069d38c_Ekran_goruntusu_2024-04-14_135019.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:00] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:00] "[36mGET /media/image/toolvision_13a5dad8_Ekran_goruntusu_2024-03-28_223023.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:00] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:00] "[36mGET /media/image/toolvision_0a7798d8_Ekran_goruntusu_2024-04-14_135527.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:06] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:06] "POST /forum/posts/50/like HTTP/1.1" 200 -
+[2025-11-22 17:46:07] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:07] "POST /forum/posts/50/like HTTP/1.1" 200 -
+[2025-11-22 17:46:07] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:07] "POST /forum/posts/50/like HTTP/1.1" 200 -
+[2025-11-22 17:46:08] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:08] "POST /forum/posts/50/like HTTP/1.1" 200 -
+[2025-11-22 17:46:27] - INFO - The CSRF token is missing.
+[2025-11-22 17:46:27] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:27] "[31m[1mPOST /record_page_visit HTTP/1.1[0m" 400 -
+[2025-11-22 17:46:27] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:27] "GET /subscriptions HTTP/1.1" 200 -
+[2025-11-22 17:46:27] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:27] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:27] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:27] "[36mGET /static/images/tr.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:27] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:27] "[36mGET /profile_pics/7_922b802d02f74160870ddcc305eceb47_Ekran_goruntusu_2024-04-28_212119.webp HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:27] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:27] "[36mGET /static/css/subscriptions.css HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:27] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:27] "[36mGET /static/images/en.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:27] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:27] "[36mGET /static/images/fr.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:28] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:28] "[36mGET /static/images/hi.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:28] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:28] "[36mGET /static/images/es.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:28] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:28] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:28] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:28] "[36mGET /static/images/ja.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:28] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:28] "[36mGET /static/js/subscriptions.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:28] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:28] "[36mGET /static/images/ko.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:28] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:28] "GET /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:46:28] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:28] "GET /get_user_limits HTTP/1.1" 200 -
+[2025-11-22 17:46:28] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:28] "[36mGET /static/images/zh.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:28] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:28] "POST /update_language HTTP/1.1" 200 -
+[2025-11-22 17:46:31] - INFO - The CSRF token is missing.
+[2025-11-22 17:46:31] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:31] "[31m[1mPOST /record_page_visit HTTP/1.1[0m" 400 -
+[2025-11-22 17:46:31] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:31] "GET /forum/ HTTP/1.1" 200 -
+[2025-11-22 17:46:32] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:32] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:32] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:32] "[36mGET /static/css/subscriptions.css HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:32] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:32] "[36mGET /forum/forum/static/forum.css HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:32] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:32] "[36mGET /forum/forum/static/cut.css HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:32] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:32] "[36mGET /profile_pics/7_922b802d02f74160870ddcc305eceb47_Ekran_goruntusu_2024-04-28_212119.webp HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:32] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:32] "[36mGET /static/images/tr.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:32] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:32] "[36mGET /static/images/ja.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:32] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:32] "[36mGET /static/images/ko.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:32] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:32] "[36mGET /static/images/hi.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:32] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:32] "[36mGET /static/images/zh.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:32] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:32] "[36mGET /static/images/en.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:32] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:32] "[36mGET /static/images/fr.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:32] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:32] "[36mGET /static/images/es.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:32] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:32] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:32] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:32] "[36mGET /static/js/auth_helpers.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:32] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:32] "[36mGET /static/js/subscriptions.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:32] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:32] "[36mGET /forum/forum/static/forum_core.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:32] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:32] "[36mGET /forum/forum/static/cut.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:33] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:33] "[36mGET /forum/forum/static/forum_interactions.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:33] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:33] "GET /get_user_limits HTTP/1.1" 200 -
+[2025-11-22 17:46:33] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:33] "GET /forum/user/status HTTP/1.1" 200 -
+[2025-11-22 17:46:33] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:33] "POST /update_language HTTP/1.1" 200 -
+[2025-11-22 17:46:33] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:33] "GET /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:46:33] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:33] "GET /forum/posts/all_with_like_status HTTP/1.1" 200 -
+[2025-11-22 17:46:33] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:33] "GET /forum/posts/all_with_like_status HTTP/1.1" 200 -
+[2025-11-22 17:46:34] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:34] "[36mGET /static/images/free.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:34] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:34] "[36mGET /profile_pics/6_3c21f30db6214f3eafcaef6c0de7a551_Ekran_goruntusu_2024-08-15_172820.webp HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:34] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:34] "[36mGET /profile_pics/4_131450094815411599659d7a93351aee_Ekran_goruntusu_2024-04-28_212119.webp HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:34] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:34] "[36mGET /forum/user_media/image/toolvision_166dfd6d_Ekran_goruntusu_2024-03-28_223023.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:34] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:34] "[36mGET /forum/user_media/image/toolvision_914c053c_Ekran_goruntusu_2024-04-28_211620.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:34] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:34] "[36mGET /media/image/toolvision_914c053c_Ekran_goruntusu_2024-04-28_211620.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:46:34] - INFO - 127.0.0.1 - - [22/Nov/2025 17:46:34] "[36mGET /media/image/toolvision_1989cea7_Ekran_goruntusu_2024-04-28_212119.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:47:59] - INFO - 127.0.0.1 - - [22/Nov/2025 17:47:59] "GET /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:48:02] - INFO - 127.0.0.1 - - [22/Nov/2025 17:48:02] "POST /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:48:03] - INFO - 127.0.0.1 - - [22/Nov/2025 17:48:03] "POST /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:48:04] - INFO - 127.0.0.1 - - [22/Nov/2025 17:48:04] "POST /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:48:04] - INFO - 127.0.0.1 - - [22/Nov/2025 17:48:04] "POST /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:48:05] - INFO - 127.0.0.1 - - [22/Nov/2025 17:48:05] "POST /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:48:05] - INFO - 127.0.0.1 - - [22/Nov/2025 17:48:05] "POST /user/frames HTTP/1.1" 200 -
+[2025-11-22 17:50:00] - INFO - Running job "cleanup_files_task (trigger: interval[0:05:00], next run at: 2025-11-22 17:50:00 +03)" (scheduled at 2025-11-22 17:50:00.179564+03:00)
+[2025-11-22 17:50:00] - INFO - Job "cleanup_files_task (trigger: interval[0:05:00], next run at: 2025-11-22 17:55:00 +03)" executed successfully
+[2025-11-22 17:54:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:54:09] "GET /forum/ HTTP/1.1" 200 -
+[2025-11-22 17:54:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:54:09] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2025-11-22 17:54:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:54:09] "[36mGET /static/images/tr.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:54:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:54:09] "[36mGET /static/css/subscriptions.css HTTP/1.1[0m" 304 -
+[2025-11-22 17:54:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:54:09] "[36mGET /forum/forum/static/forum.css HTTP/1.1[0m" 304 -
+[2025-11-22 17:54:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:54:09] "[36mGET /forum/forum/static/cut.css HTTP/1.1[0m" 304 -
+[2025-11-22 17:54:09] - INFO - 127.0.0.1 - - [22/Nov/2025 17:54:09] "[36mGET /profile_pics/7_922b802d02f74160870ddcc305eceb47_Ekran_goruntusu_2024-04-28_212119.webp HTTP/1.1[0m" 304 -
+[2025-11-22 17:54:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:54:10] "[36mGET /static/images/ko.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:54:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:54:10] "[36mGET /static/images/zh.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:54:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:54:10] "[36mGET /static/images/ja.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:54:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:54:10] "[36mGET /static/images/en.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:54:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:54:10] "[36mGET /static/images/hi.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:54:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:54:10] "[36mGET /static/images/fr.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:54:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:54:10] "[36mGET /static/js/subscriptions.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:54:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:54:10] "[36mGET /forum/forum/static/cut.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:54:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:54:10] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:54:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:54:10] "[36mGET /static/images/es.png HTTP/1.1[0m" 304 -
+[2025-11-22 17:54:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:54:10] "[36mGET /static/js/auth_helpers.js HTTP/1.1[0m" 304 -
+[2025-11-22 17:54:10] - INFO - 127.0.0.1 - - [22/Nov/2025 17:54:10] "[36mGET /forum/forum/static/forum_core.js HTTP/1.1[0m" 304 -
