@@ -8,6 +8,7 @@ user_media/
 static/profile_pics/
 static/receipt/
 uploads/
+results/
 
 # Gereksiz sistem dosyaları
 __pycache__/
@@ -15,3 +16,7 @@ __pycache__/
 venv/
 .env
 .DS_Store
+activity.log
+*.log
+*.pem
+*.key
