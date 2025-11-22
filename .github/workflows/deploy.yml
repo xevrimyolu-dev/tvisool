@@ -18,8 +18,18 @@ jobs:
           port: 22
           script: |
             cd /var/www/app
-            git pull
+            
+            # --- ZORLA GUNCELLEME BASLANGICI ---
+            # Sunucudaki farkliliklari yoksay ve GitHub'i esas al
+            git fetch --all
+            git reset --hard origin/main
+            # -----------------------------------
+
             source venv/bin/activate
             pip install -r requirements.txt
+            
+            # Veritabani guncellemesi (Hata verirse durma, devam et)
             flask db upgrade || true
+            
+            # Siteyi yeniden baslat
             sudo systemctl restart app
