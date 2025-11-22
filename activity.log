@@ -15091,3 +15091,172 @@ sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - c
 [2025-11-22 01:04:44] - INFO - 127.0.0.1 - - [22/Nov/2025 01:04:44] "POST /admin/reported_posts/12/reject HTTP/1.1" 200 -
 [2025-11-22 01:04:44] - INFO - 127.0.0.1 - - [22/Nov/2025 01:04:44] "GET /admin/reported_posts HTTP/1.1" 200 -
 [2025-11-22 01:04:45] - INFO - 127.0.0.1 - - [22/Nov/2025 01:04:45] "[36mGET /static/images/free.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:27] - INFO - Scheduler started
+[2025-11-22 02:21:27] - INFO - Added job "cleanup_files_task" to job store "default"
+[2025-11-22 02:21:27] - INFO - Added job "check_roles_task" to job store "default"
+[2025-11-22 02:21:27] - INFO - Added job "reset_captcha_fails_task" to job store "default"
+[2025-11-22 02:21:27] - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.147:5000
+[2025-11-22 02:21:27] - INFO - [33mPress CTRL+C to quit[0m
+[2025-11-22 02:21:30] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:30] "[32mGET /?ide_webview_request_time=1763767289998 HTTP/1.1[0m" 302 -
+[2025-11-22 02:21:30] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:30] "GET /forum/ HTTP/1.1" 200 -
+[2025-11-22 02:21:30] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:30] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:30] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:30] "[36mGET /forum/forum/static/forum.css HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:30] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:30] "[36mGET /forum/forum/static/cut.css HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:30] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:30] "[36mGET /static/css/subscriptions.css HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:31] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:31] "[36mGET /static/images/free.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:31] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:31] "[36mGET /static/images/ko.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:31] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:31] "[36mGET /static/images/es.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:31] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:31] "[36mGET /static/images/ja.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:31] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:31] "[36mGET /static/images/hi.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:31] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:31] "[36mGET /static/images/zh.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:31] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:31] "[36mGET /static/images/tr.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:31] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:31] "[36mGET /static/images/en.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:31] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:31] "[36mGET /static/images/fr.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:31] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:31] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:31] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:31] "[36mGET /static/js/subscriptions.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:31] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:31] "[36mGET /static/js/auth_helpers.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:32] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:32] "[36mGET /forum/forum/static/forum_interactions.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:32] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:32] "[36mGET /forum/forum/static/forum_core.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:32] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:32] "[36mGET /forum/forum/static/cut.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:32] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:32] "GET /get_user_limits HTTP/1.1" 200 -
+[2025-11-22 02:21:32] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:32] "POST /update_language HTTP/1.1" 200 -
+[2025-11-22 02:21:32] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:32] "GET /forum/user/status HTTP/1.1" 200 -
+[2025-11-22 02:21:32] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:32] "GET /forum/posts/all_with_like_status HTTP/1.1" 200 -
+[2025-11-22 02:21:32] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:32] "[36mGET /forum/user_media/image/toolvision_166dfd6d_Ekran_goruntusu_2024-03-28_223023.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:33] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:33] "[36mGET /forum/user_media/image/toolvision_914c053c_Ekran_goruntusu_2024-04-28_211620.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:33] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:33] "[36mGET /forum/user_media/image/toolvision_1989cea7_Ekran_goruntusu_2024-04-28_212119.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:33] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:33] "[36mGET /forum/user_media/video/thumbnails/toolvision_c0ed72c2_2023-10-14_22-45-24.jpg HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:36] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:36] "GET /get_user_info HTTP/1.1" 200 -
+[2025-11-22 02:21:36] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:36] "[36mGET /static/images/kurucu.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:40] - INFO - The CSRF token is missing.
+[2025-11-22 02:21:40] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:40] "[31m[1mPOST /record_page_visit HTTP/1.1[0m" 400 -
+[2025-11-22 02:21:41] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:41] "[32mGET /logout HTTP/1.1[0m" 302 -
+[2025-11-22 02:21:41] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:41] "GET / HTTP/1.1" 200 -
+[2025-11-22 02:21:41] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:41] "[36mGET /static/css/welcome.css HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:41] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:41] "[36mGET /static/js/welcome.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:41] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:41] "[33mGET /static/videos/placeholder.jpg HTTP/1.1[0m" 404 -
+[2025-11-22 02:21:41] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:41] "[36mGET /static/js/auth_helpers.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:41] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:41] "[36mGET /static/images/vision.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:41] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:41] "[33mGET /static/videos/demo.mp4 HTTP/1.1[0m" 404 -
+[2025-11-22 02:21:47] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:47] "POST /check_username HTTP/1.1" 200 -
+[2025-11-22 02:21:48] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:48] "POST /check_username HTTP/1.1" 200 -
+[2025-11-22 02:21:58] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:58] "[32mPOST /register HTTP/1.1[0m" 302 -
+[2025-11-22 02:21:59] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:59] "GET /?from_=login HTTP/1.1" 200 -
+[2025-11-22 02:21:59] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:59] "[36mGET /static/css/welcome.css HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:59] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:59] "[33mGET /static/videos/placeholder.jpg HTTP/1.1[0m" 404 -
+[2025-11-22 02:21:59] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:59] "[36mGET /static/images/vision.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:59] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:59] "[36mGET /static/js/welcome.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:21:59] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:59] "[33mGET /static/videos/demo.mp4 HTTP/1.1[0m" 404 -
+[2025-11-22 02:21:59] - INFO - 127.0.0.1 - - [22/Nov/2025 02:21:59] "[36mGET /static/js/auth_helpers.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:26:27] - INFO - Running job "cleanup_files_task (trigger: interval[0:05:00], next run at: 2025-11-22 02:26:27 +03)" (scheduled at 2025-11-22 02:26:27.337458+03:00)
+[2025-11-22 02:26:27] - INFO - Job "cleanup_files_task (trigger: interval[0:05:00], next run at: 2025-11-22 02:31:27 +03)" executed successfully
+[2025-11-22 02:34:11] - INFO - Scheduler started
+[2025-11-22 02:34:11] - INFO - Added job "cleanup_files_task" to job store "default"
+[2025-11-22 02:34:11] - INFO - Added job "check_roles_task" to job store "default"
+[2025-11-22 02:34:11] - INFO - Added job "reset_captcha_fails_task" to job store "default"
+[2025-11-22 02:34:11] - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.147:5000
+[2025-11-22 02:34:11] - INFO - [33mPress CTRL+C to quit[0m
+[2025-11-22 02:34:15] - INFO - 127.0.0.1 - - [22/Nov/2025 02:34:15] "GET /?ide_webview_request_time=1763768055571 HTTP/1.1" 200 -
+[2025-11-22 02:34:16] - INFO - 127.0.0.1 - - [22/Nov/2025 02:34:16] "[36mGET /static/css/welcome.css HTTP/1.1[0m" 304 -
+[2025-11-22 02:34:16] - INFO - 127.0.0.1 - - [22/Nov/2025 02:34:16] "[33mGET /static/videos/placeholder.jpg HTTP/1.1[0m" 404 -
+[2025-11-22 02:34:16] - INFO - 127.0.0.1 - - [22/Nov/2025 02:34:16] "[36mGET /static/images/vision.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:34:16] - INFO - 127.0.0.1 - - [22/Nov/2025 02:34:16] "[36mGET /static/js/welcome.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:34:16] - INFO - 127.0.0.1 - - [22/Nov/2025 02:34:16] "[33mGET /static/videos/demo.mp4 HTTP/1.1[0m" 404 -
+[2025-11-22 02:34:16] - INFO - 127.0.0.1 - - [22/Nov/2025 02:34:16] "[36mGET /static/js/auth_helpers.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:04] - INFO - 'zzz' için giriþ denemesi. Gelen fingerprint: 013ec62cb5c74a1ad8a17733a08415da
+[2025-11-22 02:35:04] - INFO - Giriþ baþarýlý: Yeni cihaz Slot 2'ye kaydediledi.
+[2025-11-22 02:35:04] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:04] "[32mPOST /login HTTP/1.1[0m" 302 -
+[2025-11-22 02:35:04] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:04] "GET /forum/ HTTP/1.1" 200 -
+[2025-11-22 02:35:04] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:04] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:04] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:04] "[36mGET /static/css/subscriptions.css HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:04] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:04] "[36mGET /static/images/free.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:04] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:04] "[36mGET /forum/forum/static/forum.css HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:04] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:04] "[36mGET /static/images/tr.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:04] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:04] "[36mGET /forum/forum/static/cut.css HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:04] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:04] "[36mGET /static/images/hi.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:04] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:04] "[36mGET /static/images/es.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:04] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:04] "[36mGET /static/images/zh.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:04] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:04] "[36mGET /static/images/ja.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:04] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:04] "[36mGET /static/images/ko.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:04] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:04] "[36mGET /static/images/en.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:05] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:05] "[36mGET /static/images/fr.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:05] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:05] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:05] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:05] "[36mGET /static/js/subscriptions.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:05] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:05] "[36mGET /static/js/auth_helpers.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:05] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:05] "GET /forum/forum/static/cut.js HTTP/1.1" 200 -
+[2025-11-22 02:35:05] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:05] "[36mGET /forum/forum/static/forum_core.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:05] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:05] "[36mGET /forum/forum/static/forum_interactions.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:05] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:05] "POST /update_language HTTP/1.1" 200 -
+[2025-11-22 02:35:05] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:05] "GET /get_user_limits HTTP/1.1" 200 -
+[2025-11-22 02:35:05] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:05] "GET /forum/user/status HTTP/1.1" 200 -
+[2025-11-22 02:35:05] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:05] "GET /forum/posts/all_with_like_status HTTP/1.1" 200 -
+[2025-11-22 02:35:05] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:05] "[36mGET /forum/user_media/image/toolvision_166dfd6d_Ekran_goruntusu_2024-03-28_223023.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:06] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:06] "[36mGET /forum/user_media/image/toolvision_914c053c_Ekran_goruntusu_2024-04-28_211620.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:06] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:06] "[36mGET /forum/user_media/image/toolvision_1989cea7_Ekran_goruntusu_2024-04-28_212119.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:35:16] - INFO - Resim baþarýyla kýrpýldý ve 'user_media\image\toolvision_13a5dad8_Ekran_goruntusu_2024-03-28_223023.png' yoluna kaydedildi.
+[2025-11-22 02:35:17] - INFO - Resim baþarýyla kýrpýldý ve 'user_media\image\toolvision_b069d38c_Ekran_goruntusu_2024-04-14_135019.png' yoluna kaydedildi.
+[2025-11-22 02:35:17] - INFO - Resim baþarýyla kýrpýldý ve 'user_media\image\toolvision_0a7798d8_Ekran_goruntusu_2024-04-14_135527.png' yoluna kaydedildi.
+[2025-11-22 02:35:17] - INFO - Resim baþarýyla kýrpýldý ve 'user_media\image\toolvision_4433627d_Ekran_goruntusu_2024-04-14_135753.png' yoluna kaydedildi.
+[2025-11-22 02:35:17] - INFO - Resim baþarýyla kýrpýldý ve 'user_media\image\toolvision_17bf26c2_Ekran_goruntusu_2024-04-14_135931.png' yoluna kaydedildi.
+[2025-11-22 02:35:17] - INFO - Resim baþarýyla kýrpýldý ve 'user_media\image\toolvision_a3dfe703_Ekran_goruntusu_2024-04-14_140059.png' yoluna kaydedildi.
+[2025-11-22 02:35:17] - INFO - Resim baþarýyla kýrpýldý ve 'user_media\image\toolvision_8637280e_Ekran_goruntusu_2024-04-14_140827.png' yoluna kaydedildi.
+[2025-11-22 02:35:17] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:17] "[35m[1mPOST /forum/posts/create HTTP/1.1[0m" 201 -
+[2025-11-22 02:35:18] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:18] "GET /forum/posts/46 HTTP/1.1" 200 -
+[2025-11-22 02:35:18] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:18] "GET /forum/user_media/image/toolvision_13a5dad8_Ekran_goruntusu_2024-03-28_223023.png HTTP/1.1" 200 -
+[2025-11-22 02:35:18] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:18] "GET /forum/user_media/image/toolvision_b069d38c_Ekran_goruntusu_2024-04-14_135019.png HTTP/1.1" 200 -
+[2025-11-22 02:35:18] - INFO - 127.0.0.1 - - [22/Nov/2025 02:35:18] "GET /forum/user_media/image/toolvision_0a7798d8_Ekran_goruntusu_2024-04-14_135527.png HTTP/1.1" 200 -
+[2025-11-22 02:54:46] - INFO - Scheduler started
+[2025-11-22 02:54:46] - INFO - Added job "cleanup_files_task" to job store "default"
+[2025-11-22 02:54:46] - INFO - Added job "check_roles_task" to job store "default"
+[2025-11-22 02:54:46] - INFO - Added job "reset_captcha_fails_task" to job store "default"
+[2025-11-22 02:54:46] - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.147:5000
+[2025-11-22 02:54:46] - INFO - [33mPress CTRL+C to quit[0m
+[2025-11-22 02:54:48] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:48] "[32mGET /?ide_webview_request_time=1763769287814 HTTP/1.1[0m" 302 -
+[2025-11-22 02:54:48] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:48] "GET /forum/ HTTP/1.1" 200 -
+[2025-11-22 02:54:48] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:48] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:48] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:48] "[36mGET /forum/forum/static/forum.css HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:48] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:48] "[36mGET /static/css/subscriptions.css HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:48] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:48] "[36mGET /forum/forum/static/cut.css HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:48] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:48] "[36mGET /static/images/free.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:48] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:48] "[36mGET /static/images/tr.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:49] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:49] "[36mGET /static/images/ko.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:49] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:49] "[36mGET /static/images/es.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:49] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:49] "[36mGET /static/images/ja.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:49] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:49] "[36mGET /static/images/hi.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:49] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:49] "[36mGET /static/images/en.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:49] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:49] "[36mGET /static/images/zh.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:49] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:49] "[36mGET /static/images/fr.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:49] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:49] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:49] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:49] "[36mGET /static/js/subscriptions.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:49] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:49] "[36mGET /static/js/auth_helpers.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:49] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:49] "[36mGET /forum/forum/static/forum_core.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:49] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:49] "GET /forum/forum/static/cut.js HTTP/1.1" 200 -
+[2025-11-22 02:54:49] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:49] "[36mGET /forum/forum/static/forum_interactions.js HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:50] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:50] "POST /update_language HTTP/1.1" 200 -
+[2025-11-22 02:54:50] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:50] "GET /get_user_limits HTTP/1.1" 200 -
+[2025-11-22 02:54:50] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:50] "GET /forum/user/status HTTP/1.1" 200 -
+[2025-11-22 02:54:50] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:50] "GET /forum/posts/all_with_like_status HTTP/1.1" 200 -
+[2025-11-22 02:54:50] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:50] "[36mGET /forum/user_media/image/toolvision_166dfd6d_Ekran_goruntusu_2024-03-28_223023.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:50] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:50] "[36mGET /forum/user_media/image/toolvision_914c053c_Ekran_goruntusu_2024-04-28_211620.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:50] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:50] "[36mGET /forum/user_media/image/toolvision_1989cea7_Ekran_goruntusu_2024-04-28_212119.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:50] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:50] "[36mGET /forum/user_media/image/toolvision_13a5dad8_Ekran_goruntusu_2024-03-28_223023.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:54:50] - INFO - 127.0.0.1 - - [22/Nov/2025 02:54:50] "[36mGET /forum/user_media/image/toolvision_b069d38c_Ekran_goruntusu_2024-04-14_135019.png HTTP/1.1[0m" 304 -
+[2025-11-22 02:55:00] - INFO - Video için kapak fotoðrafý oluþturuldu: user_media\video\thumbnails\toolvision_59c74802_2023-10-14_22-45-24.jpg
+[2025-11-22 02:55:00] - INFO - 127.0.0.1 - - [22/Nov/2025 02:55:00] "[35m[1mPOST /forum/posts/create HTTP/1.1[0m" 201 -
+[2025-11-22 02:55:00] - INFO - 127.0.0.1 - - [22/Nov/2025 02:55:00] "GET /forum/posts/47 HTTP/1.1" 200 -
+[2025-11-22 02:55:00] - INFO - 127.0.0.1 - - [22/Nov/2025 02:55:00] "GET /forum/user_media/video/thumbnails/toolvision_59c74802_2023-10-14_22-45-24.jpg HTTP/1.1" 200 -
+[2025-11-22 02:55:02] - INFO - 127.0.0.1 - - [22/Nov/2025 02:55:02] "GET /forum/posts/all_with_like_status HTTP/1.1" 200 -
+[2025-11-22 02:58:07] - INFO - Video sýkýþtýrýldý ve etiketlendi: user_media\video\toolvision_59c74802_2023-10-14_22-45-24.mp4
+[2025-11-22 02:59:46] - INFO - Running job "cleanup_files_task (trigger: interval[0:05:00], next run at: 2025-11-22 02:59:46 +03)" (scheduled at 2025-11-22 02:59:46.545124+03:00)
+[2025-11-22 02:59:46] - INFO - Job "cleanup_files_task (trigger: interval[0:05:00], next run at: 2025-11-22 03:04:46 +03)" executed successfully
+[2025-11-22 03:04:46] - INFO - Running job "cleanup_files_task (trigger: interval[0:05:00], next run at: 2025-11-22 03:09:46 +03)" (scheduled at 2025-11-22 03:04:46.545124+03:00)
+[2025-11-22 03:04:46] - INFO - Job "cleanup_files_task (trigger: interval[0:05:00], next run at: 2025-11-22 03:09:46 +03)" executed successfully
