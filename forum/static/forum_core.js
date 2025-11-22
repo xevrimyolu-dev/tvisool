@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const elementsToDisable = [
             document.getElementById('composer-submit-btn'),
             document.getElementById('image-upload-btn'),
-            document.getElementById('video-upload-btn'),
             document.getElementById('audio-upload-btn'),
             document.getElementById('doc-upload-btn'),
             document.getElementById('composer-textarea')
@@ -219,7 +218,7 @@ function showSpamCaptchaModal(onConfirm) {
     if (createPostForm) {
 
         document.getElementById('image-upload-btn')?.addEventListener('click', () => triggerFileInput('image/png,image/jpeg,image/gif'));
-        document.getElementById('video-upload-btn')?.addEventListener('click', () => triggerFileInput('video/mp4,video/quicktime'));
+        
         document.getElementById('doc-upload-btn')?.addEventListener('click', () => triggerFileInput('.docx,.pdf,.txt,.zip,.rar,.uasset,.uexp,.ini,.html,.css,.py,.js,.bms,.exe,.php,.7z,.tar,.rar,.sql'));
         document.getElementById('audio-upload-btn')?.addEventListener('click', () => triggerFileInput('audio/mp3,audio/wav,audio/ogg'));
 
@@ -237,14 +236,20 @@ function showSpamCaptchaModal(onConfirm) {
         let newFiles = Array.from(composerFileInput.files);
         if (newFiles.length === 0) return;
 
+        if (newFiles.some(f => f.type.startsWith('video/'))) {
+            showToastNotification(getLang('video_upload_disabled') || 'Video yükleme devre dışı.', 'error');
+            composerFileInput.value = '';
+            return;
+        }
+
         if (newFiles.some(f => f.type.startsWith('image/'))) {
             croppedImageData = [];
         }
 
         const currentImages = selectedFiles.filter(f => f.type.startsWith('image/'));
-        const currentVideos = selectedFiles.filter(f => f.type.startsWith('video/'));
+        const currentVideos = [];
         const currentAudios = selectedFiles.filter(f => f.type.startsWith('audio/'));
-        const currentDocs = selectedFiles.filter(f => !f.type.startsWith('image/') && !f.type.startsWith('video/') && !f.type.startsWith('audio/'));
+        const currentDocs = selectedFiles.filter(f => !f.type.startsWith('image/') && !f.type.startsWith('audio/'));
 
         if (currentVideos.length > 0 || currentAudios.length > 0 || currentDocs.length > 0) {
             showToastNotification(getLang('media_mix_error_1'), 'error');
@@ -254,7 +259,7 @@ function showSpamCaptchaModal(onConfirm) {
 
         const newFileTypes = new Set(newFiles.map(file => {
             if (file.type.startsWith('image/')) return 'image';
-            if (file.type.startsWith('video/')) return 'video';
+            if (file.type.startsWith('video/')) return 'document';
             if (file.type.startsWith('audio/')) return 'audio';
             return 'document';
         }));
@@ -271,7 +276,7 @@ function showSpamCaptchaModal(onConfirm) {
             return;
         }
 
-        if ((currentVideos.length > 0 || currentAudios.length > 0 || currentDocs.length > 0) && Array.from(newFileTypes).includes('image')) {
+        if ((currentAudios.length > 0 || currentDocs.length > 0) && Array.from(newFileTypes).includes('image')) {
             showToastNotification(getLang('media_mix_error_3'), 'error');
             composerFileInput.value = '';
             return;
@@ -293,9 +298,8 @@ function showSpamCaptchaModal(onConfirm) {
             }
         }
 
-        ['video', 'audio', 'document'].forEach(type => {
+        ['audio', 'document'].forEach(type => {
             const newTypedFiles = newFiles.filter(f => {
-                if (type === 'video') return f.type.startsWith('video/');
                 if (type === 'audio') return f.type.startsWith('audio/');
                 if (type === 'document') return !f.type.startsWith('image/') && !f.type.startsWith('video/') && !f.type.startsWith('audio/');
                 return false;
@@ -304,7 +308,6 @@ function showSpamCaptchaModal(onConfirm) {
             if (newTypedFiles.length > 0) {
                 let limit = 0;
                 let typeName = '';
-                if (type === 'video') { limit = MAX_VIDEO_COUNT; typeName = 'video'; }
                 if (type === 'audio') { limit = MAX_AUDIO_COUNT; typeName = 'ses dosyası'; }
                 if (type === 'document') { limit = MAX_DOCUMENT_COUNT; typeName = 'belge'; }
 
@@ -354,8 +357,7 @@ function showSpamCaptchaModal(onConfirm) {
                 reader.readAsDataURL(file);
             } else {
                 let iconClass = 'fas fa-file-alt';
-                if (file.type.startsWith('video/')) iconClass = 'fas fa-video';
-                else if (file.type.startsWith('audio/')) iconClass = 'fas fa-music';
+                if (file.type.startsWith('audio/')) iconClass = 'fas fa-music';
 
                 const icon = document.createElement('i');
                 icon.className = `${iconClass} preview-icon`;
@@ -442,75 +444,14 @@ async function handleFormSubmit(e) {
         return;
     }
 
-    async function uploadVideoInChunks(file) {
-        const initFd = new FormData();
-        initFd.append('filename', file.name);
-        initFd.append('file_type', 'video');
-        initFd.append('total_size', String(file.size));
-        const initRes = await fetch('/forum/uploads/init', { method: 'POST', headers: { 'X-CSRFToken': getCSRFToken() }, body: initFd });
-        if (!initRes.ok) throw new Error('chunk_init_failed');
-        const initJson = await initRes.json();
-        const uploadId = initJson.upload_id;
-        if (!uploadId) throw new Error('chunk_init_failed');
-        const chunkSize = 4 * 1024 * 1024;
-        const totalChunks = Math.ceil(file.size / chunkSize);
-        const tasks = [];
-        let index = 0;
-        while (index < totalChunks) {
-            const start = index * chunkSize;
-            const end = Math.min(start + chunkSize, file.size);
-            const blob = file.slice(start, end);
-            const fd = new FormData();
-            fd.append('upload_id', uploadId);
-            fd.append('index', String(index));
-            fd.append('chunk', blob);
-            tasks.push(async () => {
-                const res = await fetch('/forum/uploads/chunk', { method: 'POST', headers: { 'X-CSRFToken': getCSRFToken() }, body: fd });
-                if (!res.ok) throw new Error('chunk_send_failed');
-            });
-            index++;
-        }
-        const concurrency = 4;
-        let cursor = 0;
-        const runners = [];
-        async function worker() {
-            while (cursor < tasks.length) {
-                const t = tasks[cursor++];
-                await t();
-            }
-        }
-        for (let i = 0; i < concurrency; i++) runners.push(worker());
-        await Promise.all(runners);
-        const completeFd = new FormData();
-        completeFd.append('upload_id', uploadId);
-        completeFd.append('filename', file.name);
-        completeFd.append('file_type', 'video');
-        completeFd.append('total_chunks', String(totalChunks));
-        const compRes = await fetch('/forum/uploads/complete', { method: 'POST', headers: { 'X-CSRFToken': getCSRFToken() }, body: completeFd });
-        if (!compRes.ok) throw new Error('chunk_complete_failed');
-        const compJson = await compRes.json();
-        return compJson;
-    }
-
-    const useChunks = false;
-    const largeVideos = useChunks ? selectedFiles.filter(f => f.type.startsWith('video/') && f.size > (8 * 1024 * 1024)) : [];
     const preUploaded = [];
-    for (const vf of largeVideos) {
-        try {
-            const info = await uploadVideoInChunks(vf);
-            if (info && info.file_url) preUploaded.push(info);
-        } catch (err) {
-            preUploaded.push(null);
-        }
-    }
 
     const formData = new FormData();
     formData.append('content', finalContent);
     selectedFiles.forEach(file => {
-        const isVideo = file.type.startsWith('video/');
-        if (!isVideo) formData.append('media_files', file);
+        if (!file.type.startsWith('video/')) formData.append('media_files', file);
     });
-    if (preUploaded.length > 0) formData.append('pre_uploaded_paths', JSON.stringify(preUploaded));
+    
     formData.append('crop_data', JSON.stringify(croppedImageData));
 
     if (composerSubmitBtn) {
@@ -532,60 +473,7 @@ async function handleFormSubmit(e) {
                 pa.removeAttribute('data-reply-content');
                 pa.removeAttribute('data-reply-id');
             }
-            const videoFiles = selectedFiles.filter(f => f.type.startsWith('video/'));
-            if (res.post_id && videoFiles.length > 0) {
-                const bar = document.createElement('div');
-                bar.className = 'upload-progress-bar';
-                bar.innerHTML = '<div class="bar"></div><span class="label">0%</span>';
-                document.getElementById('post-feed-container')?.prepend(bar);
-                function updateProgress(p) {
-                    const b = bar.querySelector('.bar');
-                    const l = bar.querySelector('.label');
-                    if (b) b.style.width = `${p}%`;
-                    if (l) l.textContent = `${Math.floor(p)}%`;
-                }
-                async function uploadVideoToPost(file, idx, total) {
-                    const initFd = new FormData();
-                    initFd.append('filename', file.name);
-                    initFd.append('file_type', 'video');
-                    initFd.append('total_size', String(file.size));
-                    const initRes = await fetch('/forum/uploads/init', { method: 'POST', headers: { 'X-CSRFToken': getCSRFToken() }, body: initFd });
-                    const initJson = await initRes.json();
-                    const uploadId = initJson.upload_id;
-                    const chunkSize = 4 * 1024 * 1024;
-                    const totalChunks = Math.ceil(file.size / chunkSize);
-                    for (let i = 0; i < totalChunks; i++) {
-                        const start = i * chunkSize;
-                        const end = Math.min(start + chunkSize, file.size);
-                        const fd = new FormData();
-                        fd.append('upload_id', uploadId);
-                        fd.append('index', String(i));
-                        fd.append('chunk', file.slice(start, end));
-                        await fetch('/forum/uploads/chunk', { method: 'POST', headers: { 'X-CSRFToken': getCSRFToken() }, body: fd });
-                        const localP = ((i + 1) / totalChunks);
-                        updateProgress(((idx + localP) / total) * 100);
-                    }
-                    const completeFd = new FormData();
-                    completeFd.append('upload_id', uploadId);
-                    completeFd.append('filename', file.name);
-                    completeFd.append('file_type', 'video');
-                    completeFd.append('total_chunks', String(totalChunks));
-                    const compRes = await fetch('/forum/uploads/complete', { method: 'POST', headers: { 'X-CSRFToken': getCSRFToken() }, body: completeFd });
-                    const compJson = await compRes.json();
-                    if (compJson && compJson.file_url) {
-                        const attachFd = new FormData();
-                        attachFd.append('file_url', compJson.file_url);
-                        attachFd.append('file_type', compJson.file_type);
-                        attachFd.append('original_filename', compJson.original_filename);
-                        await fetch(`/forum/posts/${res.post_id}/attach_media`, { method: 'POST', headers: { 'X-CSRFToken': getCSRFToken() }, body: attachFd });
-                    }
-                }
-                for (let i = 0; i < videoFiles.length; i++) {
-                    await uploadVideoToPost(videoFiles[i], i, videoFiles.length);
-                }
-                updateProgress(100);
-                setTimeout(() => bar.remove(), 1500);
-            }
+            
         }
         // Başarısızsa hiçbir şey yapma, böylece alıntı kutusu ekranda kalır.
         

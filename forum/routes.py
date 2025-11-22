@@ -444,7 +444,7 @@ def create_post():
     if len(sanitized_content) > MAX_CONTENT_LENGTH_CHARS:
         return jsonify({"error_key": "content_too_long", "limit": MAX_CONTENT_LENGTH_CHARS}), 400
 
-    # Dosyaları türlerine göre ayır
+    # Dosyaları türlerine göre ayır (video desteklenmez)
     images, videos, audios, documents = [], [], [], []
     
     for file in media_files:
@@ -453,7 +453,7 @@ def create_post():
             if ext in IMAGE_EXTENSIONS:
                 images.append(file)
             elif ext in VIDEO_EXTENSIONS:
-                videos.append(file)
+                return jsonify({"error_key": "video_upload_disabled"}), 400
             elif ext in AUDIO_EXTENSIONS:
                 audios.append(file)
             elif ext in DOCUMENT_EXTENSIONS:
@@ -486,16 +486,8 @@ def create_post():
         if total_image_size > MAX_TOTAL_IMAGE_SIZE_MB * 1024 * 1024:
             return jsonify({"error_key": "image_total_size_limit", "limit": MAX_TOTAL_IMAGE_SIZE_MB}), 413
 
-    # Video kontrolleri
-    if videos:
-        if len(videos) > MAX_VIDEO_COUNT:
-            return jsonify({"error_key": "video_count_limit", "limit": MAX_VIDEO_COUNT}), 413
-        
-        video_file = videos[0]
-        video_file.seek(0, os.SEEK_END)
-        if video_file.tell() > MAX_VIDEO_SIZE_MB * 1024 * 1024:
-            return jsonify({"error_key": "video_size_limit", "limit": MAX_VIDEO_SIZE_MB}), 413
-        video_file.seek(0)
+    # Video tamamen kapalı
+    videos = []
 
     # Ses kontrolleri
     if audios:
@@ -525,7 +517,7 @@ def create_post():
     
     try:
         image_crop_index = 0
-        files_to_process = images + videos + audios + documents
+        files_to_process = images + audios + documents
         
         for file in files_to_process:
             safe_original_filename = secure_filename(file.filename)
@@ -599,17 +591,7 @@ def create_post():
                 add_watermark_to_image(str(save_path_file))
                 image_crop_index += 1
             
-            elif file_type == 'video':
-                file.save(save_path_file)
-
-                # Video işleme
-                app_context = current_app._get_current_object()
-                video_thread = threading.Thread(
-                    target=process_video_in_background,
-                    args=(app_context, str(save_path_file))
-                )
-                video_thread.daemon = True
-                video_thread.start()
+            
             
             else:
                 file.save(save_path_file)
@@ -1119,110 +1101,7 @@ def get_user_posts(user_id):
 def serve_user_media(filename):
     return send_from_directory(current_app.config['USER_MEDIA_FOLDER'], filename)
 
-@forum_bp.route("/uploads/init", methods=["POST"])
-@login_required
-def init_upload():
-    filename = request.form.get('filename', '')
-    file_type = request.form.get('file_type', '')
-    total_size = request.form.get('total_size', '')
-    if not filename or not file_type:
-        return jsonify({"error": "invalid_params"}), 400
-    upload_id = uuid.uuid4().hex
-    tmp_dir = Path(current_app.config['USER_MEDIA_FOLDER']) / 'tmp' / 'uploads' / upload_id
-    tmp_dir.mkdir(parents=True, exist_ok=True)
-    return jsonify({"upload_id": upload_id})
-
-@forum_bp.route("/uploads/chunk", methods=["POST"])
-@login_required
-def upload_chunk():
-    upload_id = request.form.get('upload_id', '')
-    index = request.form.get('index', '')
-    chunk = request.files.get('chunk')
-    if not upload_id or index is None or not chunk:
-        return jsonify({"error": "invalid_params"}), 400
-    tmp_dir = Path(current_app.config['USER_MEDIA_FOLDER']) / 'tmp' / 'uploads' / upload_id
-    if not tmp_dir.exists():
-        return jsonify({"error": "upload_not_found"}), 404
-    part_path = tmp_dir / f"{int(index):06d}.part"
-    chunk.save(part_path)
-    return jsonify({"ok": True})
-
-@forum_bp.route("/uploads/complete", methods=["POST"])
-@login_required
-def complete_upload():
-    upload_id = request.form.get('upload_id', '')
-    original_filename = request.form.get('filename', '')
-    file_type = request.form.get('file_type', '')
-    total_chunks = int(request.form.get('total_chunks', '0'))
-    if not upload_id or not original_filename or not file_type or total_chunks <= 0:
-        return jsonify({"error": "invalid_params"}), 400
-    tmp_dir = Path(current_app.config['USER_MEDIA_FOLDER']) / 'tmp' / 'uploads' / upload_id
-    if not tmp_dir.exists():
-        return jsonify({"error": "upload_not_found"}), 404
-    safe_original = secure_filename(original_filename)
-    ext = safe_original.rsplit('.', 1)[1].lower() if '.' in safe_original else ''
-    unique_id = uuid.uuid4().hex[:8]
-    base = f"toolvision_{unique_id}_{Path(safe_original).stem}"
-    save_dir = Path(current_app.config['USER_MEDIA_FOLDER']) / file_type
-    save_dir.mkdir(parents=True, exist_ok=True)
-    final_path = save_dir / f"{base}.{ext}"
-    with open(final_path, 'wb') as out:
-        for i in range(total_chunks):
-            part_path = tmp_dir / f"{i:06d}.part"
-            if not part_path.exists():
-                return jsonify({"error": "missing_chunk", "index": i}), 400
-            with open(part_path, 'rb') as inp:
-                out.write(inp.read())
-    for p in sorted(tmp_dir.glob('*.part')):
-        try:
-            p.unlink()
-        except Exception:
-            pass
-    try:
-        tmp_dir.rmdir()
-    except Exception:
-        pass
-    if file_type == 'video':
-        app_context = current_app._get_current_object()
-        t = threading.Thread(target=process_video_in_background, args=(app_context, str(final_path)))
-        t.daemon = True
-        t.start()
-    return jsonify({
-        "file_url": f"{file_type}/{final_path.name}",
-        "file_type": file_type,
-        "original_filename": original_filename
-    })
-
-@forum_bp.route("/posts/<int:post_id>/attach_media", methods=["POST"])
-@login_required
-def attach_media(post_id):
-    post = db.session.get(Post, post_id)
-    if not post:
-        return jsonify({"error_key": "post_not_found"}), 404
-    if post.user_id != current_user.id:
-        return jsonify({"error_key": "attach_unauthorized"}), 403
-    file_url = request.form.get('file_url')
-    file_type = request.form.get('file_type')
-    original_filename = request.form.get('original_filename', '')
-    thumbnail_url = request.form.get('thumbnail_url')
-    if not file_url or not file_type:
-        return jsonify({"error_key": "invalid_params"}), 400
-    media = PostMedia(
-        post=post,
-        file_url=file_url,
-        file_type=file_type,
-        original_filename=original_filename,
-        thumbnail_url=thumbnail_url
-    )
-    db.session.add(media)
-    db.session.commit()
-    return jsonify({
-        "id": media.id,
-        "url": url_for('serve_user_media', filename=media.file_url),
-        "type": media.file_type,
-        "original_name": media.original_filename,
-        "thumbnail_url": url_for('serve_user_media', filename=media.thumbnail_url) if media.thumbnail_url else None
-    }), 201
+ 
 
 @forum_bp.route("/search", methods=["GET"])
 @login_required

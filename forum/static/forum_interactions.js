@@ -606,13 +606,6 @@ function showContextMenu(postCard) {
                 mediaHTML += `<div class="media-item" data-url="${media.url}" data-filename="${media.original_name}" data-type="${media.type}">`;
                 if (media.type === 'image') {
                     mediaHTML += `<img src="${media.url}" alt="${getLang('alt_post_image')}" loading="lazy">`;
-                } else if (media.type === 'video') {
-                    mediaHTML += `
-                        <a href="#" class="video-thumbnail-container" data-video-url="${media.url}">
-                            <img src="${media.thumbnail_url || ''}" alt="${getLang('alt_video_thumbnail')}" loading="lazy">
-                            <div class="video-play-button"></div>
-                        </a>
-                    `;
                 }
                 mediaHTML += `</div>`;
             });
